@@ -25,7 +25,7 @@ export class User {
     @Column({type: "varchar", length: 255, nullable: true})
     identityCard: string;
     @ManyToOne(() => Role, (role) => role.users)
-    role: number;
+    role: Role;
     @OneToOne(() => Provider)
     @JoinColumn()
     provider: Provider;

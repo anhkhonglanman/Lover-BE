@@ -1,3 +1,4 @@
+import { Role } from "./Role";
 import { Provider } from "./Provider";
 import { Booking } from "./Booking";
 export declare class User {
@@ -10,7 +11,7 @@ export declare class User {
     address: string;
     email: string;
     identityCard: string;
-    role: number;
+    role: Role;
     provider: Provider;
     booking: Booking[];
 }

@@ -54,7 +54,7 @@ __decorate([
 ], User.prototype, "identityCard", void 0);
 __decorate([
     (0, typeorm_1.ManyToOne)(() => Role_1.Role, (role) => role.users),
-    __metadata("design:type", Number)
+    __metadata("design:type", Role_1.Role)
 ], User.prototype, "role", void 0);
 __decorate([
     (0, typeorm_1.OneToOne)(() => Provider_1.Provider),
