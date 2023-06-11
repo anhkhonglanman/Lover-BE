@@ -2,7 +2,6 @@ import {Column, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne, PrimaryGener
 import {Role} from "./Role";
 import {Provider} from "./Provider";
 import {Booking} from "./Booking";
-// import {Booking} from "./Booking";
 
 @Entity()
 export class User {
