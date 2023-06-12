@@ -8,6 +8,7 @@ export declare class User {
     lastname: string;
     phoneNumber: string;
     address: string;
+    avatar: string;
     email: string;
     identityCard: string;
     role: Role;

@@ -2,10 +2,11 @@ import { User } from "./User";
 import { Image } from "./Image";
 import { Booking } from "./Booking";
 import { Service } from "./Service";
+import { Status } from "./Status";
 export declare class Provider {
     id: number;
     name: string;
-    dob: Date;
+    dob: string;
     sex: string;
     city: string;
     country: string;
@@ -23,5 +24,6 @@ export declare class Provider {
     booking: Booking[];
     images: Image[];
     service: Service;
+    status: Status;
     user: User;
 }

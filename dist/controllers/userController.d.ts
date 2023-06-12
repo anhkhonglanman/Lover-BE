@@ -6,6 +6,7 @@ declare class UserController {
     showUser: (req: Request, res: Response) => Promise<void>;
     editUser: (req: Request, res: Response) => Promise<void>;
     delete: (req: Request, res: Response) => Promise<void>;
+    searchUsername: (req: Request, res: Response) => Promise<void>;
 }
 declare const _default: UserController;
 export default _default;
