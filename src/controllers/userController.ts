@@ -66,7 +66,7 @@ class UserController {
     searchUsername = async (req: Request, res: Response) => {
         try{
         let username = req.params.name;
-        let user = await this.userService.adminSearchUsername(username);
+        let user = await userService.adminSearchUsername(username);
         res.status(200).json(user);
     }catch(e){
         console.log("error in searchUsername:",e )
@@ -75,5 +75,6 @@ class UserController {
             success: false
         })
     }}
+    userService: any;
 }
 export default new UserController()
