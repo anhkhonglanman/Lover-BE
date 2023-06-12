@@ -61,6 +61,11 @@ class UserController {
             data: user
         })
     }
+    updateToProvider = async (req: Request, res: Response) => {
+        let userId = req.params.id
+        let newRole = await userService.updateRole(userId)
+        res.status(200).json(newRole)
+    }
     editUser = async (req: Request, res: Response) => {
         let user = req.body;
         let id = req.params.id;
