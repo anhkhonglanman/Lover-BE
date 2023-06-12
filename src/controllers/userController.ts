@@ -63,5 +63,19 @@ class UserController {
         await userService.delete(req.params.id)
         res.status(200).json('delete user success')
     }
+    searchUsername = async (req: Request, res: Response) => {
+        try{
+        let username = req.params.name;
+        let user = await this.userService.adminSearchUsername(username);
+        res.status(200).json(user);
+    }catch(e){
+        console.log("error in searchUsername:",e )
+        res.status(400).json({
+            message: 'error in searchUsername',
+            success: false
+        })
+    }}
+    userService: any;
+
 }
 export default new UserController()
