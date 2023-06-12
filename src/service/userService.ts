@@ -12,7 +12,7 @@ class UserService{
     save = async (user) => {
         let password = await bcrypt.hash(user.password, 10)
         user.password = password;
-        // user.role = 1
+        user.role = 1
         await this.userRepository.save(user);
     }
     loginCheck = async (user) => {
@@ -27,9 +27,11 @@ class UserService{
                     username: userFind.username,
                     role: userFind.role
                 }
-                return jwt.sign(payload, SECRET, {
+                let token = (jwt.sign(payload, SECRET, {
                     expiresIn: 36000 * 1000
-                })
+                }))
+                payload['token'] = token
+                return payload;
             }else {
                 return 'Password is wrong'
             }

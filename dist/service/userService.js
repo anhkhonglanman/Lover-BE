@@ -14,39 +14,32 @@ class UserService {
         this.save = async (user) => {
             let password = await bcrypt_1.default.hash(user.password, 10);
             user.password = password;
+            user.role = 1;
             await this.userRepository.save(user);
         };
         this.loginCheck = async (user) => {
-            let foundUser = await this.userRepository.findOne({
-                relations: {
-                    role: true
-                },
-                where: {
-                    username: user.username
-                }
-            });
-            console.log("foundUser:", foundUser);
-            if (foundUser) {
-                let pass = await bcrypt_1.default.compare(user.password, foundUser.password);
-                if (pass) {
-                    let payload = {
-                        id: foundUser.id,
-                        username: foundUser.username,
-                        role: foundUser.role.id
-                    };
-                    return {
-                        info: {
-                            username: foundUser.username,
-                            role: foundUser.role.id
-                        },
-                        token: jsonwebtoken_1.default.sign(payload, auth_1.SECRET, {
-                            expiresIn: '1h'
-                        })
-                    };
-                }
-                return null;
+            let userFind = await this.userRepository.findOneBy({ username: user.username });
+            if (!userFind) {
+                return 'User is not exist';
             }
-            return null;
+            else {
+                let passWordCompare = await bcrypt_1.default.compare(user.password, userFind.password);
+                if (passWordCompare) {
+                    let payload = {
+                        idUser: userFind.id,
+                        username: userFind.username,
+                        role: userFind.role
+                    };
+                    let token = (jsonwebtoken_1.default.sign(payload, auth_1.SECRET, {
+                        expiresIn: 36000 * 1000
+                    }));
+                    payload['token'] = token;
+                    return payload;
+                }
+                else {
+                    return 'Password is wrong';
+                }
+            }
         };
         this.findOne = async (userId) => {
             let userFind = await this.userRepository.findOneBy({ id: userId });
