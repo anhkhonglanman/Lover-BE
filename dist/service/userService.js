@@ -8,6 +8,7 @@ const User_1 = require("../entity/User");
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const auth_1 = require("../middleware/auth");
+const typeorm_1 = require("typeorm");
 class UserService {
     constructor() {
         this.save = async (user) => {
@@ -71,6 +72,21 @@ class UserService {
         };
         this.delete = async (id) => {
             await this.userRepository.delete({ id: id });
+        };
+        this.adminSearchUsername = async (username) => {
+            try {
+                let searchPeople = await this.userRepository.find({
+                    where: {
+                        username: (0, typeorm_1.Like)(`${username}%`),
+                        role: 'user'
+                    }
+                });
+                return searchPeople;
+            }
+            catch (error) {
+                console.log(`Error ${error} on adminSearchUsername in adminUserService`);
+                throw error;
+            }
         };
         this.userRepository = data_source_1.AppDataSource.getRepository(User_1.User);
     }

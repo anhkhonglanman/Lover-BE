@@ -15,6 +15,7 @@ const User_1 = require("./User");
 const Image_1 = require("./Image");
 const Booking_1 = require("./Booking");
 const Service_1 = require("./Service");
+const Status_1 = require("./Status");
 let Provider = class Provider {
 };
 __decorate([
@@ -26,23 +27,23 @@ __decorate([
     __metadata("design:type", String)
 ], Provider.prototype, "name", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ type: "date" }),
-    __metadata("design:type", Date)
+    (0, typeorm_1.Column)({ type: "varchar", length: 255, nullable: true }),
+    __metadata("design:type", String)
 ], Provider.prototype, "dob", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ type: "varchar", length: 255, nullable: false }),
+    (0, typeorm_1.Column)({ type: "varchar", length: 255, nullable: true }),
     __metadata("design:type", String)
 ], Provider.prototype, "sex", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ type: "varchar", length: 255, nullable: false }),
+    (0, typeorm_1.Column)({ type: "varchar", length: 255, nullable: true }),
     __metadata("design:type", String)
 ], Provider.prototype, "city", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ type: "varchar", length: 20, nullable: false }),
+    (0, typeorm_1.Column)({ type: "varchar", length: 20, nullable: true }),
     __metadata("design:type", String)
 ], Provider.prototype, "country", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ type: "varchar", length: 255, nullable: false }),
+    (0, typeorm_1.Column)({ type: "varchar", length: 255, nullable: true }),
     __metadata("design:type", String)
 ], Provider.prototype, "avatar", void 0);
 __decorate([
@@ -70,7 +71,7 @@ __decorate([
     __metadata("design:type", String)
 ], Provider.prototype, "linkFB", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ type: "date" }),
+    (0, typeorm_1.Column)({ type: "timestamp", default: () => "CURRENT_TIMESTAMP" }),
     __metadata("design:type", Date)
 ], Provider.prototype, "joinDate", void 0);
 __decorate([
@@ -97,6 +98,10 @@ __decorate([
     (0, typeorm_1.ManyToOne)(() => Service_1.Service),
     __metadata("design:type", Service_1.Service)
 ], Provider.prototype, "service", void 0);
+__decorate([
+    (0, typeorm_1.ManyToOne)(() => Status_1.Status),
+    __metadata("design:type", Status_1.Status)
+], Provider.prototype, "status", void 0);
 __decorate([
     (0, typeorm_1.OneToOne)(() => User_1.User),
     (0, typeorm_1.JoinColumn)(),

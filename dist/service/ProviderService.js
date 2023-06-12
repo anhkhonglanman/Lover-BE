@@ -4,8 +4,25 @@ const data_source_1 = require("../data-source");
 const Provider_1 = require("../entity/Provider");
 class ProviderService {
     constructor() {
-        this.createProvider = async (provider) => {
+        this.save = async (provider) => {
             await this.providerRepository.save(provider);
+        };
+        this.all = async () => {
+            return await this.providerRepository.find({
+                relations: {
+                    images: true,
+                    service: true,
+                    user: true,
+                    status: true
+                },
+                select: {
+                    user: {
+                        firstname: true,
+                        lastname: true,
+                        phoneNumber: true
+                    }
+                }
+            });
         };
         this.providerRepository = data_source_1.AppDataSource.getRepository(Provider_1.Provider);
     }

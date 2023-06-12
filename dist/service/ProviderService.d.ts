@@ -1,7 +1,8 @@
 declare class ProviderService {
     private providerRepository;
     constructor();
-    createProvider: (provider: any) => Promise<void>;
+    save: (provider: any) => Promise<void>;
+    all: () => Promise<any>;
 }
 declare const _default: ProviderService;
 export default _default;
