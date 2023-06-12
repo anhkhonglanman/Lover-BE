@@ -75,7 +75,5 @@ class UserController {
             success: false
         })
     }}
-    userService: any;
-
 }
 export default new UserController()
