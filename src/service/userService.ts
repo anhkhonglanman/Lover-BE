@@ -27,7 +27,7 @@ class UserService{
                     username: userFind.username,
                     role: userFind.role
                 }
-                let token = (jwt.sign(payload, SECRET, {
+                let token = await (jwt.sign(payload, SECRET, {
                     expiresIn: 36000 * 1000
                 }))
                 payload['token'] = token
