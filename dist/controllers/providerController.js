@@ -26,6 +26,11 @@ class ProviderController {
             let allProvider = await ProviderService_1.default.all();
             res.status(200).json(allProvider);
         };
+        this.searchByTypeProvider = async (req, res) => {
+            let id = req.params.id;
+            let typeProvider = await ProviderService_1.default.searchByType(id);
+            res.status(200).json(typeProvider);
+        };
     }
 }
 exports.default = new ProviderController();

@@ -9,19 +9,23 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Status = void 0;
+exports.Service = void 0;
 const typeorm_1 = require("typeorm");
-let Status = exports.Status = class Status {
+let Service = exports.Service = class Service {
 };
 __decorate([
     (0, typeorm_1.PrimaryGeneratedColumn)(),
     __metadata("design:type", Number)
-], Status.prototype, "id", void 0);
+], Service.prototype, "id", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ type: "varchar" }),
+    (0, typeorm_1.Column)({ type: "varchar", length: 255, default: null }),
     __metadata("design:type", String)
-], Status.prototype, "status", void 0);
-exports.Status = Status = __decorate([
+], Service.prototype, "type", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ type: "varchar", length: 255, default: "user" }),
+    __metadata("design:type", String)
+], Service.prototype, "name", void 0);
+exports.Service = Service = __decorate([
     (0, typeorm_1.Entity)()
-], Status);
-//# sourceMappingURL=Status.js.map
+], Service);
+//# sourceMappingURL=Service.js.map

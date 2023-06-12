@@ -9,24 +9,41 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Image = void 0;
+exports.Booking = void 0;
 const typeorm_1 = require("typeorm");
+const User_1 = require("./User");
 const Provider_1 = require("./Provider");
-let Image = exports.Image = class Image {
+let Booking = exports.Booking = class Booking {
 };
 __decorate([
     (0, typeorm_1.PrimaryGeneratedColumn)(),
     __metadata("design:type", Number)
-], Image.prototype, "id", void 0);
+], Booking.prototype, "id", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ type: "varchar", length: 255, nullable: true }),
+    (0, typeorm_1.Column)({ type: "varchar", length: 255 }),
     __metadata("design:type", String)
-], Image.prototype, "imageURL", void 0);
+], Booking.prototype, "address", void 0);
 __decorate([
-    (0, typeorm_1.ManyToOne)(() => Provider_1.Provider, (provider) => provider.images),
+    (0, typeorm_1.Column)({ type: "varchar", length: 255 }),
+    __metadata("design:type", String)
+], Booking.prototype, "hour", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ type: "date" }),
+    __metadata("design:type", Date)
+], Booking.prototype, "startTime", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ type: "varchar", length: 255 }),
+    __metadata("design:type", String)
+], Booking.prototype, "cost", void 0);
+__decorate([
+    (0, typeorm_1.ManyToOne)(() => User_1.User, (user) => user.booking),
+    __metadata("design:type", User_1.User)
+], Booking.prototype, "user", void 0);
+__decorate([
+    (0, typeorm_1.ManyToOne)(() => Provider_1.Provider, (provider) => provider.booking),
     __metadata("design:type", Provider_1.Provider)
-], Image.prototype, "provider", void 0);
-exports.Image = Image = __decorate([
+], Booking.prototype, "providers", void 0);
+exports.Booking = Booking = __decorate([
     (0, typeorm_1.Entity)()
-], Image);
-//# sourceMappingURL=Image.js.map
+], Booking);
+//# sourceMappingURL=Booking.js.map

@@ -9,19 +9,24 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Status = void 0;
+exports.Role = void 0;
 const typeorm_1 = require("typeorm");
-let Status = exports.Status = class Status {
+const User_1 = require("./User");
+let Role = exports.Role = class Role {
 };
 __decorate([
     (0, typeorm_1.PrimaryGeneratedColumn)(),
     __metadata("design:type", Number)
-], Status.prototype, "id", void 0);
+], Role.prototype, "id", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ type: "varchar" }),
+    (0, typeorm_1.Column)({ type: "varchar", length: 255, default: "user" }),
     __metadata("design:type", String)
-], Status.prototype, "status", void 0);
-exports.Status = Status = __decorate([
+], Role.prototype, "name", void 0);
+__decorate([
+    (0, typeorm_1.OneToMany)(() => User_1.User, (user) => user.role),
+    __metadata("design:type", Array)
+], Role.prototype, "users", void 0);
+exports.Role = Role = __decorate([
     (0, typeorm_1.Entity)()
-], Status);
-//# sourceMappingURL=Status.js.map
+], Role);
+//# sourceMappingURL=Role.js.map

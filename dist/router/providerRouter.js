@@ -8,5 +8,6 @@ const providerController_1 = __importDefault(require("../controllers/providerCon
 const providerRouter = (0, express_1.Router)();
 providerRouter.post('/', providerController_1.default.save);
 providerRouter.get('/', providerController_1.default.all);
+providerRouter.get('/:id', providerController_1.default.searchByTypeProvider);
 exports.default = providerRouter;
 //# sourceMappingURL=providerRouter.js.map
