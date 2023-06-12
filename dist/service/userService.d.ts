@@ -13,6 +13,7 @@ declare class UserService {
     checkUserSignup: (user: any) => Promise<any>;
     all: () => Promise<any>;
     update: (id: any, user: any) => Promise<void>;
+    updateRole: (id: any) => Promise<void>;
     delete: (id: any) => Promise<void>;
     adminSearchUsername: (username: any) => Promise<any>;
 }

@@ -9,11 +9,13 @@ const bcrypt_1 = __importDefault(require("bcrypt"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const auth_1 = require("../middleware/auth");
 const typeorm_1 = require("typeorm");
+const Role_1 = require("../entity/Role");
 class UserService {
     constructor() {
         this.save = async (user) => {
             let password = await bcrypt_1.default.hash(user.password, 10);
             user.password = password;
+            user.role = 1;
             await this.userRepository.save(user);
         };
         this.loginCheck = async (user) => {
@@ -49,7 +51,14 @@ class UserService {
             return null;
         };
         this.findOne = async (userId) => {
-            let userFind = await this.userRepository.findOneBy({ id: userId });
+            let userFind = await this.userRepository.find({
+                relations: {
+                    role: true
+                },
+                where: {
+                    id: userId
+                }
+            });
             return userFind;
         };
         this.checkUserSignup = async (user) => {
@@ -69,6 +78,10 @@ class UserService {
         };
         this.update = async (id, user) => {
             await this.userRepository.update({ id: id }, user);
+        };
+        this.updateRole = async (id) => {
+            let providerRole = await data_source_1.AppDataSource.getRepository(Role_1.Role).findOneBy({ id: 3 });
+            await this.userRepository.update({ id: id }, { role: providerRole });
         };
         this.delete = async (id) => {
             await this.userRepository.delete({ id: id });

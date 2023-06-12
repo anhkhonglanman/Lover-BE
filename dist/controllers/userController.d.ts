@@ -4,6 +4,7 @@ declare class UserController {
     login: (req: Request, res: Response) => Promise<void>;
     allUser: (req: Request, res: Response) => Promise<void>;
     showUser: (req: Request, res: Response) => Promise<void>;
+    updateToProvider: (req: Request, res: Response) => Promise<void>;
     editUser: (req: Request, res: Response) => Promise<void>;
     delete: (req: Request, res: Response) => Promise<void>;
     searchUsername: (req: Request, res: Response) => Promise<void>;

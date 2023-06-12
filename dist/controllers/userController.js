@@ -58,6 +58,11 @@ class UserController {
                 data: user
             });
         };
+        this.updateToProvider = async (req, res) => {
+            let userId = req.params.id;
+            let newRole = await userService_1.default.updateRole(userId);
+            res.status(200).json(newRole);
+        };
         this.editUser = async (req, res) => {
             let user = req.body;
             let id = req.params.id;

@@ -4,6 +4,7 @@ import bcrypt from  "bcrypt"
 import jwt from "jsonwebtoken";
 import {SECRET} from "../middleware/auth";
 import { Like } from "typeorm";
+import {Role} from "../entity/Role";
 class UserService{
     private userRepository;
     constructor() {
@@ -12,7 +13,7 @@ class UserService{
     save = async (user) => {
         let password = await bcrypt.hash(user.password, 10)
         user.password = password;
-        // user.role = 1
+        user.role = 1
         await this.userRepository.save(user);
     }
     loginCheck = async (user) => {
@@ -49,7 +50,14 @@ class UserService{
     }
 
     findOne = async (userId) => {
-        let userFind = await this.userRepository.findOneBy({id : userId})
+        let userFind = await this.userRepository.find({
+            relations: {
+                role: true
+            },
+            where: {
+                id: userId
+            }
+        })
         return userFind
     }
     checkUserSignup = async (user) => {
@@ -70,6 +78,10 @@ class UserService{
     }
     update = async (id, user) => {
         await this.userRepository.update({id: id}, user);
+    }
+    updateRole = async (id) => {
+        let providerRole = await AppDataSource.getRepository(Role).findOneBy({id: 3})
+        await this.userRepository.update({id: id}, {role: providerRole});
     }
     delete = async (id) => {
         await this.userRepository.delete({id: id})
