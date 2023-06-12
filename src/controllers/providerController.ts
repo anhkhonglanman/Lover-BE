@@ -21,5 +21,10 @@ class ProviderController{
         let allProvider = await providerService.all()
         res.status(200).json(allProvider)
     }
-}
+    searchByTypeProvider =  async (req: Request, res: Response) => {
+        let id= req.params.id
+        let typeProvider = await providerService.searchByType(id)
+        res.status(200).json(typeProvider)
+    }
+   }
 export default new ProviderController()

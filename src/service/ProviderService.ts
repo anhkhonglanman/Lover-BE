@@ -27,5 +27,23 @@ class ProviderService{
             }
         })
     }
+    searchByType = async (id) => {
+        let provider = await this.providerRepository.find({where: {service: {id: id}},
+            relations:{
+                images: true,
+                service: true,
+                user: true,
+                status: true
+            },
+            select: {
+                user: {
+                    firstname: true,
+                    lastname: true,
+                    phoneNumber: true
+                }
+            }
+        })
+        return(provider);
+    }
 }
 export default new ProviderService()
