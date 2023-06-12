@@ -45,5 +45,23 @@ class ProviderService{
         })
         return(provider);
     }
+    findByIdPost = async (id) => {
+        let provider = await this.providerRepository.findOne({where: {id: id},
+            relations:{
+                images: true,
+                service: true,
+                user: true,
+                status: true
+            },
+            select: {
+                user: {
+                    firstname: true,
+                    lastname: true,
+                    phoneNumber: true
+                }
+            }
+        })
+        return(provider);
+    }
 }
 export default new ProviderService()

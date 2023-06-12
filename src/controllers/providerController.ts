@@ -26,5 +26,23 @@ class ProviderController{
         let typeProvider = await providerService.searchByType(id)
         res.status(200).json(typeProvider)
     }
+    findIdProvider = async (req: Request, res: Response) => {
+        let id = req.params.id;
+        try {
+            let provider = await this.providerService.findByIdPost(id);
+            res.status(200).json({
+                data: provider,
+                success: true
+            })
+        } catch (e) {
+            console.log("error find id in post controller", e)
+            res.status(500).json({
+                message: 'id not found',
+                success: false
+            })
+        }
+
+    }
+    providerService: any;
    }
 export default new ProviderController()
