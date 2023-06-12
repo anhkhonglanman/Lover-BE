@@ -27,6 +27,16 @@ class ProviderService{
             }
         })
     }
+
+    one = async (id) => {
+        return  await this.providerRepository.findOne({
+            where : {id: id},
+            relations: {
+                images: true,
+                service: true
+            }
+        })
+    }
     searchByType = async (id) => {
         let provider = await this.providerRepository.find({where: {service: {id: id}},
             relations:{
@@ -44,6 +54,9 @@ class ProviderService{
             }
         })
         return(provider);
+    }
+    update = async (id, update) => {
+        await this.providerRepository.update({id: id}, update)
     }
 }
 export default new ProviderService()

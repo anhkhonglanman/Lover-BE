@@ -26,6 +26,25 @@ class ProviderController {
             let allProvider = await ProviderService_1.default.all();
             res.status(200).json(allProvider);
         };
+        this.showOne = async (req, res) => {
+            let id = req.params.id;
+            let oneProvider = await ProviderService_1.default.one(id);
+            res.status(200).json(oneProvider);
+        };
+        this.searchByTypeProvider = async (req, res) => {
+            let id = req.params.id;
+            let typeProvider = await ProviderService_1.default.searchByType(id);
+            res.status(200).json(typeProvider);
+        };
+        this.editProvider = async (req, res) => {
+            let provider = req.body;
+            let id = req.params.id;
+            let newProvider = await ProviderService_1.default.update(id, provider);
+            res.status(200).json({
+                success: true,
+                data: newProvider
+            });
+        };
     }
 }
 exports.default = new ProviderController();
