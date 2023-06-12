@@ -20,11 +20,7 @@ class UserController {
     }
     login = async (req: Request, res: Response) =>{
         let payload = await userService.loginCheck(req.body)
-        console.log('login with user: ', payload)
-        res.status(200).json({
-            success: true,
-            data: payload
-        });
+        res.status(200).json(payload);
     }
     allUser = async (req: Request, res: Response) => {
         let users = await userService.all();

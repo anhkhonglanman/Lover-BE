@@ -23,28 +23,26 @@ class UserService{
                 username: user.username
             }
         })
-        console.log("foundUser:", foundUser)
+
         if (foundUser) {
             let pass = await bcrypt.compare(user.password, foundUser.password);
             if (pass) {
                 let payload = {
                     id: foundUser.id,
                     username: foundUser.username,
-                    role: foundUser.role.id
+                    role: foundUser.role.id,
                 }
-                return {
-                    info: {
-                        username: foundUser.username,
-                        role: foundUser.role.id
-                    },
-                    token: jwt.sign(payload, SECRET, {
-                        expiresIn: '1h'
-                    })
-                }
+                let token = await (jwt.sign(payload, SECRET, {
+                    expiresIn: 3600000 * 10 * 100000
+                }))
+                payload['token'] = token
+                return payload;
+            }else {
+                return 'Password is wrong'
             }
-            return null
+
         }
-        return null
+
     }
 
     findOne = async (userId) => {
