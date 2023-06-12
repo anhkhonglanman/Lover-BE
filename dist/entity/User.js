@@ -12,7 +12,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.User = void 0;
 const typeorm_1 = require("typeorm");
 const Role_1 = require("./Role");
-const Provider_1 = require("./Provider");
 const Booking_1 = require("./Booking");
 let User = class User {
 };
@@ -45,6 +44,10 @@ __decorate([
     __metadata("design:type", String)
 ], User.prototype, "address", void 0);
 __decorate([
+    (0, typeorm_1.Column)({ type: "varchar", default: "https://as1.ftcdn.net/v2/jpg/03/46/83/96/1000_F_346839683_6nAPzbhpSkIpb8pmAwufkC7c5eD7wYws.jpg" }),
+    __metadata("design:type", String)
+], User.prototype, "avatar", void 0);
+__decorate([
     (0, typeorm_1.Column)({ type: "varchar", length: 255, nullable: true }),
     __metadata("design:type", String)
 ], User.prototype, "email", void 0);
@@ -56,11 +59,6 @@ __decorate([
     (0, typeorm_1.ManyToOne)(() => Role_1.Role, (role) => role.users),
     __metadata("design:type", Role_1.Role)
 ], User.prototype, "role", void 0);
-__decorate([
-    (0, typeorm_1.OneToOne)(() => Provider_1.Provider),
-    (0, typeorm_1.JoinColumn)(),
-    __metadata("design:type", Provider_1.Provider)
-], User.prototype, "provider", void 0);
 __decorate([
     (0, typeorm_1.OneToMany)(() => Booking_1.Booking, (booking) => booking.user),
     __metadata("design:type", Array)

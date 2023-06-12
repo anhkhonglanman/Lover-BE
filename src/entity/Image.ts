@@ -5,7 +5,7 @@ import {Provider} from "./Provider";
 export class Image{
     @PrimaryGeneratedColumn()
     id: number;
-    @Column()
+    @Column({type: "varchar", length: 255, nullable: true})
     imageURL: string;
     @ManyToOne(()=> Provider, (provider)=> provider.images)
     provider: Provider;

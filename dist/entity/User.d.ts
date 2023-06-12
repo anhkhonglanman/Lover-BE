@@ -1,5 +1,4 @@
 import { Role } from "./Role";
-import { Provider } from "./Provider";
 import { Booking } from "./Booking";
 export declare class User {
     id: number;
@@ -9,9 +8,9 @@ export declare class User {
     lastname: string;
     phoneNumber: string;
     address: string;
+    avatar: string;
     email: string;
     identityCard: string;
     role: Role;
-    provider: Provider;
     booking: Booking[];
 }

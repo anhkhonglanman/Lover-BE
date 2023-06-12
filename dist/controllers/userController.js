@@ -11,7 +11,10 @@ class UserController {
                 let check = await userService_1.default.checkUserSignup(req.body);
                 if (!check) {
                     let newUser = await userService_1.default.save(req.body);
-                    res.status(201).json(newUser);
+                    res.status(201).json({
+                        success: true,
+                        data: newUser
+                    });
                 }
                 else {
                     res.status(201).json('tai khoan da ton tai');
@@ -26,8 +29,32 @@ class UserController {
             }
         };
         this.login = async (req, res) => {
-            let payload = await userService_1.default.loginCheck(req.body);
-            res.status(200).json(payload);
+            try {
+                let payload = await userService_1.default.loginCheck(req.body);
+                console.log('login with user: ', payload);
+                if (payload === "User is not exist") {
+                    res.status(401).json({
+                        payload
+                    });
+                }
+                else if (payload === "Password is wrong") {
+                    res.status(401).json({
+                        payload
+                    });
+                }
+                else {
+                    res.status(200).json({
+                        payload
+                    });
+                }
+            }
+            catch (e) {
+                console.log("error in login:", e);
+                res.status(400).json({
+                    message: 'error in login',
+                    success: false
+                });
+            }
         };
         this.allUser = async (req, res) => {
             let users = await userService_1.default.all();
@@ -42,6 +69,11 @@ class UserController {
                 data: user
             });
         };
+        this.updateToProvider = async (req, res) => {
+            let userId = req.params.id;
+            let newRole = await userService_1.default.updateRole(userId);
+            res.status(200).json(newRole);
+        };
         this.editUser = async (req, res) => {
             let user = req.body;
             let id = req.params.id;
@@ -53,6 +85,20 @@ class UserController {
         this.delete = async (req, res) => {
             await userService_1.default.delete(req.params.id);
             res.status(200).json('delete user success');
+        };
+        this.searchUsername = async (req, res) => {
+            try {
+                let username = req.params.name;
+                let user = await userService_1.default.adminSearchUsername(username);
+                res.status(200).json(user);
+            }
+            catch (e) {
+                console.log("error in searchUsername:", e);
+                res.status(400).json({
+                    message: 'error in searchUsername',
+                    success: false
+                });
+            }
         };
     }
 }

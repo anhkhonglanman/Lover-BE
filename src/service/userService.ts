@@ -3,6 +3,8 @@ import {User} from "../entity/User";
 import bcrypt from  "bcrypt"
 import jwt from "jsonwebtoken";
 import {SECRET} from "../middleware/auth";
+import { Like } from "typeorm";
+import {Role} from "../entity/Role";
 class UserService{
     private userRepository;
     constructor() {
@@ -15,38 +17,44 @@ class UserService{
         await this.userRepository.save(user);
     }
     loginCheck = async (user) => {
-        let foundUser = await this.userRepository.findOne({
+        let userFind = await this.userRepository.findOne({
             relations: {
                 role: true
             },
             where: {
                 username: user.username
             }
-        })
-
-        if (foundUser) {
-            let pass = await bcrypt.compare(user.password, foundUser.password);
-            if (pass) {
+        });
+        if(!userFind){
+            return 'User is not exist'
+        }else {
+            let passWordCompare = await bcrypt.compare(user.password, userFind.password);
+            if(passWordCompare){
                 let payload = {
-                    id: foundUser.id,
-                    username: foundUser.username,
-                    role: foundUser.role.id,
+                    id: userFind.id,
+                    username: userFind.username,
+                    role: userFind.role.id
                 }
                 let token = await (jwt.sign(payload, SECRET, {
-                    expiresIn: 3600000 * 10 * 100000
+                    expiresIn: 36000 * 100000
                 }))
                 payload['token'] = token
                 return payload;
             }else {
                 return 'Password is wrong'
             }
-
         }
-
     }
 
     findOne = async (userId) => {
-        let userFind = await this.userRepository.findOneBy({id : userId})
+        let userFind = await this.userRepository.find({
+            relations: {
+                role: true
+            },
+            where: {
+                id: userId
+            }
+        })
         return userFind
     }
     checkUserSignup = async (user) => {
@@ -68,9 +76,26 @@ class UserService{
     update = async (id, user) => {
         await this.userRepository.update({id: id}, user);
     }
+    updateRole = async (id) => {
+        let providerRole = await AppDataSource.getRepository(Role).findOneBy({id: 3})
+        await this.userRepository.update({id: id}, {role: providerRole});
+    }
     delete = async (id) => {
         await this.userRepository.delete({id: id})
     }
+    adminSearchUsername = async (username) => {
+        try {
+            let searchPeople = await this.userRepository.find({
+                where: {
+                    username: Like(`${username}%`),
+                    role: 'user'
+                }
+            });
+            return searchPeople;
+        } catch (error) {
+            console.log(`Error ${error} on adminSearchUsername in adminUserService`);
+            throw error;
+        }
+    }
 }
-
 export default new UserService()

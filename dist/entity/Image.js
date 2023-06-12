@@ -19,7 +19,7 @@ __decorate([
     __metadata("design:type", Number)
 ], Image.prototype, "id", void 0);
 __decorate([
-    (0, typeorm_1.Column)(),
+    (0, typeorm_1.Column)({ type: "varchar", length: 255, nullable: true }),
     __metadata("design:type", String)
 ], Image.prototype, "imageURL", void 0);
 __decorate([

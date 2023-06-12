@@ -1,7 +1,9 @@
-import {Column, Entity, OneToMany, PrimaryGeneratedColumn} from "typeorm";
+import {Column, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn} from "typeorm";
 import {User} from "./User";
 import {Image} from "./Image";
 import {Booking} from "./Booking";
+import {Service} from "./Service";
+import {Status} from "./Status";
 // import {Booking} from "./Booking";
 @Entity()
 export class Provider {
@@ -9,15 +11,15 @@ export class Provider {
     id: number;
     @Column({type: "varchar", length: 255})
     name: string;
-    @Column({type: "date"})
-    dob: Date;
-    @Column({type: "varchar", length: 255, nullable: false})
+    @Column({type: "varchar", length: 255, nullable: true})
+    dob: string;
+    @Column({type: "varchar", length: 255, nullable: true})
     sex: string;
-    @Column({type: "varchar", length: 255, nullable: false})
+    @Column({type: "varchar", length: 255, nullable: true})
     city: string;
-    @Column({type: "varchar", length: 20, nullable: false})
+    @Column({type: "varchar", length: 20, nullable: true})
     country: string;
-    @Column({type: "varchar", length: 255, nullable: false})
+    @Column({type: "varchar", length: 255, nullable: true})
     avatar: string;
     @Column({type: "varchar", length: 255, nullable: true})
     height: string;
@@ -31,7 +33,7 @@ export class Provider {
     request: string;
     @Column({type: "varchar", length: 255, nullable: true})
     linkFB: string;
-    @Column({type: "date"})
+    @Column({type: "timestamp", default: () => "CURRENT_TIMESTAMP"})
     joinDate: Date;
     @Column({type: "varchar", length: 255, default: "70000"})
     price: string;
@@ -44,5 +46,11 @@ export class Provider {
     booking: Booking[];
     @OneToMany(() => Image, (image) => image.provider)
     images : Image[];
-
+    @ManyToOne(() => Service)
+    service : Service;
+    @ManyToOne(() => Status)
+    status : Status;
+    @OneToOne(() => User)
+    @JoinColumn()
+    user: User;
 }
