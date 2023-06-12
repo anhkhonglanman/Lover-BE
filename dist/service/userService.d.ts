@@ -2,13 +2,11 @@ declare class UserService {
     private userRepository;
     constructor();
     save: (user: any) => Promise<void>;
-    loginCheck: (user: any) => Promise<{
-        info: {
-            username: any;
-            role: any;
-        };
-        token: string;
-    }>;
+    loginCheck: (user: any) => Promise<"User is not exist" | {
+        idUser: any;
+        username: any;
+        role: any;
+    } | "Password is wrong">;
     findOne: (userId: any) => Promise<any>;
     checkUserSignup: (user: any) => Promise<any>;
     all: () => Promise<any>;

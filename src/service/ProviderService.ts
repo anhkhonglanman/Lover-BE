@@ -27,5 +27,36 @@ class ProviderService{
             }
         })
     }
+
+    one = async (id) => {
+        return  await this.providerRepository.findOne({
+            where : {id: id},
+            relations: {
+                images: true,
+                service: true
+            }
+        })
+    }
+    searchByType = async (id) => {
+        let provider = await this.providerRepository.find({where: {service: {id: id}},
+            relations:{
+                images: true,
+                service: true,
+                user: true,
+                status: true
+            },
+            select: {
+                user: {
+                    firstname: true,
+                    lastname: true,
+                    phoneNumber: true
+                }
+            }
+        })
+        return(provider);
+    }
+    update = async (id, update) => {
+        await this.providerRepository.update({id: id}, update)
+    }
 }
 export default new ProviderService()
