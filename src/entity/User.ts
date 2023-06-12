@@ -25,9 +25,9 @@ export class User {
     identityCard: string;
     @ManyToOne(() => Role, (role) => role.users)
     role: Role;
-    @OneToOne(() => Provider)
-    @JoinColumn()
-    provider: Provider;
+    // @OneToOne(() => Provider)
+    // @JoinColumn()
+    // provider: Provider;
     @OneToMany(() => Booking, (booking) => booking.user)
     booking: Booking[];
 }

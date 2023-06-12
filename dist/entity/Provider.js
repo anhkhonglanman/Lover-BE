@@ -11,8 +11,10 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Provider = void 0;
 const typeorm_1 = require("typeorm");
+const User_1 = require("./User");
 const Image_1 = require("./Image");
 const Booking_1 = require("./Booking");
+const Service_1 = require("./Service");
 let Provider = class Provider {
 };
 __decorate([
@@ -91,6 +93,15 @@ __decorate([
     (0, typeorm_1.OneToMany)(() => Image_1.Image, (image) => image.provider),
     __metadata("design:type", Array)
 ], Provider.prototype, "images", void 0);
+__decorate([
+    (0, typeorm_1.ManyToOne)(() => Service_1.Service),
+    __metadata("design:type", Service_1.Service)
+], Provider.prototype, "service", void 0);
+__decorate([
+    (0, typeorm_1.OneToOne)(() => User_1.User),
+    (0, typeorm_1.JoinColumn)(),
+    __metadata("design:type", User_1.User)
+], Provider.prototype, "user", void 0);
 Provider = __decorate([
     (0, typeorm_1.Entity)()
 ], Provider);

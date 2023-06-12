@@ -12,7 +12,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.User = void 0;
 const typeorm_1 = require("typeorm");
 const Role_1 = require("./Role");
-const Provider_1 = require("./Provider");
 const Booking_1 = require("./Booking");
 let User = class User {
 };
@@ -56,11 +55,6 @@ __decorate([
     (0, typeorm_1.ManyToOne)(() => Role_1.Role, (role) => role.users),
     __metadata("design:type", Role_1.Role)
 ], User.prototype, "role", void 0);
-__decorate([
-    (0, typeorm_1.OneToOne)(() => Provider_1.Provider),
-    (0, typeorm_1.JoinColumn)(),
-    __metadata("design:type", Provider_1.Provider)
-], User.prototype, "provider", void 0);
 __decorate([
     (0, typeorm_1.OneToMany)(() => Booking_1.Booking, (booking) => booking.user),
     __metadata("design:type", Array)

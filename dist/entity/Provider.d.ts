@@ -1,5 +1,7 @@
+import { User } from "./User";
 import { Image } from "./Image";
 import { Booking } from "./Booking";
+import { Service } from "./Service";
 export declare class Provider {
     id: number;
     name: string;
@@ -20,4 +22,6 @@ export declare class Provider {
     ready: string;
     booking: Booking[];
     images: Image[];
+    service: Service;
+    user: User;
 }

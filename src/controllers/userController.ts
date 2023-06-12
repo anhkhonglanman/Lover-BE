@@ -6,7 +6,10 @@ class UserController {
             let check = await userService.checkUserSignup(req.body)
             if (!check) {
                 let newUser = await userService.save(req.body);
-                res.status(201).json(newUser);
+                res.status(201).json({
+                    success: true,
+                    data: newUser
+                });
             } else {
                 res.status(201).json('tai khoan da ton tai');
             }
@@ -19,12 +22,21 @@ class UserController {
         }
     }
     login = async (req: Request, res: Response) =>{
-        let payload = await userService.loginCheck(req.body)
-        console.log('login with user: ', payload)
-        res.status(200).json({
-            success: true,
-            data: payload
-        });
+        try {
+            let payload = await userService.loginCheck(req.body)
+            console.log('login with user: ', payload)
+            res.status(200).json({
+                success: true,
+                data: payload
+            });
+        } catch (e) {
+            console.log("error in login:",e )
+            res.status(400).json({
+                message: 'error in login',
+                success: false
+            })
+        }
+
     }
     allUser = async (req: Request, res: Response) => {
         let users = await userService.all();

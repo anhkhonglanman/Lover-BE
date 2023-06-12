@@ -10,6 +10,6 @@ export class Service {
     type: string;
     @Column({type: "varchar", length: 255, default: "user"})
     name: string;
-    @ManyToOne(() => Provider)
-    provider : Provider
+    // @ManyToOne(() => Provider)
+    // provider : Provider
 }

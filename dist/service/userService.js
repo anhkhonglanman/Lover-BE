@@ -13,7 +13,6 @@ class UserService {
         this.save = async (user) => {
             let password = await bcrypt_1.default.hash(user.password, 10);
             user.password = password;
-            user.role = 1;
             await this.userRepository.save(user);
         };
         this.loginCheck = async (user) => {

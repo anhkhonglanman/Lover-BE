@@ -11,7 +11,7 @@ class UserService{
     save = async (user) => {
         let password = await bcrypt.hash(user.password, 10)
         user.password = password;
-        user.role = 1
+        // user.role = 1
         await this.userRepository.save(user);
     }
     loginCheck = async (user) => {

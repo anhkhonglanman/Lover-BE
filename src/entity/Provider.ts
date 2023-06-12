@@ -1,7 +1,8 @@
-import {Column, Entity, OneToMany, PrimaryGeneratedColumn} from "typeorm";
+import {Column, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn} from "typeorm";
 import {User} from "./User";
 import {Image} from "./Image";
 import {Booking} from "./Booking";
+import {Service} from "./Service";
 // import {Booking} from "./Booking";
 @Entity()
 export class Provider {
@@ -44,5 +45,9 @@ export class Provider {
     booking: Booking[];
     @OneToMany(() => Image, (image) => image.provider)
     images : Image[];
-
+    @ManyToOne(() => Service)
+    service : Service;
+    @OneToOne(() => User)
+    @JoinColumn()
+    user: User;
 }
