@@ -32,10 +32,21 @@ class UserController {
             try {
                 let payload = await userService_1.default.loginCheck(req.body);
                 console.log('login with user: ', payload);
-                res.status(200).json({
-                    success: true,
-                    data: payload
-                });
+                if (payload === "User is not exist") {
+                    res.status(401).json({
+                        payload
+                    });
+                }
+                else if (payload === "Password is wrong") {
+                    res.status(401).json({
+                        payload
+                    });
+                }
+                else {
+                    res.status(200).json({
+                        payload
+                    });
+                }
             }
             catch (e) {
                 console.log("error in login:", e);

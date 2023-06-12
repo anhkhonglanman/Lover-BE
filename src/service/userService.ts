@@ -12,40 +12,30 @@ class UserService{
     save = async (user) => {
         let password = await bcrypt.hash(user.password, 10)
         user.password = password;
-        // user.role = 1
+        user.role = 1
         await this.userRepository.save(user);
     }
     loginCheck = async (user) => {
-        let foundUser = await this.userRepository.findOne({
-            relations: {
-                role: true
-            },
-            where: {
-                username: user.username
-            }
-        })
-        console.log("foundUser:", foundUser)
-        if (foundUser) {
-            let pass = await bcrypt.compare(user.password, foundUser.password);
-            if (pass) {
+        let userFind = await this.userRepository.findOneBy({username: user.username});
+        if(!userFind){
+            return 'User is not exist'
+        }else {
+            let passWordCompare = await bcrypt.compare(user.password, userFind.password);
+            if(passWordCompare){
                 let payload = {
-                    id: foundUser.id,
-                    username: foundUser.username,
-                    role: foundUser.role.id
+                    idUser: userFind.id,
+                    username: userFind.username,
+                    role: userFind.role
                 }
-                return {
-                    info: {
-                        username: foundUser.username,
-                        role: foundUser.role.id
-                    },
-                    token: jwt.sign(payload, SECRET, {
-                        expiresIn: '1h'
-                    })
-                }
+                let token = (jwt.sign(payload, SECRET, {
+                    expiresIn: 36000 * 1000
+                }))
+                payload['token'] = token
+                return payload;
+            }else {
+                return 'Password is wrong'
             }
-            return null
         }
-        return null
     }
 
     findOne = async (userId) => {

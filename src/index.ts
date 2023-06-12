@@ -4,21 +4,14 @@ import cors from 'cors'
 import {AppDataSource} from "./data-source";
 import router from "./router/router";
 const app = express();
-const hostname = '127.0.0.1';
-const port = 8181;
-const FE_SERVER_PORT = 3000;
 AppDataSource.initialize().then(() => {
     console.log('Connect database success')
 })
-app.use(cors({
-    // origin: the port that front end server is running on
-    origin: `http://${hostname}:${FE_SERVER_PORT}`,
-    // allowedHeaders: ["my-custom-header"],
-    credentials: true
-}))
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
+app.use(cors());
 app.use("", router)
-app.listen(port, () => {
-    console.log(`Server running at http://${hostname}:${port}/`);
+app.listen(8181, () => {
+    console.log('Server is running')
 });

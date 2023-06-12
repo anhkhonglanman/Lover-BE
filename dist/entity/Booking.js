@@ -13,7 +13,11 @@ exports.Booking = void 0;
 const typeorm_1 = require("typeorm");
 const User_1 = require("./User");
 const Provider_1 = require("./Provider");
+<<<<<<< HEAD
 let Booking = exports.Booking = class Booking {
+=======
+let Booking = class Booking {
+>>>>>>> origin/dev
 };
 __decorate([
     (0, typeorm_1.PrimaryGeneratedColumn)(),
@@ -43,7 +47,14 @@ __decorate([
     (0, typeorm_1.ManyToOne)(() => Provider_1.Provider, (provider) => provider.booking),
     __metadata("design:type", Provider_1.Provider)
 ], Booking.prototype, "providers", void 0);
+<<<<<<< HEAD
 exports.Booking = Booking = __decorate([
     (0, typeorm_1.Entity)()
 ], Booking);
+=======
+Booking = __decorate([
+    (0, typeorm_1.Entity)()
+], Booking);
+exports.Booking = Booking;
+>>>>>>> origin/dev
 //# sourceMappingURL=Booking.js.map
