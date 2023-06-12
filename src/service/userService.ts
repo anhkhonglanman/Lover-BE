@@ -3,6 +3,7 @@ import {User} from "../entity/User";
 import bcrypt from  "bcrypt"
 import jwt from "jsonwebtoken";
 import {SECRET} from "../middleware/auth";
+import { Like } from "typeorm";
 class UserService{
     private userRepository;
     constructor() {
@@ -72,6 +73,20 @@ class UserService{
     }
     delete = async (id) => {
         await this.userRepository.delete({id: id})
+    }
+    adminSearchUsername = async (username) => {
+        try {
+            let searchPeople = await this.userRepository.find({
+                where: {
+                    username: Like(`${username}%`),
+                    role: 'user'
+                }
+            });
+            return searchPeople;
+        } catch (error) {
+            console.log(`Error ${error} on adminSearchUsername in adminUserService`);
+            throw error;
+        }
     }
 }
 
