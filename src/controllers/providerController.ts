@@ -41,5 +41,9 @@ class ProviderController{
             data: newProvider
         })
     }
+    findAll =  async (req: Request, res: Response) => {
+        let allProvider = await providerService.findAll(req)
+        res.status(200).json(allProvider)
+    }
 }
 export default new ProviderController()
