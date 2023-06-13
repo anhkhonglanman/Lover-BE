@@ -12,7 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.Role = void 0;
 const typeorm_1 = require("typeorm");
 const User_1 = require("./User");
-let Role = class Role {
+let Role = exports.Role = class Role {
 };
 __decorate([
     (0, typeorm_1.PrimaryGeneratedColumn)(),
@@ -26,8 +26,7 @@ __decorate([
     (0, typeorm_1.OneToMany)(() => User_1.User, (user) => user.role),
     __metadata("design:type", Array)
 ], Role.prototype, "users", void 0);
-Role = __decorate([
+exports.Role = Role = __decorate([
     (0, typeorm_1.Entity)()
 ], Role);
-exports.Role = Role;
 //# sourceMappingURL=Role.js.map
