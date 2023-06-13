@@ -1,6 +1,5 @@
 import {Column, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn} from "typeorm";
 import {Role} from "./Role";
-import {Provider} from "./Provider";
 import {Booking} from "./Booking";
 
 @Entity()

@@ -6,6 +6,7 @@ const userRouter = Router()
 userRouter.post('/register', userController.signup);
 userRouter.get('/', userController.allUser);
 userRouter.post('/login',userController.login)
+// userRouter.post('/send-email',userController.sendEmail)
 userRouter.put('/role/:id',userController.updateToProvider);
 userRouter.get('/:id', auth,userController.showUser);
 userRouter.put('/:id', auth,userController.editUser);

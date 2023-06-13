@@ -4,6 +4,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const userService_1 = __importDefault(require("../service/userService"));
+const nodemailer_1 = __importDefault(require("nodemailer"));
 class UserController {
     constructor() {
         this.signup = async (req, res) => {
@@ -11,6 +12,38 @@ class UserController {
                 let check = await userService_1.default.checkUserSignup(req.body);
                 if (!check) {
                     let newUser = await userService_1.default.save(req.body);
+                    if (req.body.email) {
+                        console.log('1');
+                        const transporter = nodemailer_1.default.createTransport({
+                            service: 'gmail',
+                            host: 'smtp.gmail.com',
+                            port: 465,
+                            secure: true,
+                            auth: {
+                                user: 'loveandlove4f@gmail.com',
+                                pass: 'vpckhppikkspxyhh'
+                            },
+                            tls: {
+                                rejectUnauthorized: false
+                            }
+                        });
+                        let mainOptions = {
+                            from: 'loveAndlove4f@gmail.com',
+                            to: req.body.email,
+                            subject: 'Thông báo đăng ký tài khoản thành công',
+                            text: 'Đã đăng ký thành công - Chờ hệ thống duyệt',
+                        };
+                        console.log(mainOptions);
+                        transporter.sendMail(mainOptions, function (err, info) {
+                            console.log('2');
+                            if (err) {
+                                console.log(err);
+                            }
+                            else {
+                                console.log('Email sent: ' + info.response);
+                            }
+                        });
+                    }
                     res.status(201).json({
                         success: true,
                         data: newUser
