@@ -87,7 +87,7 @@ class UserService{
         try {
             let searchPeople = await this.userRepository.find({
                 where: {
-                    username: Like(`${username}%`),
+                    username: Like(`%${username}%`),
                     role: 'user'
                 }
             });
