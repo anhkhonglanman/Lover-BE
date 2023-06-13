@@ -19,19 +19,32 @@ class UserService {
             await this.userRepository.save(user);
         };
         this.loginCheck = async (user) => {
-            let userFind = await this.userRepository.findOneBy({ username: user.username });
+            let userFind = await this.userRepository.findOne({
+                relations: {
+                    role: true
+                },
+                where: {
+                    username: user.username
+                }
+            });
             if (!userFind) {
                 return 'User is not exist';
             }
             else {
                 let passWordCompare = await bcrypt_1.default.compare(user.password, userFind.password);
                 if (passWordCompare) {
+                    if (userFind.isLocked) {
+                        return {
+                            isLocked: true
+                        };
+                    }
                     let payload = {
                         idUser: userFind.id,
                         username: userFind.username,
-                        role: userFind.role
+                        role: userFind.role,
+                        isLocked: userFind.isLocked
                     };
-                    let token = (jsonwebtoken_1.default.sign(payload, auth_1.SECRET, {
+                    let token = await (jsonwebtoken_1.default.sign(payload, auth_1.SECRET, {
                         expiresIn: 36000 * 1000
                     }));
                     payload['token'] = token;
@@ -74,6 +87,14 @@ class UserService {
         this.updateRole = async (id) => {
             let providerRole = await data_source_1.AppDataSource.getRepository(Role_1.Role).findOneBy({ id: 3 });
             await this.userRepository.update({ id: id }, { role: providerRole });
+        };
+        this.lock = async (id) => {
+            let isLock = await this.userRepository.findOneBy({ isLocked: 1 });
+            await this.userRepository.update({ id: id }, { isLocked: isLock });
+        };
+        this.open = async (id) => {
+            let isOpen = await this.userRepository.findOneBy({ isLocked: 0 });
+            await this.userRepository.update({ id: id }, { isLocked: isOpen });
         };
         this.delete = async (id) => {
             await this.userRepository.delete({ id: id });

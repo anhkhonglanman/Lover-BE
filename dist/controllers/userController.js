@@ -34,17 +34,22 @@ class UserController {
                 console.log('login with user: ', payload);
                 if (payload === "User is not exist") {
                     res.status(401).json({
-                        payload
+                        data: payload
                     });
                 }
                 else if (payload === "Password is wrong") {
                     res.status(401).json({
-                        payload
+                        data: payload
+                    });
+                }
+                else if (typeof payload !== "string" && (payload === null || payload === void 0 ? void 0 : payload.isLocked)) {
+                    res.status(401).json({
+                        mess: 'tài khoản đã bị khóa'
                     });
                 }
                 else {
                     res.status(200).json({
-                        payload
+                        data: payload['token']
                     });
                 }
             }
@@ -73,6 +78,22 @@ class UserController {
             let userId = req.params.id;
             let newRole = await userService_1.default.updateRole(userId);
             res.status(200).json(newRole);
+        };
+        this.lockUser = async (req, res) => {
+            let userId = req.params.id;
+            let isLock = await userService_1.default.lock(userId);
+            res.status(200).json({
+                message: 'locked',
+                data: isLock
+            });
+        };
+        this.openUser = async (req, res) => {
+            let userId = req.params.id;
+            let isOpen = await userService_1.default.open(userId);
+            res.status(200).json({
+                message: 'opened',
+                data: isOpen
+            });
         };
         this.editUser = async (req, res) => {
             let user = req.body;

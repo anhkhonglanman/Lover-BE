@@ -17,16 +17,29 @@ class UserService{
         await this.userRepository.save(user);
     }
     loginCheck = async (user) => {
-        let userFind = await this.userRepository.findOneBy({username: user.username});
+        let userFind = await this.userRepository.findOne({
+            relations: {
+                role: true
+            },
+            where: {
+                username: user.username
+            }
+        });
         if(!userFind){
             return 'User is not exist'
         }else {
             let passWordCompare = await bcrypt.compare(user.password, userFind.password);
             if(passWordCompare){
+                if (userFind.isLocked) {
+                    return {
+                        isLocked: true
+                    }
+                }
                 let payload = {
                     idUser: userFind.id,
                     username: userFind.username,
-                    role: userFind.role
+                    role: userFind.role,
+                    isLocked: userFind.isLocked
                 }
                 let token = await (jwt.sign(payload, SECRET, {
                     expiresIn: 36000 * 1000
@@ -72,6 +85,14 @@ class UserService{
     updateRole = async (id) => {
         let providerRole = await AppDataSource.getRepository(Role).findOneBy({id: 3})
         await this.userRepository.update({id: id}, {role: providerRole});
+    }
+    lock =  async (id) => {
+        let isLock = await this.userRepository.findOneBy({isLocked: 1})
+        await this.userRepository.update({id: id}, {isLocked: isLock})
+    }
+    open =  async (id) => {
+        let isOpen = await this.userRepository.findOneBy({isLocked: 0})
+        await this.userRepository.update({id: id}, {isLocked: isOpen})
     }
     delete = async (id) => {
         await this.userRepository.delete({id: id})

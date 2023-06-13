@@ -63,6 +63,12 @@ __decorate([
     (0, typeorm_1.OneToMany)(() => Booking_1.Booking, (booking) => booking.user),
     __metadata("design:type", Array)
 ], User.prototype, "booking", void 0);
+__decorate([
+    (0, typeorm_1.Column)({
+        default: 0
+    }),
+    __metadata("design:type", Boolean)
+], User.prototype, "isLocked", void 0);
 User = __decorate([
     (0, typeorm_1.Entity)()
 ], User);

@@ -32,4 +32,8 @@ export class User {
     // provider: Provider;
     @OneToMany(() => Booking, (booking) => booking.user)
     booking: Booking[];
+    @Column({
+        default: 0
+    })
+    isLocked: boolean;
 }

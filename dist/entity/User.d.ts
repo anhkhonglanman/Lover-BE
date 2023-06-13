@@ -13,4 +13,5 @@ export declare class User {
     identityCard: string;
     role: Role;
     booking: Booking[];
+    isLocked: boolean;
 }
