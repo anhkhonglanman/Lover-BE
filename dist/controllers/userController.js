@@ -43,7 +43,7 @@ class UserController {
                     });
                 }
                 else {
-                    res.status(200).json({
+                    res.status(401).json({
                         payload
                     });
                 }
