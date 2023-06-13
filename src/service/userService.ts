@@ -38,7 +38,7 @@ class UserService{
                     expiresIn: 3600000 * 10 * 100000
                 }))
                 payload['token'] = token
-                return payload;
+                return token;
             }else {
                 return 'Password is wrong'
             }
