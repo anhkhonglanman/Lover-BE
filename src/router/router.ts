@@ -6,5 +6,6 @@ const router = Router();
 
 router.use('/users', userRouter);
 router.use('/providers', providerRouter);
+// router.use('/verify', verifyRouter);
 
 export default router
