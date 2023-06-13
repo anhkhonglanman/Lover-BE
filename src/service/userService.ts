@@ -17,32 +17,32 @@ class UserService{
         await this.userRepository.save(user);
     }
     loginCheck = async (user) => {
-        let userFind = await this.userRepository.findOne({
+        let foundUser = await this.userRepository.findOne({
             relations: {
                 role: true
             },
             where: {
                 username: user.username
             }
-        });
-        if(!userFind){
-            return 'User is not exist'
-        }else {
-            let passWordCompare = await bcrypt.compare(user.password, userFind.password);
-            if(passWordCompare){
+        })
+
+        if (foundUser) {
+            let pass = await bcrypt.compare(user.password, foundUser.password);
+            if (pass) {
                 let payload = {
-                    id: userFind.id,
-                    username: userFind.username,
-                    role: userFind.role.id
+                    id: foundUser.id,
+                    username: foundUser.username,
+                    role: foundUser.role.id,
                 }
                 let token = await (jwt.sign(payload, SECRET, {
-                    expiresIn: 36000 * 100000
+                    expiresIn: 3600000 * 10 * 100000
                 }))
                 payload['token'] = token
                 return payload;
             }else {
                 return 'Password is wrong'
             }
+
         }
     }
 

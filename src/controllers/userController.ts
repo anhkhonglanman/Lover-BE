@@ -24,7 +24,6 @@ class UserController {
     login = async (req: Request, res: Response) =>{
         try {
             let payload = await userService.loginCheck(req.body)
-            console.log('login with user: ', payload)
             if( payload === "User is not exist"){
                 res.status(401).json({
                     payload
@@ -40,7 +39,6 @@ class UserController {
             }
             
         } catch (e) {
-            console.log("error in login:",e )
             res.status(400).json({
                 message: 'error in login',
                 success: false

@@ -2,7 +2,7 @@ declare class UserService {
     private userRepository;
     constructor();
     save: (user: any) => Promise<void>;
-    loginCheck: (user: any) => Promise<"User is not exist" | {
+    loginCheck: (user: any) => Promise<{
         id: any;
         username: any;
         role: any;
