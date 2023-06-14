@@ -1,15 +1,16 @@
-import {Column, Entity, ManyToOne, PrimaryGeneratedColumn} from "typeorm";
+import {Column, Entity, ManyToMany, ManyToOne, PrimaryGeneratedColumn} from "typeorm";
 import {Provider} from "./Provider";
+import {Type} from "./Type";
 
 @Entity()
 
 export class Service {
     @PrimaryGeneratedColumn()
     id: number;
-    @Column({type: "varchar", length: 255, default: null})
-    type: string;
     @Column({type: "varchar", length: 255, default: "user"})
     name: string;
-    // @ManyToOne(() => Provider)
-    // provider : Provider
+    @ManyToMany(() => Provider, (provider) => provider.services)
+    providers : Provider[];
+    @ManyToOne(() => Type)
+    type : Type
 }
