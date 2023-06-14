@@ -40,12 +40,9 @@ class ProviderService{
     }
 
     searchNameProvider = async (name) => {
-        console.log(111);
+        console.log(2);
         let provider = await this.providerRepository.findBy({
-            name: Like(`%${name}%`),
-            order: {
-                joinDate: 'DESC' 
-            }
+            name: Like(`%${name}%`)
         });
         return provider;
     }
