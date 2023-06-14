@@ -61,7 +61,7 @@ class ProviderService{
         let provider = await this.providerRepository.findBy({
             name: Like(`%${name}%`),
             order: {
-                joinDate: 'DESC'
+                joinDate: 'DESC' 
             }
         });
         return provider;

@@ -44,7 +44,7 @@ class ProviderController{
     providerSearch = async (req: Request, res: Response) => {
         let searchName = req.params.name
         try {
-            let provider = await this.providerService.searchNameProvider(searchName)
+            let provider = await providerService.searchNameProvider(searchName)
             res.status(200).json({
                 data: provider,
                 success: true
