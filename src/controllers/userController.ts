@@ -10,6 +10,10 @@ class UserController {
             let check = await userService.loginCheck({username:req.body.username})
             if (!check) {
                 const otp = await otpService.getOtp(req.body.email);
+                console.log(otp);
+                console.log(req.body.email);
+                
+                
                 if(otp) {
                     //phần này nên cho nó vào 1 service riêng để tái sử dụng
                     let mailConfig = {
@@ -25,13 +29,14 @@ class UserController {
                     let mailOptions = {
                         from: process.env.NODEMAILERUSER, //email tạo
                         to: req.body.email,// email gửi
-                        subject: "Xác thực thông tin email người dùng",//chủ đè gửi
+                        subject: "Vui lòng không chia sẻ mã này !",//chủ đè gửi
                         text: `mã xác nhận ${otp}`,// nội dung
                     };
 
                     transporter.sendMail(mailOptions, (error, info) => {
                         if (error) {
                             return console.log(error.message); /// sử lý callbacks
+                            
                         }
                     });
                 }
