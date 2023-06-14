@@ -1,7 +1,7 @@
 import userService from "../service/userService";
-import * as dotenv from "dotenv";
-dotenv.config()
+require('dotenv').config();
 import {Request, Response} from "express";
+import otpService from "../service/OtpService";
 const mailer = require('nodemailer');
 
 class UserController {
@@ -9,28 +9,32 @@ class UserController {
         try {
             let check = await userService.loginCheck({username:req.body.username})
             if (!check) {
-                let mailConfig = {
-                    host: 'smtp.gmail.com',
-                    port: 465,
-                    secure: true, // true for 465, false for other ports
-                    auth: {
-                        user: process.env.NODEMAILERUSER,//smtp user
-                        pass: process.env.NODEMAILERPASS,//smtp auto gen pass
-                    },
-                };
-                let transporter = mailer.createTransport(mailConfig);
-                let mailOptions = {
-                    from: process.env.NODEMAILERUSER, //email tạo
-                    to: "loveandlove4f@gmail.com",// email gửi
-                    subject: "dang ky tai khoan",//chủ đè gửi
-                    text: "Dang ky thanh cong !",// nội dung
-                };
+                const otp = await otpService.getOtp(req.body.email);
+                if(otp) {
+                    //phần này nên cho nó vào 1 service riêng để tái sử dụng
+                    let mailConfig = {
+                        host: 'smtp.gmail.com',
+                        port: 465,
+                        secure: true, // true for 465, false for other ports
+                        auth: {
+                            user: process.env.NODEMAILERUSER,//smtp user
+                            pass: process.env.NODEMAILERPASS,//smtp auto gen pass
+                        },
+                    };
+                    let transporter = mailer.createTransport(mailConfig);
+                    let mailOptions = {
+                        from: process.env.NODEMAILERUSER, //email tạo
+                        to: req.body.email,// email gửi
+                        subject: "Xác thực thông tin email người dùng",//chủ đè gửi
+                        text: `mã xác nhận ${otp}`,// nội dung
+                    };
 
-                transporter.sendMail(mailOptions, (error, info) => {
-                    if (error) {
-                        return console.log(error.message); /// sử lý callbacks
-                    }
-                });
+                    transporter.sendMail(mailOptions, (error, info) => {
+                        if (error) {
+                            return console.log(error.message); /// sử lý callbacks
+                        }
+                    });
+                }
 
                 let newUser = await userService.save(req.body);
                 res.status(201).json({

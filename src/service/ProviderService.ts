@@ -1,4 +1,4 @@
-import {AppDataSource} from "../data-source";
+import {AppDataSource} from "../ormconfig";
 import {Provider} from "../entity/Provider";
 import { PageMeta, Paginate } from "../lib/paginate";
 import { User } from "../entity/User";
