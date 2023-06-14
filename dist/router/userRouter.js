@@ -12,6 +12,8 @@ userRouter.get('/', userController_1.default.allUser);
 userRouter.post('/login', userController_1.default.login);
 userRouter.put('/role/:id', userController_1.default.updateToProvider);
 userRouter.get('/:id', auth_1.auth, userController_1.default.showUser);
-userRouter.delete('/:name', auth_1.auth, userController_1.default.searchUsername);
+userRouter.put('/:id', auth_1.auth, userController_1.default.editUser);
+userRouter.delete('/:id', auth_1.auth, userController_1.default.delete);
+userRouter.get('/:name', auth_1.auth, userController_1.default.searchUsername);
 exports.default = userRouter;
 //# sourceMappingURL=userRouter.js.map

@@ -13,7 +13,7 @@ exports.User = void 0;
 const typeorm_1 = require("typeorm");
 const Role_1 = require("./Role");
 const Booking_1 = require("./Booking");
-let User = class User {
+let User = exports.User = class User {
 };
 __decorate([
     (0, typeorm_1.PrimaryGeneratedColumn)(),
@@ -63,14 +63,7 @@ __decorate([
     (0, typeorm_1.OneToMany)(() => Booking_1.Booking, (booking) => booking.user),
     __metadata("design:type", Array)
 ], User.prototype, "booking", void 0);
-__decorate([
-    (0, typeorm_1.Column)({
-        default: 0
-    }),
-    __metadata("design:type", Boolean)
-], User.prototype, "isLocked", void 0);
-User = __decorate([
+exports.User = User = __decorate([
     (0, typeorm_1.Entity)()
 ], User);
-exports.User = User;
 //# sourceMappingURL=User.js.map
