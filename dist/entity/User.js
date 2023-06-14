@@ -13,7 +13,7 @@ exports.User = void 0;
 const typeorm_1 = require("typeorm");
 const Role_1 = require("./Role");
 const Booking_1 = require("./Booking");
-let User = exports.User = class User {
+let User = class User {
 };
 __decorate([
     (0, typeorm_1.PrimaryGeneratedColumn)(),
@@ -63,7 +63,8 @@ __decorate([
     (0, typeorm_1.OneToMany)(() => Booking_1.Booking, (booking) => booking.user),
     __metadata("design:type", Array)
 ], User.prototype, "booking", void 0);
-exports.User = User = __decorate([
+User = __decorate([
     (0, typeorm_1.Entity)()
 ], User);
+exports.User = User;
 //# sourceMappingURL=User.js.map

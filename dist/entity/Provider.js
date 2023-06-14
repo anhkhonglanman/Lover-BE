@@ -16,7 +16,7 @@ const Image_1 = require("./Image");
 const Booking_1 = require("./Booking");
 const Service_1 = require("./Service");
 const Status_1 = require("./Status");
-let Provider = exports.Provider = class Provider {
+let Provider = class Provider {
 };
 __decorate([
     (0, typeorm_1.PrimaryGeneratedColumn)(),
@@ -107,7 +107,8 @@ __decorate([
     (0, typeorm_1.JoinColumn)(),
     __metadata("design:type", User_1.User)
 ], Provider.prototype, "user", void 0);
-exports.Provider = Provider = __decorate([
+Provider = __decorate([
     (0, typeorm_1.Entity)()
 ], Provider);
+exports.Provider = Provider;
 //# sourceMappingURL=Provider.js.map

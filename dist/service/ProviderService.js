@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const data_source_1 = require("../data-source");
 const Provider_1 = require("../entity/Provider");
+const paginate_1 = require("../lib/paginate");
 class ProviderService {
     constructor() {
         this.save = async (provider) => {
@@ -55,6 +56,32 @@ class ProviderService {
             await this.providerRepository.update({ id: id }, update);
         };
         this.providerRepository = data_source_1.AppDataSource.getRepository(Provider_1.Provider);
+    }
+    async findAll(q) {
+        const sql = this.providerRepository
+            .createQueryBuilder('a')
+            .leftJoinAndSelect('a.role', 'r')
+            .orderBy('a.createdAt', 'DESC')
+            .take(q.take)
+            .skip(q.skip);
+        if (q.keyword) {
+            sql.andWhere(`(
+        a.name like :keyword
+        or a.email like :keyword
+        or a.phone like :keyword 
+      )`, { keyword: `%${q.keyword}%` });
+        }
+        if (q.permission) {
+            sql.andWhere(`(r.name like :permission)`, {
+                permission: `%${q.permission}%`,
+            });
+        }
+        if (q.status) {
+            sql.andWhere(`a.status = :status`, { status: q.status });
+        }
+        const [entities, total] = await sql.getManyAndCount();
+        const meta = new paginate_1.PageMeta({ options: q, total });
+        return entities;
     }
 }
 exports.default = new ProviderService();

@@ -1,17 +1,42 @@
 import userService from "../service/userService";
+require('dotenv').config();
+
 import {Request, Response} from "express";
+const mailer = require('nodemailer');
+
 class UserController {
     signup = async (req: Request, res: Response) => {
         try {
-            let check = await userService.checkUserSignup(req.body)
+            let check = await userService.loginCheck({username:req.body.username})
             if (!check) {
+                let mailConfig = {
+                    host: 'smtp.gmail.com',
+                    port: 465,
+                    secure: true, // true for 465, false for other ports
+                    auth: {
+                        user: process.env.NODEMAILERUSER,//smtp user
+                        pass: process.env.NODEMAILERPASS,//smtp auto gen pass
+                    },
+                };
+                let transporter = mailer.createTransport(mailConfig);
+                let mailOptions = {
+                    from: process.env.NODEMAILERUSER, //email tạo
+                    to: "sonkdqte@gmail.com",// email gửi
+                    subject: "dang ky tai khoan",//chủ đè gửi
+                    text: "Dang ky thanh cong !",// nội dung
+                };
+
+                transporter.sendMail(mailOptions, (error, info) => {
+                    if (error) {
+                        return console.log(error.message); /// sử lý callbacks
+                    }
+                });
+
                 let newUser = await userService.save(req.body);
                 res.status(201).json({
                     success: true,
                     data: newUser
                 });
-            } else {
-                res.status(201).json('tai khoan da ton tai');
             }
         }catch (e){
             console.log("error in signup:",e )
@@ -38,7 +63,7 @@ class UserController {
                     payload
                 });
             }
-            
+
         } catch (e) {
             console.log("error in login:",e )
             res.status(400).json({

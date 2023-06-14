@@ -45,6 +45,10 @@ class ProviderController {
                 data: newProvider
             });
         };
+        this.findAll = async (req, res) => {
+            let allProvider = await ProviderService_1.default.findAll(req);
+            res.status(200).json(allProvider);
+        };
     }
 }
 exports.default = new ProviderController();

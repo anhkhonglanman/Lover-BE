@@ -5,6 +5,7 @@ declare class ProviderController {
     showOne: (req: Request, res: Response) => Promise<void>;
     searchByTypeProvider: (req: Request, res: Response) => Promise<void>;
     editProvider: (req: Request, res: Response) => Promise<void>;
+    findAll: (req: Request, res: Response) => Promise<void>;
 }
 declare const _default: ProviderController;
 export default _default;

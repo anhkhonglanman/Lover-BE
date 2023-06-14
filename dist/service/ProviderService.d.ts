@@ -6,6 +6,7 @@ declare class ProviderService {
     one: (id: any) => Promise<any>;
     searchByType: (id: any) => Promise<any>;
     update: (id: any, update: any) => Promise<void>;
+    findAll(q: any): Promise<any>;
 }
 declare const _default: ProviderService;
 export default _default;

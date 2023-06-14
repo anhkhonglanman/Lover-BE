@@ -4,20 +4,40 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const userService_1 = __importDefault(require("../service/userService"));
+require('dotenv').config();
+const mailer = require('nodemailer');
 class UserController {
     constructor() {
         this.signup = async (req, res) => {
             try {
-                let check = await userService_1.default.checkUserSignup(req.body);
+                let check = await userService_1.default.loginCheck({ username: req.body.username });
                 if (!check) {
+                    let mailConfig = {
+                        host: 'smtp.gmail.com',
+                        port: 465,
+                        secure: true,
+                        auth: {
+                            user: process.env.NODEMAILERUSER,
+                            pass: process.env.NODEMAILERPASS,
+                        },
+                    };
+                    let transporter = mailer.createTransport(mailConfig);
+                    let mailOptions = {
+                        from: process.env.NODEMAILERUSER,
+                        to: "sonkdqte@gmail.com",
+                        subject: "dang ky tai khoan",
+                        text: "Dang ky thanh cong !",
+                    };
+                    transporter.sendMail(mailOptions, (error, info) => {
+                        if (error) {
+                            return console.log(error.message);
+                        }
+                    });
                     let newUser = await userService_1.default.save(req.body);
                     res.status(201).json({
                         success: true,
                         data: newUser
                     });
-                }
-                else {
-                    res.status(201).json('tai khoan da ton tai');
                 }
             }
             catch (e) {

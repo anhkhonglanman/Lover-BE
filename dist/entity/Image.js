@@ -12,7 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.Image = void 0;
 const typeorm_1 = require("typeorm");
 const Provider_1 = require("./Provider");
-let Image = exports.Image = class Image {
+let Image = class Image {
 };
 __decorate([
     (0, typeorm_1.PrimaryGeneratedColumn)(),
@@ -26,7 +26,8 @@ __decorate([
     (0, typeorm_1.ManyToOne)(() => Provider_1.Provider, (provider) => provider.images),
     __metadata("design:type", Provider_1.Provider)
 ], Image.prototype, "provider", void 0);
-exports.Image = Image = __decorate([
+Image = __decorate([
     (0, typeorm_1.Entity)()
 ], Image);
+exports.Image = Image;
 //# sourceMappingURL=Image.js.map
