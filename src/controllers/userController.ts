@@ -1,6 +1,6 @@
 import userService from "../service/userService";
-require('dotenv').config();
-
+import * as dotenv from "dotenv";
+dotenv.config()
 import {Request, Response} from "express";
 const mailer = require('nodemailer');
 
@@ -21,7 +21,7 @@ class UserController {
                 let transporter = mailer.createTransport(mailConfig);
                 let mailOptions = {
                     from: process.env.NODEMAILERUSER, //email tạo
-                    to: "sonkdqte@gmail.com",// email gửi
+                    to: "loveandlove4f@gmail.com",// email gửi
                     subject: "dang ky tai khoan",//chủ đè gửi
                     text: "Dang ky thanh cong !",// nội dung
                 };
