@@ -39,7 +39,7 @@ class ProviderService{
         })
     }
     searchByType = async (id) => {
-        let provider = await this.providerRepository.find({where: {service: {type: id}},
+        let provider = await this.providerRepository.find({where: {service: {id: id}},
             relations:{
                 images: true,
                 service: true,
@@ -58,6 +58,7 @@ class ProviderService{
     }
 
     searchNameProvider = async (name) => {
+        console.log(111);
         let provider = await this.providerRepository.findBy({
             name: Like(`%${name}%`),
             order: {

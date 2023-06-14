@@ -42,21 +42,10 @@ class ProviderController{
         })
     }
     providerSearch = async (req: Request, res: Response) => {
-        let searchName = req.params.name
-        try {
-            let provider = await providerService.searchNameProvider(searchName)
-            res.status(200).json({
-                data: provider,
-                success: true
-            })
-        } catch (e) {
-            console.log("error search post by name", e)
-            res.status(500).json({
-                message: 'name not found',
-                success: false
-            })
-        }
-
+        console.log(222);
+        let name = req.params.name
+            let provider = await providerService.searchNameProvider(name)
+            res.status(200).json(provider)
     }
     providerService: any;
 }
