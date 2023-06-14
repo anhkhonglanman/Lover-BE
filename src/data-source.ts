@@ -12,7 +12,7 @@ export const AppDataSource = new DataSource({
     password: process.env.PASSWORDDB,
     database: process.env.DATABASE,
     synchronize: true,
-    entities: ["dist/entity/*.js"]
+    entities: ["dist/src/entity/*.js"]
 })
 
 
