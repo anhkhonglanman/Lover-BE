@@ -1,3 +1,4 @@
+import { Like } from "typeorm";
 import {AppDataSource} from "../data-source";
 import {Provider} from "../entity/Provider";
 
@@ -38,7 +39,7 @@ class ProviderService{
         })
     }
     searchByType = async (id) => {
-        let provider = await this.providerRepository.find({where: {service: {id: id}},
+        let provider = await this.providerRepository.find({where: {service: {type: id}},
             relations:{
                 images: true,
                 service: true,
@@ -55,6 +56,17 @@ class ProviderService{
         })
         return(provider);
     }
+
+    searchNameProvider = async (name) => {
+        let provider = await this.providerRepository.findBy({
+            name: Like(`%${name}%`),
+            order: {
+                joinDate: 'DESC'
+            }
+        });
+        return provider;
+    }
+
     update = async (id, update) => {
         await this.providerRepository.update({id: id}, update)
     }
