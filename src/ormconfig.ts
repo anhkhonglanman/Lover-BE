@@ -1,4 +1,4 @@
-import "reflect-metadata"
+// import "reflect-metadata"
 
 import {DataSource} from "typeorm";
 require('dotenv').config();
@@ -12,7 +12,7 @@ export const AppDataSource = new DataSource({
     password: process.env.PASSWORDDB,
     database: process.env.DATABASE,
     synchronize: true,
-    entities: ['src/**/**.entity{.ts,.js}'],
+    entities: ["dist/src/entity/*{.js,.ts}"], // typeorm loads entities from this directory
     migrations: ['src/migrations/**/*{.ts,.js}'],
 })
 
