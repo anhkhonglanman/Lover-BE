@@ -56,9 +56,9 @@ export class Provider {
     booking: Booking[];
     @OneToMany(() => Image, (image) => image.provider)
     images : Image[];
-    @ManyToMany(() => Service)
-    @JoinTable()
-    services: Service[]
+    // @ManyToMany(() => Service)
+    // @JoinTable()
+    // services: Service[]
     @ManyToOne(() => Status)
     status : Status;
     @OneToOne(() => User)
