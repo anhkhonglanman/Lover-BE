@@ -15,7 +15,7 @@ class ProviderService{
         return await this.providerRepository.find({
             relations: {
                 images: true,
-                service: true,
+                services: true,
                 user: true,
                 status: true
             },
@@ -34,7 +34,7 @@ class ProviderService{
             where : {id: id},
             relations: {
                 images: true,
-                service: true
+                services: true
             }
         })
     }

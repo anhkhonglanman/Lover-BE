@@ -47,7 +47,7 @@ export class Provider {
     @OneToMany(() => Image, (image) => image.provider)
     images : Image[];
     @ManyToMany(() => Service)
-    @JoinTable()
+    @JoinTable()                                                                                                                                                                                                
     services: Service[]
     @ManyToOne(() => Status)
     status : Status;
