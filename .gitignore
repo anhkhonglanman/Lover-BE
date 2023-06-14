@@ -37,10 +37,18 @@ lerna-debug.log*
 !.vscode/launch.json
 !.vscode/extensions.json
 
+<<<<<<< HEAD
+=======
+.env
+>>>>>>> fcfb36be61b26a3ddf8042f8c64b2a612c27a66a
 
 .vscode
 *.pem
 /uploads
+<<<<<<< HEAD
 /private
 
 package.json
+=======
+/private
+>>>>>>> fcfb36be61b26a3ddf8042f8c64b2a612c27a66a

@@ -16,7 +16,7 @@ class ProviderService{
         return await this.providerRepository.find({
             relations: {
                 images: true,
-                service: true,
+                // services: true,
                 user: true,
                 status: true
             },
@@ -35,15 +35,15 @@ class ProviderService{
             where : {id: id},
             relations: {
                 images: true,
-                service: true
+                // services: true
             }
         })
     }
     searchByType = async (id) => {
-        let provider = await this.providerRepository.find({where: {service: {id: id}},
+        let provider = await this.providerRepository.find({where: {services: {id: id}},
             relations:{
                 images: true,
-                service: true,
+                services: true,
                 user: true,
                 status: true
             },
