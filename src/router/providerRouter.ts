@@ -8,6 +8,5 @@ providerRouter.post('/', providerController.save)
 providerRouter.get('/', providerController.all)
 providerRouter.get('/:id', providerController.showOne)
 providerRouter.put('/:id',providerController.editProvider);
-providerRouter.get('/:name', providerController.providerSearch)
 
 export default providerRouter
