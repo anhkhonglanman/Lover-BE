@@ -9,4 +9,6 @@ providerRouter.get('/', providerController.all)
 providerRouter.get('/:id', providerController.showOne)
 providerRouter.put('/:id',providerController.editProvider);
 providerRouter.get('/service/:id', providerController.searchByTypeProvider)
+providerRouter.get('/:name', providerController.providerSearch)
+
 export default providerRouter

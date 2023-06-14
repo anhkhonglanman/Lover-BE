@@ -41,7 +41,7 @@ class ProviderController{
             data: newProvider
         })
     }
-    postSearch = async (req: Request, res: Response) => {
+    providerSearch = async (req: Request, res: Response) => {
         let searchName = req.params.name
         try {
             let provider = await this.providerService.searchNameProvider(searchName)
