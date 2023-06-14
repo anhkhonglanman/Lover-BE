@@ -37,11 +37,5 @@ class ProviderController{
             data: newProvider
         })
     }
-    providerSearch = async (req: Request, res: Response) => {
-        console.log(1);
-        let name = req.params.name
-        let provider= await providerService.searchNameProvider(name)
-        res.status(200).json(provider)
-    }
 }
 export default new ProviderController()
