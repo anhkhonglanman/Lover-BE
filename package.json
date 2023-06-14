@@ -7,6 +7,14 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "rimraf dist && tsc -p tsconfig.build.json",
     "start:dev": "rimraf dist && tsc-watch -p tsconfig.build.json --onSuccess \"node dist/src/index.js\"",
+    "typeorm": "ts-node ./node_modules/typeorm/cli.js",
+    "typeorm:cli": "ts-node ./node_modules/typeorm/cli -f ./ormconfig.ts",
+    "db:drop": "npm run typeorm:cli schema:drop",
+    "migration:generate": "typeorm migration:create -n",
+    "db:create": "ts-node src/script/create-db.ts",
+    "db:migrate": "npm run typeorm:cli migration:run -d src/ormconfig.ts",
+    "db:revert": "npm run typeorm:cli migration:revert",
+    "db:sync": "npm run typeorm:cli schema:sync && npm run db:migrate"
     "seed:config": "node ./node_modules/typeorm-seeding/dist/cli.js config",
     "seed:run": "node ./node_modules/typeorm-seeding/dist/cli.js seed"
   },
