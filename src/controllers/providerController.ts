@@ -27,11 +27,7 @@ class ProviderController{
         let oneProvider = await providerService.one(id)
         res.status(200).json(oneProvider)
     }
-    searchByTypeProvider =  async (req: Request, res: Response) => {
-        let id= req.params.id
-        let typeProvider = await providerService.searchByType(id)
-        res.status(200).json(typeProvider)
-    }
+ 
     editProvider = async (req: Request, res: Response) => {
         let provider = req.body;
         let id = req.params.id;
