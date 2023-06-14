@@ -6,6 +6,6 @@ export class Status{
     @PrimaryGeneratedColumn()
     id: number;
     // có 2 trang thái on , off để đăng nhập
-    @Column({type: "varchar", default: "ON"})
+    @Column({type: "varchar"})
     status: string;
 }
