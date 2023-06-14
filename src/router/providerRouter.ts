@@ -4,7 +4,7 @@ import {auth} from "../middleware/auth";
 
 const providerRouter = Router()
 
-providerRouter.post('/', providerController.save)
+providerRouter.post('/',auth, providerController.save)
 providerRouter.get('/', providerController.all)
 providerRouter.get('/:id', providerController.showOne)
 providerRouter.put('/:id',providerController.editProvider);
