@@ -8,13 +8,24 @@ class UserController {
     signup = async (req: Request, res: Response) => {
         try {
             let check = await userService.loginCheck({username:req.body.username})
-            console.log(check, "11111")
-            if (check == "User is not exist") {                
-                let newUser = await userService.save(req.body);
+            if (check == "User is not exist") { 
+                let user = {
+                    username: req.body.username,
+                    password: req.body.password,
+                    email: req.body.email
+                } 
+               let checkOtp = await otpService.checkOtp(req.body.otpValue) 
+                if(checkOtp == false) {      
+                let newUser = await userService.save(user);
                 res.status(201).json({
                     success: true,
                     data: newUser
                 });
+             }else if(checkOtp == true){
+                res.status(401).json({
+                    success: false,
+             });
+            }
 
             }
         } catch (e) {
@@ -37,8 +48,7 @@ class UserController {
                 res.status(401).json({
                     data: payload
                 });
-            } else
-                if (typeof payload !== "string" && payload?.isLocked) {
+            } else if (typeof payload !== "string" && payload?.isLocked) {
                     res.status(401).json({
                         mess: 'tài khoản đã bị khóa'
                     });

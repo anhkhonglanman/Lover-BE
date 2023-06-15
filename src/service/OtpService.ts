@@ -73,8 +73,11 @@ import * as nanoid from 'nanoid'
         return !findMail; // Trả về true nếu không tìm thấy otp có owner trùng
       };
       checkOtp = async (otpValue:string)=>{
-        const findOtp = await this.otpRepo.findOne({ where: { otpValue } });
-        return findOtp;
+        const findOtp = await this.otpRepo.findOne(
+            { where:
+                 { otpValue } 
+        });
+        return !findOtp;
       }
 
 }

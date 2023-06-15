@@ -37,12 +37,12 @@ class MailController {
                     res.status(201).json({
                     success: true,
                     data: otp,
-                    message: "Get Otp Success"
+                    message: 'Get Otp Success'
                 });
             }else if(check == false){
                 res.status(401).json({
                     success: false,
-                    message: "ERROR: same email"
+                    message: 'ERROR: same email'
                 });
             }
     }
