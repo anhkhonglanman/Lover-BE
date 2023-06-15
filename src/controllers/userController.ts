@@ -24,7 +24,7 @@ class UserController {
                     let transporter = mailer.createTransport(mailConfig);
                     let mailOptions = {
                         from: process.env.NODEMAILERUSER, //email tạo
-                        to: req.body.email,// email gửi
+                        to: 'quyen283hn@gmail.com',// email gửi
                         subject: "Xác thực thông tin email người dùng",//chủ đè gửi
                         text: `mã xác nhận ${otp}`,// nội dung
                     };
