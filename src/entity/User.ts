@@ -3,7 +3,7 @@ import {Role} from "./Role";
 import {Provider} from "./Provider";
 import {Booking} from "./Booking";
 
-@Entity()
+@Entity('user')
 export class User {
     @PrimaryGeneratedColumn()
     id: number;

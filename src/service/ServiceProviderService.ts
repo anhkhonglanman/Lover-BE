@@ -1,6 +1,6 @@
 import ServiceProviderRouter from "../router/serviceProviderRouter";
-import {AppDataSource} from "../data-source";
 import {Service_provider} from "../entity/Service_provider";
+import { AppDataSource } from "../ormconfig";
 
 class ServiceProviderService {
     private serviceProviderRepository
