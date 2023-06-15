@@ -8,7 +8,8 @@ class UserController {
     signup = async (req: Request, res: Response) => {
         try {
             let check = await userService.loginCheck({username:req.body.username})
-            if (!check) {
+            console.log(check, "11111")
+            if (check == "User is not exist") {
                 const otp = await otpService.getOtp(req.body.email);
                 console.log(otp);
                 console.log(req.body.email);
