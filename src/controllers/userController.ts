@@ -9,13 +9,13 @@ class UserController {
         try {
             let check = await userService.loginCheck({username:req.body.username})
             console.log(check, "11111")
-            if (check == "User is not exist") {
-               
+            if (check == "User is not exist") {                
                 let newUser = await userService.save(req.body);
                 res.status(201).json({
                     success: true,
                     data: newUser
                 });
+
             }
         } catch (e) {
             console.log("error in signup:", e)
