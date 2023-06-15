@@ -10,38 +10,7 @@ class UserController {
             let check = await userService.loginCheck({username:req.body.username})
             console.log(check, "11111")
             if (check == "User is not exist") {
-                const otp = await otpService.getOtp(req.body.email);
-                console.log(otp);
-                console.log(req.body.email);
-                
-                
-                if(otp) {
-                    //phần này nên cho nó vào 1 service riêng để tái sử dụng
-                    let mailConfig = {
-                        host: 'smtp.gmail.com',
-                        port: 465,
-                        secure: true, // true for 465, false for other ports
-                        auth: {
-                            user: process.env.NODEMAILERUSER,//smtp user
-                            pass: process.env.NODEMAILERPASS,//smtp auto gen pass
-                        },
-                    };
-                    let transporter = mailer.createTransport(mailConfig);
-                    let mailOptions = {
-                        from: process.env.NODEMAILERUSER, //email tạo
-                        to: req.body.email,// email gửi
-                        subject: "Vui lòng không chia sẻ mã này !",//chủ đè gửi
-                        text: `mã xác nhận ${otp}`,// nội dung
-                    };
-
-                    transporter.sendMail(mailOptions, (error, info) => {
-                        if (error) {
-                            return console.log(error.message); /// sử lý callbacks
-                            
-                        }
-                    });
-                }
-
+               
                 let newUser = await userService.save(req.body);
                 res.status(201).json({
                     success: true,
