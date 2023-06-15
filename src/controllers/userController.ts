@@ -14,7 +14,7 @@ class UserController {
                     password: req.body.password,
                     email: req.body.email
                 } 
-               let checkOtp = await otpService.checkOtp(req.body.otpValue) 
+               let checkOtp = await otpService.checkOtp(req.body.otpValue, req.body.email) 
                 if(checkOtp == false) {      
                 let newUser = await userService.save(user);
                 res.status(201).json({
