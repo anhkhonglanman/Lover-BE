@@ -1,10 +1,12 @@
 import {Router} from 'express'
 import userController from "../controllers/userController";
 import {auth} from "../middleware/auth";
+import { CheckRoleAdmin } from '../middleware/CheckRoleAdmin';
+import { CheckRoleUser } from '../middleware/checkRoleUser';
 const userRouter = Router()
 
 userRouter.post('/register', userController.signup);
-userRouter.get('/', userController.allUser);
+userRouter.get('/',CheckRoleAdmin, userController.allUser);
 userRouter.post('/login',userController.login)
 userRouter.put('/role/:id',userController.updateToProvider);
 userRouter.get('/:id', auth,userController.showUser);

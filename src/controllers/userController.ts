@@ -4,44 +4,29 @@ import {Request, Response} from "express";
 import otpService from "../service/OtpService";
 const mailer = require('nodemailer');
 
-
 class UserController {
     signup = async (req: Request, res: Response) => {
         try {
             let check = await userService.loginCheck({username:req.body.username})
-            if (!check) {
-                const otp = await otpService.getOtp(req.body.email);
-                if(otp) {
-                    //phần này nên cho nó vào 1 service riêng để tái sử dụng
-                    let mailConfig = {
-                        host: 'smtp.gmail.com',
-                        port: 465,
-                        secure: true, // true for 465, false for other ports
-                        auth: {
-                            user: process.env.NODEMAILERUSER,//smtp user
-                            pass: process.env.NODEMAILERPASS,//smtp auto gen pass
-                        },
-                    };
-                    let transporter = mailer.createTransport(mailConfig);
-                    let mailOptions = {
-                        from: process.env.NODEMAILERUSER, //email tạo
-                        to: 'quyen283hn@gmail.com',// email gửi
-                        subject: "Xác thực thông tin email người dùng",//chủ đè gửi
-                        text: `mã xác nhận ${otp}`,// nội dung
-                    };
-
-                    transporter.sendMail(mailOptions, (error, info) => {
-                        if (error) {
-                            return console.log(error.message); /// sử lý callbacks
-                        }
-                    });
-                }
-
-                let newUser = await userService.save(req.body);
+            if (check == "User is not exist") { 
+                let user = {
+                    username: req.body.username,
+                    password: req.body.password,
+                    email: req.body.email
+                } 
+               let checkOtp = await otpService.checkOtp(req.body.otpValue, req.body.email) 
+                if(checkOtp == false) {      
+                let newUser = await userService.save(user);
                 res.status(201).json({
                     success: true,
                     data: newUser
                 });
+             }else if(checkOtp == true){
+                res.status(401).json({
+                    success: false,
+             });
+            }
+
             }
         } catch (e) {
             console.log("error in signup:", e)
@@ -63,8 +48,7 @@ class UserController {
                 res.status(401).json({
                     data: payload
                 });
-            } else
-                if (typeof payload !== "string" && payload?.isLocked) {
+            } else if (typeof payload !== "string" && payload?.isLocked) {
                     res.status(401).json({
                         mess: 'tài khoản đã bị khóa'
                     });
@@ -144,5 +128,4 @@ class UserController {
         }
     }
 }
-
 export default new UserController()
