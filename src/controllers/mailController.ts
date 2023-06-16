@@ -79,6 +79,9 @@ class MailController {
       .body {
         background-color: #f6f6f6;
         width: 100%; 
+        -webkit-box-shadow: 10px 10px 17px 0px rgba(0,0,0,0.42);
+        -moz-box-shadow: 10px 10px 17px 0px rgba(0,0,0,0.42);
+        box-shadow: 10px 10px 17px 0px rgba(0,0,0,0.42);
       }
 
       /* Set a max-width, and make it display as block so it will automatically stretch to that width, but will also shrink down on a phone or something */
@@ -360,7 +363,6 @@ class MailController {
     </style>
   </head>
   <body>
-    <span class="preheader">This is preheader text. Some clients will show this text as a preview.</span>
     <table role="presentation" border="0" cellpadding="0" cellspacing="0" class="body">
       <tr>
         <td>&nbsp;</td>
@@ -377,7 +379,7 @@ class MailController {
                     <tr>
                       <td>
                         <h3>Hi ${req.body.owner},</h3>
-                        <p>Dưới đây là mã otp dùng để đăng ký tài khoản. Vui lòng không chia sẻ mã này với bất kì ai!</p>
+                        <p>Dưới đây là mã otp dùng để đăng ký tài khoản Love&Love. Vui lòng không chia sẻ mã này với bất kì ai!</p>
                         <table role="presentation" border="0" cellpadding="0" cellspacing="0" class="btn btn-primary">
                           <tbody>
                             <tr>
