@@ -41,7 +41,7 @@ class UserController {
         }
         } catch (e) {
             console.log("error in signup:", e)
-            res.status(400).json({
+            res.status(401).json({
                 message: 'trung tai khoan',
                 success: false
             })
