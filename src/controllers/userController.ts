@@ -7,6 +7,9 @@ const mailer = require('nodemailer');
 class UserController {
     signup = async (req: Request, res: Response) => {
         try {
+            let checkMail = await userService.checkMail(req.body.email);
+            console.log(checkMail);
+            if(checkMail == true){
             let check = await userService.loginCheck({username:req.body.username})
             if (check == "User is not exist") { 
                 let user = {
@@ -18,20 +21,28 @@ class UserController {
                 if(checkOtp == false) {      
                 let newUser = await userService.save(user);
                 res.status(201).json({
+                    message: 'dang ky thanh công',
                     success: true,
                     data: newUser
                 });
              }else if(checkOtp == true){
                 res.status(401).json({
+                    message: 'sai otp',
                     success: false,
              });
             }
 
             }
+        }else if(checkMail == false){
+            res.status(401).json({
+                message: 'email da duoc dang ky o tai khoan khac',
+                success: false,
+         });
+        }
         } catch (e) {
             console.log("error in signup:", e)
             res.status(400).json({
-                message: 'error in signup',
+                message: 'trung tai khoan',
                 success: false
             })
         }

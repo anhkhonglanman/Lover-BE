@@ -443,7 +443,7 @@ class MailController {
             }else if(check == false){
                 res.status(401).json({
                     success: false,
-                    message: 'email đã được đăng kí'
+                    message: 'email đã được đăng kí o tai khoan khac'
                 });
             }
     }
