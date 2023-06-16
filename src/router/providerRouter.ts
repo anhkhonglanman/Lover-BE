@@ -6,7 +6,7 @@ const providerRouter = Router()
 
 providerRouter.post('/', providerController.save)
 providerRouter.get('/', providerController.all)
-providerRouter.get('/:id', providerController.showOne)
+providerRouter.get('/providerDetail/:id', providerController.showOne)
 providerRouter.put('/:id',providerController.editProvider);
 
 export default providerRouter

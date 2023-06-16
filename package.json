@@ -1,12 +1,21 @@
 {
   "name": "case_md4",
-  "version": "1.0.0",
-  "description": "",
+  "version": "0.0.0",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "rimraf dist && tsc -p tsconfig.build.json",
-    "start:dev": "rimraf dist && tsc-watch -p tsconfig.build.json --onSuccess \"node dist/index.js\""
+    "start:dev": "rimraf dist && tsc-watch -p tsconfig.build.json --onSuccess \"node dist/src/index.js\"",
+    "typeorm": "ts-node ./node_modules/typeorm/cli.js",
+    "typeorm:cli": "ts-node ./node_modules/typeorm/cli -f ./ormconfig.ts",
+    "db:drop": "npm run typeorm:cli schema:drop",
+    "migration:generate": "typeorm migration:create -n",
+    "db:create": "ts-node src/script/create-db.ts",
+    "db:migrate": "npm run typeorm:cli migration:run -d src/ormconfig.ts",
+    "db:revert": "npm run typeorm:cli migration:revert",
+    "db:sync": "npm run typeorm:cli schema:sync && npm run db:migrate",
+    "seed:config": "node ./node_modules/typeorm-seeding/dist/cli.js config",
+    "seed:run": "node ./node_modules/typeorm-seeding/dist/cli.js seed"
   },
   "author": "",
   "license": "ISC",
@@ -20,11 +29,14 @@
     "body-parser": "^1.20.2",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
+    "date-fns": "^2.30.0",
     "dotenv": "^16.0.3",
     "ejs": "^3.1.9",
     "express": "^4.18.2",
     "jsonwebtoken": "^9.0.0",
     "mysql2": "^3.2.3",
+    "nanoid": "^3.3.4",
+    "nodemailer": "^6.9.3",
     "reflect-metadata": "^0.1.13",
     "rimraf": "^5.0.0",
     "sweetalert": "^2.1.2",
@@ -32,5 +44,8 @@
     "tsc-watch": "^6.0.0",
     "typeorm": "^0.3.16",
     "typescript": "^5.0.4"
+  },
+  "devDependencies": {
+    "@types/faker": "^6.6.9"
   }
 }

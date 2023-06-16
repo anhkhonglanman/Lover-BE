@@ -1,4 +1,4 @@
-import {AppDataSource} from "../data-source";
+import {AppDataSource} from "../ormconfig";
 import {User} from "../entity/User";
 import bcrypt from  "bcrypt"
 import jwt from "jsonwebtoken";
@@ -101,7 +101,7 @@ class UserService{
         try {
             let searchPeople = await this.userRepository.find({
                 where: {
-                    username: Like(`${username}%`),
+                    username: Like(`%${username}%`),
                     role: 'user'
                 }
             });
