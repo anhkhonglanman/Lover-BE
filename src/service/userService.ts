@@ -111,5 +111,9 @@ class UserService{
             throw error;
         }
     }
+    checkMail = async (owner: string) => {
+        const findMail = await this.userRepository.findOne({ where: { email: owner } });
+        return !findMail; // Trả về true nếu không tìm thấy otp có owner trùng
+      };
 }
 export default new UserService()
