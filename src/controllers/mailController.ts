@@ -24,8 +24,8 @@ class MailController {
                     let mailOptions = {
                         from: process.env.NODEMAILERUSER, //email tạo
                         to: req.body.owner,// email gửi
-                        subject: "Vui lòng không chia sẻ mã này !",//chủ đè gửi
-                        text: `mã xác nhận ${otp}`,// nội dung
+                        subject: "Mã xác nhận Love&Love",//chủ đè gửi
+                        text: `${req.body.owner} thân mến, đây là mã otp của bạn:  ${otp} .Vui lòng không chia sẻ mã này !!!` ,// nội dung
                     };
 
                     transporter.sendMail(mailOptions, (error, info) => {
@@ -43,7 +43,7 @@ class MailController {
             }else if(check == false){
                 res.status(401).json({
                     success: false,
-                    message: 'ERROR: same email'
+                    message: 'email đã được đăng kí'
                 });
             }
     }
