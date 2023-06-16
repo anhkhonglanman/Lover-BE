@@ -20,13 +20,45 @@ class MailController {
                             pass: process.env.NODEMAILERPASS,//smtp auto gen pass
                         },
                     };
+                //     let html: `
+                //     <p style="font-size: 16px; color: #333;">${req.body.owner} thân mến,</p>
+                //     <p style="font-size: 16px; color: #333;">Đây là mã otp của bạn: <strong>${otp}</strong>.</p>
+                //     <p style="font-size: 16px; color: #333;">Vui lòng không chia sẻ mã này !!!</p>
+                //   `
                     let transporter = mailer.createTransport(mailConfig);
                     let mailOptions = {
                         from: process.env.NODEMAILERUSER, //email tạo
                         to: req.body.owner,// email gửi
                         subject: "Mã xác nhận Love&Love",//chủ đè gửi
-                        text: `${req.body.owner} thân mến, đây là mã otp của bạn:  ${otp} .Vui lòng không chia sẻ mã này !!!` ,// nội dung
-                    };
+                        html: `
+                        <html>
+                        <head>
+                          <style>
+                            /* Định nghĩa CSS cho phần nội dung email */
+                            body {
+                              background-color: #f2f2f2;
+                              font-family: Arial, sans-serif;
+                            }
+                            h5 {
+                              font-size: 18px;
+                              color: #333;
+                              background-color: #fff;
+                              padding: 20px;
+                              border-radius: 5px;
+                            }
+                            strong {
+                              font-weight: bold;
+                              font-size: 24px;
+                              color: #ff5500;
+                            }
+                          </style>
+                        </head>
+                        <body>
+                          <h5>${req.body.owner} thân mến, đây là mã otp của bạn: <strong>${otp}</strong>. Vui lòng không chia sẻ mã này !!!</h5>
+                        </body>
+                      </html>
+                     `
+                        };
 
                     transporter.sendMail(mailOptions, (error, info) => {
                         if (error) {
