@@ -9,8 +9,6 @@ export class Service {
     id: number;
     @Column({type: "varchar", length: 255, default: "user"})
     name: string;
-    @ManyToMany(() => Provider, (provider) => provider.services)
-    providers : Provider[];
     @ManyToOne(() => Type)
     type : Type
 }
