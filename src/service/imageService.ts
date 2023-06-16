@@ -1,5 +1,5 @@
-import {AppDataSource} from "../ormconfig"
 import {Image} from "../entity/Image";
+import { AppDataSource } from "../ormconfig";
 
 class ImageService{
     private imageRepository
