@@ -2,6 +2,9 @@ import {AppDataSource} from "../ormconfig";
 import {Provider} from "../entity/Provider";
 import { PageMeta, Paginate } from "../lib/paginate";
 import { User } from "../entity/User";
+import userService from "./userService";
+import { decode } from "jsonwebtoken";
+import { id } from "date-fns/locale";
 
 class ProviderService{
     private providerRepository
@@ -10,21 +13,23 @@ class ProviderService{
     }
 
     save = async (provider) => {
-        await this.providerRepository.save(provider)
+        provider.user = User
+        provider.status = 1
+        return await this.providerRepository.save(provider)
     }
     all = async () => {
         return await this.providerRepository.find({
             relations: {
                 images: true,
-                // services: true,
                 user: true,
                 status: true
             },
             select: {
                 user: {
+                    id:true,
                     firstname: true,
                     lastname: true,
-                    phoneNumber: true
+                    // phoneNumber: true
                 }
             }
         })

@@ -13,6 +13,8 @@ export const auth = (req, res, next) => {
                         success: false
                     })
                 } else {
+                    console.log(payload);
+                    
                     req.decode = payload;
                     return next();
 
