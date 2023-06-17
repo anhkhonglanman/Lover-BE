@@ -16,7 +16,7 @@ class UserService{
         await this.userRepository.save(user);
     }
     loginCheck = async (user) => {
-        let foundUser = await this.userRepository.findOne({
+        let userFind = await this.userRepository.findOne({
             relations: {
                 role: true
             },
@@ -51,7 +51,7 @@ class UserService{
         }
     }
     findOne = async (userId) => {
-        let userFind = await this.userRepository.find({
+        let userFind = await this.userRepository.findOne({
             relations: {
                 role: true
             },

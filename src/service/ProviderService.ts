@@ -1,8 +1,8 @@
 import { AppDataSource } from "../ormconfig";
 import { Provider } from "../entity/Provider";
 import { PageMeta, Paginate } from "../lib/paginate";
-import { User } from "../entity/User";
 import { ProviderListPaginated, ProviderPaginate } from "../lib/provider-paginate";
+import {id} from "date-fns/locale";
 
 class ProviderService {
     private providerRepository
@@ -12,6 +12,7 @@ class ProviderService {
     }
 // những function như thế này là thừa không giải quyết vấn đề gì cả
     save = async (provider) => {
+        provider.status = 1
         await this.providerRepository.save(provider)
     }
 
@@ -89,7 +90,6 @@ class ProviderService {
     update = async (id, update) => {
         await this.providerRepository.update({id: id}, update)
     }
-
 }
 
 export default new ProviderService()

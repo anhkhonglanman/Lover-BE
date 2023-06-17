@@ -1,35 +1,43 @@
-import jwt from 'jsonwebtoken'
-export const auth = (req, res, next) => {
-    let authorziation = req.headers.authorization
-    if (authorziation) {
-        let accessToken = req.headers.authorization.split(" ")[1];
-        if (accessToken) {
-            jwt.verify(accessToken, process.env.SECRET_OR_KEY, (err, payload) => {
-                if (err) {
-                    res.status(401).json({
-                        error: err.message,
-                        message: "phien dang nhap het han, vui long dang nhap lai",
-                        success: false
-                    })
-                } else {
-                    console.log(payload);
-                    
-                    req.decode = payload;
-                    return next();
 
-                }
-            })
-        } else {
+const hasPermissions = (req, res, next) => {
+    const role = req.user.role.id
+    switch (role) {
+        case "user":
+            if (role === 1) {
+                return next();
+            }
             res.status(401).json({
-                message: "authorization header invalid",
-                success: false
-            })
-        }
-    } else {
-        res.status(401).json({
-            message: "ban chua dang nhap",
-            success: false
-        })
+                message: "Bạn không có quyền user",
+                success: false,
+            });
+            break;
+        case "provider":
+            if (role === 3) {
+                return next();
+            }
+            res.status(401).json({
+                message: "Bạn không có quyền provider",
+                success: false,
+            });
+            break;
+        case "admin":
+            if (role === 2) {
+                return next();
+            }
+            res.status(401).json({
+                message: "Bạn không có quyền admin",
+                success: false,
+            });
+            break;
+        default:
+            res.status(401).json({
+                message: "Bạn không có quyền truy cập",
+                success: false,
+            });
+            break;
     }
+};
 
-}
+
+module.exports = hasPermissions
+
