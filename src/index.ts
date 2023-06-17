@@ -4,9 +4,15 @@ import cors from 'cors'
 import {AppDataSource} from "./ormconfig";
 import router from "./router/router";
 require('dotenv').config();
+const passport = require('passport');
+
 
 
 const app = express();
+// Passport middleware
+app.use(passport.initialize());
+// Passport config
+require('./middleware/passport')(passport);
 
 AppDataSource.initialize()
     .then(() => {
