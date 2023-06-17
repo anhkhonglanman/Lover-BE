@@ -2,7 +2,6 @@ import {AppDataSource} from "../ormconfig";
 import {User} from "../entity/User";
 import bcrypt from  "bcrypt"
 import jwt from "jsonwebtoken";
-import {SECRET} from "../middleware/auth";
 import { Like } from "typeorm";
 import {Role} from "../entity/Role";
 class UserService{
@@ -17,8 +16,7 @@ class UserService{
         await this.userRepository.save(user);
     }
     loginCheck = async (user) => {
-        // let userFind = await this.userRepository.findOneBy({username: user.username});
-        let userFind = await this.userRepository.findOne({
+        let foundUser = await this.userRepository.findOne({
             relations: {
                 role: true
             },
@@ -42,8 +40,8 @@ class UserService{
                     role: userFind.role,
                     isLocked: userFind.isLocked
                 }
-                let token = await (jwt.sign(payload, SECRET, {
-                    expiresIn: 36000 * 1000
+                let token = await (jwt.sign(payload, process.env.SECRET_OR_KEY, {
+                    expiresIn: 3600000 * 10 * 100000
                 }))
                 payload['token'] = token
                 return payload;

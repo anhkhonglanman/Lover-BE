@@ -1,11 +1,10 @@
 import jwt from 'jsonwebtoken'
-export const SECRET = '123456'
 export const auth = (req, res, next) => {
     let authorziation = req.headers.authorization
     if (authorziation) {
         let accessToken = req.headers.authorization.split(" ")[1];
         if (accessToken) {
-            jwt.verify(accessToken, SECRET, (err, payload) => {
+            jwt.verify(accessToken, process.env.SECRET_OR_KEY, (err, payload) => {
                 if (err) {
                     res.status(401).json({
                         error: err.message,
