@@ -14,7 +14,6 @@ opts.secretOrKey = process.env.SECRET_OR_KEY
 
 
 module.exports = (passport) => {
-
     passport.use(new JwtStrategy(opts, (jwt_payload, done) => {
         userService.findOne(jwt_payload.idUser).then((user) => {
             if (user) {
