@@ -1,6 +1,7 @@
 
 const hasPermissions = (req, res, next) => {
     const role = req.user.role.id
+    console.log(role)
     switch (role) {
         case "user":
             if (role === 1) {
@@ -30,6 +31,7 @@ const hasPermissions = (req, res, next) => {
             });
             break;
         default:
+            console.log(1)
             res.status(401).json({
                 message: "Bạn không có quyền truy cập",
                 success: false,
