@@ -21,7 +21,7 @@ class UserController {
                 if(checkOtp == false) {
                 let newUser = await userService.save(user);
                 res.status(201).json({
-                    message: 'dang ky thanh công',
+                    message: 'đăng ký thành công',
                     success: true,
                     data: newUser
                 });
@@ -35,14 +35,14 @@ class UserController {
             }
         }else if(checkMail == false){
             res.status(401).json({
-                message: 'email da duoc dang ky o tai khoan khac',
+                message: 'email đã được đăng ký ở tài khoản khác',
                 success: false,
          });
         }
         } catch (e) {
             console.log("error in signup:", e)
             res.status(401).json({
-                message: 'trung tai khoan',
+                message: 'trùng tài khoản',
                 success: false
             })
         }
