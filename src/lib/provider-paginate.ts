@@ -1,4 +1,5 @@
 import { Paginate } from "./paginate";
+import {User} from "../entity/User";
 
 export class ProviderPaginate {
     id: number;
@@ -33,7 +34,12 @@ export class ProviderPaginate {
 
     count: string;
     ready: string;
+    user: User;
+    firstname: string;
     constructor(entity:any){
+        this.firstname = entity.user?.firstname
+        console.log(entity)
+        // this.user = user;
        this.id= entity.id;
        this.name=entity.name;
         this.dob= entity.dob;

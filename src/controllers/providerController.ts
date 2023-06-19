@@ -5,10 +5,7 @@ import userService from "../service/userService";
 class ProviderController{
     save =  async (req: Request, res: Response) => {
         try {
-            // console.log("-----",req['decode'].id);
-            let provider = req.body;
-            // provider.user = req['decode'].id
-            let newProvider = await providerService.save(provider)
+            let newProvider = await providerService.save(req)
             res.status(200).json({
                 success: true,
                 data: newProvider

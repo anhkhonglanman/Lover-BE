@@ -11,8 +11,25 @@ class ProviderService {
         this.providerRepository = AppDataSource.getRepository(Provider)
     }
 // những function như thế này là thừa không giải quyết vấn đề gì cả
-    save = async (provider) => {
-        provider.status = 1
+    save = async (req) => {
+        const user = req['user'].id
+        const provider = await this.providerRepository.create({
+            name : req.body.name,
+            dob: req.body.dob,
+            sex: req.body.sex,
+            city: req.body.city,
+            country: req.body.country,
+            height: req.body.height,
+            weight: req.body.weight,
+            hobby: req.body.hobby,
+            desc: req.body.desc,
+            request: req.body.request,
+            linkFB: req.body.linkFB,
+            count: req.body.body,
+            images: req.body.images,
+            user: user,
+            status: 1
+        })
         await this.providerRepository.save(provider)
     }
 
@@ -21,7 +38,8 @@ class ProviderService {
         //LƯU Ý việc sử dụng này nếu ở 2 bảng nhiều nhiều hoặc một nhiều sẽ có thể khác tuỳ tình huống
         const sql = this.providerRepository
             .createQueryBuilder('a')
-            // .leftJoinAndSelect('a.user', 'r')
+            .leftJoinAndSelect('a.user', 'u')
+            .leftJoinAndSelect('a.status', 's')
             // .orderBy('a.createdAt', 'DESC')
             .take(q.take ? q.take : 10)
             .skip(q.skip ? q.skip : 1);
