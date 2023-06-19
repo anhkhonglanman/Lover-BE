@@ -19,7 +19,7 @@ export class User {
     phoneNumber: string;
     @Column({type: "varchar", length: 255, nullable: true})
     address: string;
-    @Column({type: "varchar", default:"https://as1.ftcdn.net/v2/jpg/03/46/83/96/1000_F_346839683_6nAPzbhpSkIpb8pmAwufkC7c5eD7wYws.jpg"})
+    @Column({type: "varchar", default:"https://files.playerduo.net/production/images/avatar1.png"})
     avatar: string;
     @Column({type: "varchar", length: 255, nullable: true})
     email: string;
@@ -32,4 +32,8 @@ export class User {
     // provider: Provider;
     @OneToMany(() => Booking, (booking) => booking.user)
     booking: Booking[];
+    @Column({
+        default: 0
+    })
+    isLocked: boolean;
 }

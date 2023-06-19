@@ -7,69 +7,70 @@ const mailer = require('nodemailer');
 class UserController {
     signup = async (req: Request, res: Response) => {
         try {
+            let checkMail = await userService.checkMail(req.body.email);
+            console.log(checkMail);
+            if(checkMail == true){
             let check = await userService.loginCheck({username:req.body.username})
-            if (!check) {
-                const otp = await otpService.getOtp(req.body.email);
-                if(otp) {
-                    //phần này nên cho nó vào 1 service riêng để tái sử dụng
-                    let mailConfig = {
-                        host: 'smtp.gmail.com',
-                        port: 465,
-                        secure: true, // true for 465, false for other ports
-                        auth: {
-                            user: process.env.NODEMAILERUSER,//smtp user
-                            pass: process.env.NODEMAILERPASS,//smtp auto gen pass
-                        },
-                    };
-                    let transporter = mailer.createTransport(mailConfig);
-                    let mailOptions = {
-                        from: process.env.NODEMAILERUSER, //email tạo
-                        to: 'quyen283hn@gmail.com',// email gửi
-                        subject: "Xác thực thông tin email người dùng",//chủ đè gửi
-                        text: `mã xác nhận ${otp}`,// nội dung
-                    };
-
-                    transporter.sendMail(mailOptions, (error, info) => {
-                        if (error) {
-                            return console.log(error.message); /// sử lý callbacks
-                        }
-                    });
+            if (check == "User is not exist") {
+                let user = {
+                    username: req.body.username,
+                    password: req.body.password,
+                    email: req.body.email
                 }
-
-                let newUser = await userService.save(req.body);
+               let checkOtp = await otpService.checkOtp(req.body.otpValue, req.body.email)
+                if(checkOtp == false) {
+                let newUser = await userService.save(user);
                 res.status(201).json({
+                    message: 'dang ky thanh công',
                     success: true,
                     data: newUser
                 });
+             }else if(checkOtp == true){
+                res.status(401).json({
+                    message: 'sai otp',
+                    success: false,
+             });
             }
-        }catch (e){
-            console.log("error in signup:",e )
-            res.status(400).json({
-                message: 'error in signup',
+
+            }
+        }else if(checkMail == false){
+            res.status(401).json({
+                message: 'email da duoc dang ky o tai khoan khac',
+                success: false,
+         });
+        }
+        } catch (e) {
+            console.log("error in signup:", e)
+            res.status(401).json({
+                message: 'trung tai khoan',
                 success: false
             })
         }
     }
-    login = async (req: Request, res: Response) =>{
+    login = async (req: Request, res: Response) => {
         try {
             let payload = await userService.loginCheck(req.body)
             console.log('login with user: ', payload)
-            if( payload === "User is not exist"){
+            if (payload === "User is not exist") {
                 res.status(401).json({
-                    payload
+                    data: payload
                 });
-            }else if (payload === "Password is wrong"){
+            } else if (payload === "Password is wrong") {
                 res.status(401).json({
-                    payload
+                    data: payload
                 });
-            }else{
-                res.status(200).json({
-                    payload
-                });
+            } else if (typeof payload !== "string" && payload?.isLocked) {
+                    res.status(401).json({
+                        mess: 'tài khoản đã bị khóa'
+                    });
+                } else {
+                    res.status(200).json({
+                        data: payload['token']
+                    });
             }
 
         } catch (e) {
-            console.log("error in login:",e )
+            console.log("error in login:", e)
             res.status(400).json({
                 message: 'error in login',
                 success: false
@@ -78,7 +79,8 @@ class UserController {
 
     }
     allUser = async (req: Request, res: Response) => {
-        let users = await userService.all();
+        const query = req.query
+        let users = await userService.all(query);
         res.status(200).json({
             data: users
         })
@@ -95,6 +97,23 @@ class UserController {
         let newRole = await userService.updateRole(userId)
         res.status(200).json(newRole)
     }
+
+    lockUser = async (req: Request, res: Response) => {
+        let userId = req.params.id
+        let isLock = await userService.lock(userId)
+        res.status(200).json({
+            message: 'locked',
+            data: isLock
+        })
+    }
+    openUser = async (req: Request, res: Response) => {
+        let userId = req.params.id
+        let isOpen = await userService.open(userId)
+        res.status(200).json({
+            message: 'opened',
+            data: isOpen
+        })
+    }
     editUser = async (req: Request, res: Response) => {
         let user = req.body;
         let id = req.params.id;
@@ -108,16 +127,17 @@ class UserController {
         res.status(200).json('delete user success')
     }
     searchUsername = async (req: Request, res: Response) => {
-        try{
-        let username = req.params.name;
-        let user = await userService.adminSearchUsername(username);
-        res.status(200).json(user);
-    }catch(e){
-        console.log("error in searchUsername:",e )
-        res.status(400).json({
-            message: 'error in searchUsername',
-            success: false
-        })
-    }}
+        try {
+            let username = req.params.name;
+            let user = await userService.adminSearchUsername(username);
+            res.status(200).json(user);
+        } catch (e) {
+            console.log("error in searchUsername:", e)
+            res.status(400).json({
+                message: 'error in searchUsername',
+                success: false
+            })
+        }
+    }
 }
 export default new UserController()

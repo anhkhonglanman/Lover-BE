@@ -1,33 +1,37 @@
-import jwt from 'jsonwebtoken'
-export const auth = (req, res, next) => {
-    let authorziation = req.headers.authorization
-    if (authorziation) {
-        let accessToken = req.headers.authorization.split(" ")[1];
-        if (accessToken) {
-            jwt.verify(accessToken, process.env.SECRET_OR_KEY, (err, payload) => {
-                if (err) {
-                    res.status(401).json({
-                        error: err.message,
-                        message: "phien dang nhap het han, vui long dang nhap lai",
-                        success: false
-                    })
-                } else {
-                    req.decode = payload;
-                    return next();
-
-                }
-            })
-        } else {
-            res.status(401).json({
-                message: "authorization header invalid",
-                success: false
-            })
-        }
-    } else {
-        res.status(401).json({
-            message: "ban chua dang nhap",
-            success: false
-        })
-    }
-
-}
+//
+// const hasPermissionsProvider = (req, res, next) => {
+//     const role = req.user?.role?.id
+//     console.log("role cua user :",role)
+//     if (role === 3) {
+//         return res.status(201).json({
+//             message: "Ban khong co quyen truy cap"
+//         })
+//     }
+// };
+//
+// module.exports = hasPermissionsProvider
+// const hasPermissionsUser = (req, res, next) => {
+//     const role = req.user?.role?.id
+//     console.log(role)
+//     if (role !== 1) {
+//         return res.status(201).json({
+//             message: "Ban khong co quyen truy cap"
+//         })
+//     }
+// };
+//
+//
+// module.exports = hasPermissionsUser
+// const hasPermissionsAdmin = (req, res, next) => {
+//     const role = req.user?.role?.id
+//     if (role !== 2) {
+//         return res.status(403).json({
+//             message: "bạn không có quyền truy cập"
+//         })
+//     }
+//     next()
+// };
+//
+//
+// module.exports = hasPermissionsAdmin
+//

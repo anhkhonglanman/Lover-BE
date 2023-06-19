@@ -37,6 +37,7 @@ lerna-debug.log*
 !.vscode/launch.json
 !.vscode/extensions.json
 
+.env
 
 .vscode
 *.pem
@@ -44,3 +45,4 @@ lerna-debug.log*
 /private
 
 package.json
+

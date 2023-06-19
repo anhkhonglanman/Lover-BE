@@ -5,6 +5,8 @@ import {AppDataSource} from "./ormconfig";
 import router from "./router/router";
 require('dotenv').config();
 const passport = require('passport');
+const signale = require('signale');
+
 
 
 
@@ -16,18 +18,34 @@ require('./middleware/passport')(passport);
 
 AppDataSource.initialize()
     .then(() => {
-        console.log("Data Source has been initialized!");
+        signale.success("Data Source has been initialized!");
     })
     .catch((err) => {
-        console.error("Error during Data Source initialization", err);
+        signale.fatal("Error during Data Source initialization", err);
     });
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
-
-
 app.use(cors());
 app.use("", router)
-app.listen(process.env.PORT || 8181, () => {
-    console.log(`Server is running on  port ${process.env.PORT}`)
+const http = require('http').Server(app);
+
+const io = require('socket.io')(http, {
+    pingTimeout: 60000,
+});
+io.on('connection', (socket) => {
+    signale.info(
+        `A new client connected! Total: ${io.sockets.server.engine.clientsCount} clients`
+    );
+
+    socket.on('disconnect', () => {
+        signale.info(
+            `A new client disconnect! Total: ${io.sockets.server.engine.clientsCount} clients`
+        );
+    });
+});
+
+
+http.listen(process.env.PORT || 8181, () => {
+    signale.success(`Server is running on  port ${process.env.PORT}`)
 });
