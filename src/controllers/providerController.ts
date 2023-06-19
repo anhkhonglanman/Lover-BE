@@ -5,7 +5,7 @@ import userService from "../service/userService";
 class ProviderController{
     save =  async (req: Request, res: Response) => {
         try {
-            let newProvider = await providerService.save(req.body)
+            let newProvider = await providerService.save(req)
             res.status(200).json({
                 success: true,
                 data: newProvider
@@ -19,8 +19,19 @@ class ProviderController{
         }
     }
     all =  async (req: Request, res: Response) => {
-        let allProvider = await providerService.all()
-        res.status(200).json(allProvider)
+        try{
+            console.log(1)
+            const query = req.query
+            let allProvider = await providerService.all(query)
+            res.status(200).json(allProvider)
+        }
+        catch (e) {
+            console.log('Lỗi hệ thống', e)
+            res.status(500).json({
+                message: 'Có lỗi hệ thống cmnr'
+            })
+        }
+
     }
     showOne = async (req: Request, res: Response) => {
         let id = req.params.id
@@ -36,10 +47,6 @@ class ProviderController{
             success: true,
             data: newProvider
         })
-    }
-    findAll =  async (req: Request, res: Response) => {
-        let allProvider = await providerService.findAll(req)
-        res.status(200).json(allProvider)
     }
 }
 export default new ProviderController()

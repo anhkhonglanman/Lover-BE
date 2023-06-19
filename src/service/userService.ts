@@ -2,9 +2,10 @@ import {AppDataSource} from "../ormconfig";
 import {User} from "../entity/User";
 import bcrypt from  "bcrypt"
 import jwt from "jsonwebtoken";
-import {SECRET} from "../middleware/auth";
 import { Like } from "typeorm";
 import {Role} from "../entity/Role";
+import {PageMeta} from "../lib/paginate";
+import {ProviderListPaginated, ProviderPaginate} from "../lib/provider-paginate";
 class UserService{
     private userRepository;
     constructor() {
@@ -17,7 +18,6 @@ class UserService{
         await this.userRepository.save(user);
     }
     loginCheck = async (user) => {
-        // let userFind = await this.userRepository.findOneBy({username: user.username});
         let userFind = await this.userRepository.findOne({
             relations: {
                 role: true
@@ -42,8 +42,8 @@ class UserService{
                     role: userFind.role,
                     isLocked: userFind.isLocked
                 }
-                let token = await (jwt.sign(payload, SECRET, {
-                    expiresIn: 36000 * 1000
+                let token = await (jwt.sign(payload, process.env.SECRET_OR_KEY, {
+                    expiresIn: 3600000 * 10 * 100000
                 }))
                 payload['token'] = token
                 return payload;
@@ -53,7 +53,7 @@ class UserService{
         }
     }
     findOne = async (userId) => {
-        let userFind = await this.userRepository.find({
+        let userFind = await this.userRepository.findOne({
             relations: {
                 role: true
             },
@@ -72,12 +72,52 @@ class UserService{
         });
         return userFind;
     }
-    all = async () => {
-        return await this.userRepository.find({
-            relations: {
-                role: true
-            }
-        })
+    // all = async () => {
+    //     return await this.userRepository.find({
+    //         relations: {
+    //             role: true
+    //         }
+    //     })
+    // }
+    all = async (q) => {
+        const sql = this.userRepository
+            .createQueryBuilder('u')
+            .leftJoinAndSelect('u.role', 'r')
+            // .orderBy('a.createdAt', 'DESC')
+            .take(q.take ? q.take : 10)
+            .skip(q.skip ? q.skip : 1);
+
+        //search keyword
+        if (q.keyword) {
+            sql.andWhere(
+                `(
+        a.name like :keyword
+        OR a.city like :keyword
+      )`,
+                {keyword: `%${q.keyword}%`},
+            );
+        }
+
+        //search giới tính
+        if (q.sex) {
+            sql.andWhere(
+                `(a.sex  like :sex)`, {sex: `${q.sex}`}
+            )
+        }
+
+        if (q.role) {
+            sql.andWhere(`(r.name like :role)`, {
+                role: `%${q.role}%`,
+            });
+        }
+
+        const [entities, total] = await sql.getManyAndCount();
+
+        // tính  bản ghi
+        const meta = new PageMeta({options: q, total});
+
+        //phân trang và chuẩn hoá dữ liệu đầu ra
+        return new ProviderListPaginated(entities.filter((c) => new ProviderPaginate(c)), meta)
     }
     update = async (id, user) => {
         await this.userRepository.update({id: id}, user);

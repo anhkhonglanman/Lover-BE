@@ -1,8 +1,15 @@
-import {Column, Entity, JoinColumn, ManyToMany, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn} from "typeorm";
+import {
+    Column,
+    Entity,
+    JoinColumn,
+    ManyToOne,
+    OneToMany,
+    OneToOne,
+    PrimaryGeneratedColumn
+} from "typeorm";
 import {User} from "./User";
 import {Image} from "./Image";
 import {Booking} from "./Booking";
-import {Service} from "./Service";
 import {Status} from "./Status";
 // import {Booking} from "./Booking";
 @Entity()
@@ -62,9 +69,6 @@ export class Provider {
     booking: Booking[];
     @OneToMany(() => Image, (image) => image.provider)
     images : Image[];
-    // @ManyToMany(() => Service)
-    // @JoinTable()
-    // services: Service[]
     @ManyToOne(() => Status)
     status : Status;
     @OneToOne(() => User)
