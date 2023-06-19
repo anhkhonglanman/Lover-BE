@@ -1,4 +1,4 @@
-import {AppDataSource} from "../data-source";
+import {AppDataSource} from "../ormconfig";
 import {Type} from "../entity/Type";
 
 class TypeService {
