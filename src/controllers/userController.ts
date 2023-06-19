@@ -1,22 +1,48 @@
 import userService from "../service/userService";
+require('dotenv').config();
 import {Request, Response} from "express";
+import otpService from "../service/OtpService";
+const mailer = require('nodemailer');
 
 class UserController {
     signup = async (req: Request, res: Response) => {
         try {
-            let check = await userService.checkUserSignup(req.body)
-            if (!check) {
-                let newUser = await userService.save(req.body);
+            let checkMail = await userService.checkMail(req.body.email);
+            console.log(checkMail);
+            if(checkMail == true){
+            let check = await userService.loginCheck({username:req.body.username})
+            if (check == "User is not exist") {
+                let user = {
+                    username: req.body.username,
+                    password: req.body.password,
+                    email: req.body.email
+                }
+               let checkOtp = await otpService.checkOtp(req.body.otpValue, req.body.email)
+                if(checkOtp == false) {
+                let newUser = await userService.save(user);
                 res.status(201).json({
+                    message: 'dang ky thanh công',
                     success: true,
                     data: newUser
                 });
-            } else {
-                res.status(201).json('tai khoan da ton tai');
+             }else if(checkOtp == true){
+                res.status(401).json({
+                    message: 'sai otp',
+                    success: false,
+             });
             }
+
+            }
+        }else if(checkMail == false){
+            res.status(401).json({
+                message: 'email da duoc dang ky o tai khoan khac',
+                success: false,
+         });
+        }
         } catch (e) {
-            res.status(400).json({
-                message: 'error in signup',
+            console.log("error in signup:", e)
+            res.status(401).json({
+                message: 'trung tai khoan',
                 success: false
             })
         }
@@ -24,6 +50,7 @@ class UserController {
     login = async (req: Request, res: Response) => {
         try {
             let payload = await userService.loginCheck(req.body)
+            console.log('login with user: ', payload)
             if (payload === "User is not exist") {
                 res.status(401).json({
                     data: payload
@@ -32,8 +59,7 @@ class UserController {
                 res.status(401).json({
                     data: payload
                 });
-            } else
-                if (typeof payload !== "string" && payload?.isLocked) {
+            } else if (typeof payload !== "string" && payload?.isLocked) {
                     res.status(401).json({
                         mess: 'tài khoản đã bị khóa'
                     });
@@ -44,6 +70,7 @@ class UserController {
             }
 
         } catch (e) {
+            console.log("error in login:", e)
             res.status(400).json({
                 message: 'error in login',
                 success: false
@@ -52,7 +79,8 @@ class UserController {
 
     }
     allUser = async (req: Request, res: Response) => {
-        let users = await userService.all();
+        const query = req.query
+        let users = await userService.all(query);
         res.status(200).json({
             data: users
         })
@@ -104,7 +132,7 @@ class UserController {
             let user = await userService.adminSearchUsername(username);
             res.status(200).json(user);
         } catch (e) {
-
+            console.log("error in searchUsername:", e)
             res.status(400).json({
                 message: 'error in searchUsername',
                 success: false
@@ -112,5 +140,4 @@ class UserController {
         }
     }
 }
-
 export default new UserController()

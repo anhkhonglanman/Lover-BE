@@ -1,4 +1,4 @@
-import {AppDataSource} from "../data-source";
+import {AppDataSource} from "../ormconfig"
 import {Image} from "../entity/Image";
 
 class ImageService{

@@ -5,12 +5,13 @@ import userService from "../service/userService";
 class ProviderController{
     save =  async (req: Request, res: Response) => {
         try {
-            let newProvider = await providerService.save(req.body)
+            let newProvider = await providerService.save(req)
             res.status(200).json({
                 success: true,
                 data: newProvider
             })
         } catch (e) {
+            console.log('tạo người CCDV không thành công', e)
             res.status(400).json({
                 success: false,
                 message: 'tao provider ko thanh cong'
@@ -18,25 +19,22 @@ class ProviderController{
         }
     }
     all =  async (req: Request, res: Response) => {
-        let allProvider = await providerService.all()
-        res.status(200).json(allProvider)
+        try{
+            const query = req.query
+            let allProvider = await providerService.all(query)
+            res.status(200).json(allProvider)
+        }
+        catch (e) {
+            res.status(500).json({
+                message: 'Có lỗi hệ thống cmnr'
+            })
+        }
+
     }
     showOne = async (req: Request, res: Response) => {
         let id = req.params.id
         let oneProvider = await providerService.one(id)
         res.status(200).json(oneProvider)
-    }
-    searchByTypeProvider =  async (req: Request, res: Response) => {
-        let id= req.params.id
-        let typeProvider = await providerService.searchByType(id)
-        res.status(200).json(typeProvider)
-    }
-
-    findByNameProvider = async (req: Request, res: Response) => {
-        let name = req.query.name;
-        console.log(name)
-        let response = await providerService.findByNameProviders(name);
-        res.status(200).json(response)
     }
 
     editProvider = async (req: Request, res: Response) => {

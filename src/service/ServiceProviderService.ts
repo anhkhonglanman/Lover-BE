@@ -1,5 +1,5 @@
 import ServiceProviderRouter from "../router/serviceProviderRouter";
-import {AppDataSource} from "../data-source";
+import {AppDataSource} from "../ormconfig"
 import {Service_provider} from "../entity/Service_provider";
 
 class ServiceProviderService {
