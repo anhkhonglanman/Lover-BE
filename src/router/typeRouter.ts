@@ -1,7 +1,7 @@
 import {Router} from "express";
 import TypeController from "../controllers/typeController";
 
-const TypeRouter = Router()
-TypeRouter.get('/', TypeController.getType);
+const typeRouter = Router()
+typeRouter.get('/', TypeController.getType);
 
-export default TypeRouter;
+export default typeRouter;
