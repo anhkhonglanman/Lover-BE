@@ -1,11 +1,12 @@
 require('dotenv').config();
 import {Request, Response} from "express";
 import otpService from "../service/OtpService";
+import userService from "../service/userService";
 const mailer = require('nodemailer');
 
 class MailController {
     sendOtp = async (req: Request, res: Response) => {
-        let check = await otpService.checkMail(req.body.owner)
+        let check = await userService.checkMail(req.body.owner)
         if(check == true){
         const otp = await otpService.getOtp(req.body.owner);
                 if(otp) {

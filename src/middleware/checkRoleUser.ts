@@ -1,10 +1,12 @@
-export const CheckRoleUser = (req, res, next) => {
-    if (req.decode.role === 1){
-        return  next()
-    } else {
-        res.status(401).json({
-            message: "ban khong co quyen user",
-            success: false
+const hasPermissionsUser = (req, res, next) => {
+    const role = req.user?.role?.id
+    console.log(role)
+    if (role !== 1) {
+        return res.status(201).json({
+            message: "Ban khong co quyen truy cap"
         })
     }
-}
+};
+
+
+module.exports = hasPermissionsUser

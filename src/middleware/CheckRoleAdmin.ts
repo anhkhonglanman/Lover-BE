@@ -1,10 +1,12 @@
-export const CheckRoleAdmin = (req, res, next) => {
-    if (req.decode.role === 2){
-        return  next()
-    } else {
-        res.status(401).json({
-            message: "ban khong co quyen admin",
-            success: false
+const hasPermissionsAdmin = (req, res, next) => {
+    const role = req.user?.role?.id
+    if (role !== 2) {
+        return res.status(403).json({
+            message: "bạn không có quyền truy cập"
         })
     }
-}
+    next()
+};
+
+
+module.exports = hasPermissionsAdmin
