@@ -1,3 +1,4 @@
+import UserService from "../service/userService";
 import userService from "../service/userService";
 
 const JwtStrategy = require('passport-jwt').Strategy;

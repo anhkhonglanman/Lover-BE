@@ -42,6 +42,8 @@
     "reflect-metadata": "^0.1.13",
     "rimraf": "^5.0.0",
     "signale": "^1.4.0",
+    "socket.io": "^4.6.2",
+    "socket.io-client": "^4.6.2",
     "sweetalert": "^2.1.2",
     "tsc": "^2.0.4",
     "tsc-watch": "^6.0.0",
