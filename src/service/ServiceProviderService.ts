@@ -4,6 +4,7 @@ import {Service_provider} from "../entity/Service_provider";
 
 class ServiceProviderService {
     private serviceProviderRepository
+
     constructor() {
         this.serviceProviderRepository = AppDataSource.getRepository(Service_provider)
     }
@@ -11,11 +12,11 @@ class ServiceProviderService {
     all = async (typeId) => {
         return await this.serviceProviderRepository.find({
             where: {
-                service : {
-                    type : {
-                        id: typeId
-                    }
-                }
+                service: { id: typeId }
+            },
+            relations: {
+                service: true,
+                provider: true
             }
         })
     }

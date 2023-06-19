@@ -11,7 +11,6 @@ class ProviderController{
                 data: newProvider
             })
         } catch (e) {
-            console.log('tạo người CCDV không thành công', e)
             res.status(400).json({
                 success: false,
                 message: 'tao provider ko thanh cong'
@@ -32,6 +31,14 @@ class ProviderController{
         let typeProvider = await providerService.searchByType(id)
         res.status(200).json(typeProvider)
     }
+
+    findByNameProvider = async (req: Request, res: Response) => {
+        let name = req.query.name;
+        console.log(name)
+        let response = await providerService.findByNameProviders(name);
+        res.status(200).json(response)
+    }
+
     editProvider = async (req: Request, res: Response) => {
         let provider = req.body;
         let id = req.params.id;

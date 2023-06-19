@@ -1,5 +1,6 @@
 import {AppDataSource} from "../data-source";
 import {Provider} from "../entity/Provider";
+import {Like} from "typeorm";
 
 class ProviderService{
     private providerRepository
@@ -33,6 +34,7 @@ class ProviderService{
             where : {id: id},
             relations: {
                 images: true,
+                user: true
                 // services: true
             }
         })
@@ -57,6 +59,20 @@ class ProviderService{
     }
     update = async (id, update) => {
         await this.providerRepository.update({id: id}, update)
+    }
+
+    findByNameProviders = async (name) => {
+        const providers = await this.providerRepository.find({
+            where: {
+                name: Like(`%${name}%`),
+            }
+        });
+
+        if (providers.length === 0) {
+            return "providers is not exist";
+        }
+
+        return providers;
     }
 }
 export default new ProviderService()
