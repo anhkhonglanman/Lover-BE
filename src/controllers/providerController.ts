@@ -20,13 +20,11 @@ class ProviderController{
     }
     all =  async (req: Request, res: Response) => {
         try{
-            console.log(1)
             const query = req.query
             let allProvider = await providerService.all(query)
             res.status(200).json(allProvider)
         }
         catch (e) {
-            console.log('Lỗi hệ thống', e)
             res.status(500).json({
                 message: 'Có lỗi hệ thống cmnr'
             })
@@ -38,7 +36,7 @@ class ProviderController{
         let oneProvider = await providerService.one(id)
         res.status(200).json(oneProvider)
     }
- 
+
     editProvider = async (req: Request, res: Response) => {
         let provider = req.body;
         let id = req.params.id;

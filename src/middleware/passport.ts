@@ -1,3 +1,4 @@
+
 import userService from "../service/userService";
 
 const JwtStrategy = require('passport-jwt').Strategy;
@@ -32,4 +33,3 @@ module.exports = (passport) => {
         done(null, user);
     });
 }
-

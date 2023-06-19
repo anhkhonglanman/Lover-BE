@@ -11,10 +11,8 @@ class ServiceProviderController {
     find = async (req: Request, res: Response) => {
         let typeId = req.params.id
         let services = await ServiceProviderService.all(typeId)
-        res.status(201).json({
-            success: true,
-            data: services
-        })
+        let providers = services.map(service => service.provider)
+        res.status(201).json(providers)
     }
 }
 export default new ServiceProviderController()

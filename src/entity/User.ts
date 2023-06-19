@@ -52,7 +52,4 @@ export class User {
         default: 0
     })
     isLocked: boolean;
-    sentMessages: any;
-    receivedMessages: any;
-    static findOne: any;
 }
