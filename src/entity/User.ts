@@ -49,7 +49,7 @@ export class User {
     booking: Booking[];
 
     @Column({
-        default: 0
+        default: false
     })
     isLocked: boolean;
 }
