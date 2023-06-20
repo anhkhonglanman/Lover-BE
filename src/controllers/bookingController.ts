@@ -1,7 +1,6 @@
 import {Request, Response} from "express";
 import bookingService from "../service/bookingService";
 import providerService from "../service/ProviderService";
-import {id} from "date-fns/locale";
 
 class BookingController{
 

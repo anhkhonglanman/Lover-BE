@@ -1,9 +1,6 @@
 import {AppDataSource} from "../ormconfig";
 import {Booking} from "../entity/Booking";
-import providerService from "./ProviderService";
-import {sync} from "rimraf";
 import {PageMeta} from "../lib/paginate";
-import {ProviderListPaginated, ProviderPaginate} from "../lib/provider-paginate";
 import {BookingListPaginated, BookingPaginate} from "../lib/booking-paginate";
 
 class BookingService {
@@ -34,13 +31,10 @@ class BookingService {
             .createQueryBuilder('b')
             // .leftJoinAndSelect('b.user', 'u')
             .leftJoinAndSelect('b.providers', 'p')
-            // .leftJoinAndSelect('b.status', 's')
             .orderBy('b.startTime', 'DESC')
             .take(q.take ? q.take : 12)
             .skip(q.skip ? q.skip : 0);
 
-
-        //search keyword
         if (q.keyword) {
             sql.andWhere(
                 `(
@@ -51,10 +45,8 @@ class BookingService {
         }
         const [entities, total] = await sql.getManyAndCount();
 
-        // tính  bản ghi
         const meta = new PageMeta({options: q, total});
 
-        //phân trang và chuẩn hoá dữ liệu đầu ra
         return new BookingListPaginated(entities.filter((c) => new BookingPaginate(c)), meta)
 
     }

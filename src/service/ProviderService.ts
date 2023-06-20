@@ -34,19 +34,16 @@ class ProviderService {
     }
 
     all = async (q) => {
-        //ở đây có thêm các câu query join với các bảng
-        //LƯU Ý việc sử dụng này nếu ở 2 bảng nhiều nhiều hoặc một nhiều sẽ có thể khác tuỳ tình huống
+
         const sql = this.providerRepository
             .createQueryBuilder('p')
             .leftJoinAndSelect('p.user', 'u')
             .leftJoinAndSelect('p.status', 's')
-            // .orderBy('p.createdAt', 'DESC')
+            .orderBy('p.createdAt', 'DESC')
             .take(q.take ? q.take : 10)
             .skip(q.skip ? q.skip : 0);
 
 
-
-        //search keyword
         if (q.keyword) {
             sql.andWhere(
                 `(
@@ -57,7 +54,6 @@ class ProviderService {
             );
         }
 
-        //search giới tính
         if (q.sex) {
             sql.andWhere(
                 `(p.sex  like :sex)`, {sex: `${q.sex}`}
@@ -76,10 +72,8 @@ class ProviderService {
 
         const [entities, total] = await sql.getManyAndCount();
 
-        // tính  bản ghi
         const meta = new PageMeta({options: q, total});
 
-        //phân trang và chuẩn hoá dữ liệu đầu ra
         return new ProviderListPaginated(entities.filter((c) => new ProviderPaginate(c)), meta)
     }
 
