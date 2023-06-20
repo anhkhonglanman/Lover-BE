@@ -35,5 +35,5 @@ export class User {
     @Column({
         default: 0
     })
-    isLocked: boolean;
+    isLocked: number;
 }

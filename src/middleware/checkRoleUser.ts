@@ -6,6 +6,7 @@ const hasPermissionsUser = (req, res, next) => {
             message: "Ban khong co quyen truy cap"
         })
     }
+    next()
 };
 
 
