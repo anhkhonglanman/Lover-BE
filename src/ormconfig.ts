@@ -1,5 +1,3 @@
-// import "reflect-metadata"
-
 import {DataSource} from "typeorm";
 import * as dotenv from "dotenv";
 dotenv.config()
@@ -15,5 +13,3 @@ export const AppDataSource = new DataSource({
     entities: ["dist/src/entity/*{.js,.ts}"], // typeorm loads entities from this directory
     migrations: ['src/migrations/**/*{.ts,.js}'],
 })
-
-
