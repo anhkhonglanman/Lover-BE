@@ -24,12 +24,13 @@ export class User {
     @Column({type: "varchar", length: 255, nullable: true})
     email: string;
     @Column({type: "varchar", length: 255, nullable: true})
-    identityCard: string;
+    numberCard: string;
+    @Column({type: "varchar", length: 255, nullable: true})
+    beforeImageCard: string;
+    @Column({type: "varchar", length: 255, nullable: true})
+    afterImageCard: string;
     @ManyToOne(() => Role, (role) => role.users)
     role: Role;
-    // @OneToOne(() => Provider)
-    // @JoinColumn()
-    // provider: Provider;
     @OneToMany(() => Booking, (booking) => booking.user)
     booking: Booking[];
     @Column({
