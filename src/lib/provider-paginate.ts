@@ -43,7 +43,6 @@ export class ProviderPaginate {
        this.id= entity.id;
        this.name=entity.name;
         this.dob= entity.dob;
-
         this.sex=entity.sex;
 
         // city: string;

@@ -49,8 +49,12 @@ export class User {
     @Column({
         default: false
     })
+<<<<<<< HEAD
     isLocked: boolean;
   static findOne: any;
   sentMessages: any;
   receivedMessages: any;
+=======
+    isLocked: number;
+>>>>>>> b8ee7ed1cf33ac9e244e719693431edcd55ef817
 }

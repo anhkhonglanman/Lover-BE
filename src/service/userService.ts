@@ -111,6 +111,7 @@ class UserService{
             });
         }
 
+
         const [entities, total] = await sql.getManyAndCount();
 
         // tính  bản ghi
@@ -126,15 +127,28 @@ class UserService{
         let providerRole = await AppDataSource.getRepository(Role).findOneBy({id: 3})
         await this.userRepository.update({id: id}, {role: providerRole});
     }
+<<<<<<< HEAD
     lock =  async (id) => {
         let isLock = await this.userRepository.findOneBy({isLocked: true})
         await this.userRepository.update({id: id}, {isLocked: isLock})
+=======
+    lock = async (id) => {
+        await this.userRepository.update({ id }, { isLocked: 1 });
+        return { id, isLocked: 1 };
+>>>>>>> b8ee7ed1cf33ac9e244e719693431edcd55ef817
     }
 
 
     open =  async (id) => {
+<<<<<<< HEAD
         let isOpen = await this.userRepository.findOneBy({isLocked: false})
         await this.userRepository.update({id: id}, {isLocked: isOpen})
+=======
+        // let isOpen = await this.userRepository.findOneBy({isLocked: 0})
+        // await this.userRepository.update({id: id}, {isLocked: isOpen})
+        await this.userRepository.update({id}, {isLocked: 0});
+        return {id, isLocked: 0}
+>>>>>>> b8ee7ed1cf33ac9e244e719693431edcd55ef817
     }
     delete = async (id) => {
         await this.userRepository.delete({id: id})
