@@ -14,5 +14,13 @@ providerRouter.put('/:id',passport.authenticate('jwt', { session: false, failWit
     (req, res, next) => {
         hasPermissionsProvider(req, res, next, );
     },providerController.editProvider);
+providerRouter.put('/accept/:id',passport.authenticate('jwt', { session: false, failWithError: true }),
+    (req, res, next) => {
+        hasPermissionsProvider(req, res, next, );
+    },providerController.acceptUser);
+providerRouter.put('/reject/:id',passport.authenticate('jwt', { session: false, failWithError: true }),
+    (req, res, next) => {
+        hasPermissionsProvider(req, res, next, );
+    },providerController.rejectUser);
 
 export default providerRouter

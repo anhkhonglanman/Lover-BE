@@ -8,12 +8,15 @@ export class BookingPaginate{
     address: string;
     hour: string;
     startTime: Date;
+    status: string;
     cost: string;
     user: User;
     providers: Provider
 
     constructor(entity: any) {
+        console.log(entity)
         this.startTime = entity.startTime
+        this.status = entity.status
     }
 }
 

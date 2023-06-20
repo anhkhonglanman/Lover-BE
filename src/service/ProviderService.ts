@@ -3,6 +3,7 @@ import { Provider } from "../entity/Provider";
 import { PageMeta, Paginate } from "../lib/paginate";
 import { ProviderListPaginated, ProviderPaginate } from "../lib/provider-paginate";
 import {id} from "date-fns/locale";
+import {Booking} from "../entity/Booking";
 
 class ProviderService {
     private providerRepository
@@ -40,7 +41,7 @@ class ProviderService {
             .leftJoinAndSelect('p.user', 'u')
             .leftJoinAndSelect('p.status', 's')
             .orderBy('p.createdAt', 'DESC')
-            .take(q.take ? q.take : 10)
+            .take(q.take ? q.take : 12)
             .skip(q.skip ? q.skip : 0);
 
 
@@ -106,6 +107,14 @@ class ProviderService {
             }
         })
         return (provider);
+    }
+    accept = async (id) => {
+        return await AppDataSource.getRepository(Booking)
+            .update({id : id}, {status: "accept"})
+    }
+    reject = async (id) => {
+        return await AppDataSource.getRepository(Booking)
+            .update({id : id}, {status: "reject"})
     }
     update = async (id, update) => {
         await this.providerRepository.update({id: id}, update)

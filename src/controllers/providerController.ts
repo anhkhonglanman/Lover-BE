@@ -2,8 +2,8 @@ import {Request, Response} from "express";
 import providerService from "../service/ProviderService";
 import userService from "../service/userService";
 
-class ProviderController{
-    save =  async (req: Request, res: Response) => {
+class ProviderController {
+    save = async (req: Request, res: Response) => {
         try {
             let newProvider = await providerService.save(req)
             res.status(200).json({
@@ -18,14 +18,13 @@ class ProviderController{
             })
         }
     }
-    all =  async (req: Request, res: Response) => {
-        try{
+    all = async (req: Request, res: Response) => {
+        try {
             console.log(1)
             const query = req.query
             let allProvider = await providerService.all(query)
             res.status(200).json(allProvider)
-        }
-        catch (e) {
+        } catch (e) {
             console.log('Lỗi hệ thống', e)
             res.status(500).json({
                 message: 'Có lỗi hệ thống cmnr'
@@ -38,7 +37,22 @@ class ProviderController{
         let oneProvider = await providerService.one(id)
         res.status(200).json(oneProvider)
     }
- 
+    acceptUser = async (req: Request, res: Response) => {
+        let id  = req.params.id
+        const data = await providerService.accept(id)
+        res.status(200).json({
+            message: true,
+            data: data
+        })
+    }
+    rejectUser = async (req: Request, res: Response) => {
+        let id  = req.params.id
+        const data = await providerService.reject(id)
+        res.status(200).json({
+            message: true,
+            data: data
+        })
+    }
     editProvider = async (req: Request, res: Response) => {
         let provider = req.body;
         let id = req.params.id;
@@ -49,4 +63,5 @@ class ProviderController{
         })
     }
 }
+
 export default new ProviderController()

@@ -43,6 +43,12 @@ class BookingService {
                 {keyword: `%${q.keyword}%`},
             );
         }
+
+        if (q.status) {
+            sql.andWhere(
+                `(q.status like: status)`, {status: `${q.status}`}
+            )
+        }
         const [entities, total] = await sql.getManyAndCount();
 
         const meta = new PageMeta({options: q, total});

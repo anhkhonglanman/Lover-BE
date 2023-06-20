@@ -14,6 +14,8 @@ export class Booking {
     startTime: Date;
     @Column({type: "varchar", length: 255})
     cost: string;
+    @Column({type: "enum", enum: ["pending", "accept", "reject"], default: "pending"})
+    status: string;
     @ManyToOne(() => User, (user) => user.booking)
     user: User;
     @ManyToOne(() => Provider, (provider) => provider.booking)

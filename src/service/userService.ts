@@ -85,7 +85,7 @@ class UserService{
             .leftJoinAndSelect('u.role', 'r')
             // .orderBy('a.createdAt', 'DESC')
             .take(q.take ? q.take : 10)
-            .skip(q.skip ? q.skip : 1);
+            .skip(q.skip ? q.skip : 0);
 
         //search keyword
         if (q.keyword) {
