@@ -39,8 +39,7 @@ export class User {
 
     @Column({type: "varchar", length: 255, nullable: true})
     email: string;
-    @Column({type: "varchar", length: 255, nullable: true})
-    identityCard: string;
+
     @ManyToOne(() => Role, (role) => role.users)
     role: Role;
     @OneToMany(() => Booking, (booking) => booking.user)
@@ -49,12 +48,6 @@ export class User {
     @Column({
         default: false
     })
-<<<<<<< HEAD
     isLocked: boolean;
-  static findOne: any;
-  sentMessages: any;
-  receivedMessages: any;
-=======
-    isLocked: number;
->>>>>>> b8ee7ed1cf33ac9e244e719693431edcd55ef817
+
 }
