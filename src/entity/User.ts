@@ -2,7 +2,6 @@ import {Column, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne, PrimaryGener
 import {Role} from "./Role";
 import {Provider} from "./Provider";
 import {Booking} from "./Booking";
-import { Chat } from './Chat';
 import {IdentityCard} from "./IdentityCard"
 
 
@@ -49,8 +48,4 @@ export class User {
         default: false
     })
     isLocked: boolean;
-  static findOne: any;
-  sentMessages: any;
-  receivedMessages: any;
-
 }
