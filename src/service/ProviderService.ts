@@ -37,12 +37,12 @@ class ProviderService {
         //ở đây có thêm các câu query join với các bảng
         //LƯU Ý việc sử dụng này nếu ở 2 bảng nhiều nhiều hoặc một nhiều sẽ có thể khác tuỳ tình huống
         const sql = this.providerRepository
-            .createQueryBuilder('a')
-            .leftJoinAndSelect('a.user', 'u')
-            .leftJoinAndSelect('a.status', 's')
+            .createQueryBuilder('p')
+            .leftJoinAndSelect('p.user', 'u')
+            .leftJoinAndSelect('p.status', 's')
             // .orderBy('a.createdAt', 'DESC')
             .take(q.take ? q.take : 10)
-            .skip(q.skip ? q.skip : 1);
+            .skip(q.skip ? q.skip : 0);
 
 
 

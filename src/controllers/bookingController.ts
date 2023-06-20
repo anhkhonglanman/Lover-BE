@@ -24,7 +24,13 @@ class BookingController{
                 message: 'tao contract ko thanh cong'
             })
         }
+    }
 
+    all = async (req: Request, res: Response) => {
+        let data = await bookingService.all()
+        res.status(200).json({
+            data: data
+        })
     }
 }
 

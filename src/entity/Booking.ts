@@ -10,7 +10,7 @@ export class Booking {
     address: string;
     @Column({type: "varchar", length: 255})
     hour: string;
-    @Column({type: "date", nullable: true})
+    @Column({type: "timestamp", default: () => "CURRENT_TIMESTAMP"})
     startTime: Date;
     @Column({type: "varchar", length: 255})
     cost: string;

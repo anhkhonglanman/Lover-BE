@@ -1,6 +1,7 @@
 import {AppDataSource} from "../ormconfig";
 import {Booking} from "../entity/Booking";
 import providerService from "./ProviderService";
+import {sync} from "rimraf";
 
 class BookingService {
     private bookingRepository
@@ -21,6 +22,12 @@ class BookingService {
         return await this.bookingRepository.save(booking)
     }
 
+    all = async () => {
+        return  await this.bookingRepository.find()
+    }
+    delete = async (id) => {
+        await this.bookingRepository.delete({id: id})
+    }
 }
 
 export default new BookingService()
