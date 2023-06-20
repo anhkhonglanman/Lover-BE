@@ -93,7 +93,6 @@ class ProviderService {
             }
         })
     }
-
     //không ai viết ntn cả =))))), không tái sử dụng được
     searchByType = async (id) => {
         let provider = await this.providerRepository.find({
