@@ -5,16 +5,13 @@ import adminRouter from "./adminRouter";
 import serviceProviderRouter from "./serviceProviderRouter";
 import otpRouter from "./otpRouter";
 const hasPermissionsAdmin = require('../middleware/CheckRoleAdmin')
-const hasPermissionsProvider = require('../middleware/CheckRoleProvider')
+
 const hasPermissionsUser = require('../middleware/checkRoleUser')
 const passport = require('passport');
 const router = Router();
 
 router.use('/users', userRouter);
-router.use('/providers', passport.authenticate('jwt', { session: false, failWithError: true }),
-(req, res, next) => {
-    hasPermissionsProvider(req, res, next, );
-},providerRouter);
+router.use('/providers', providerRouter);
 router.use('/admin', passport.authenticate('jwt', { session: false, failWithError: true }),
     (req, res, next) => {
         hasPermissionsAdmin(req, res, next, );

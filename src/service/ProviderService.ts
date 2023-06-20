@@ -25,7 +25,7 @@ class ProviderService {
             desc: req.body.desc,
             request: req.body.request,
             linkFB: req.body.linkFB,
-            count: req.body.body,
+            count: req.body.count,
             images: req.body.images,
             user: user,
             status: 1
@@ -62,6 +62,16 @@ class ProviderService {
             sql.andWhere(
                 `(a.sex  like :sex)`, {sex: `${q.sex}`}
             )
+        }
+
+        if (q.name) {
+            sql.andWhere(`(a.name  like :name)`, {name: `${q.name}`})
+        }
+        if (q.city) {
+            sql.andWhere(`(a.city  like :city)`, {city: `${q.city}`})
+        }
+        if (q.country) {
+            sql.andWhere(`(a.country  like :country)`, {country: `${q.country}`})
         }
 
         const [entities, total] = await sql.getManyAndCount();
