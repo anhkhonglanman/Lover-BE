@@ -32,7 +32,7 @@ export class Provider {
     @Column({type: "varchar", length: 20, nullable: true})
     country: string;
 
-    @Column({type: "varchar", length: 255, nullable: true})
+    @Column({type: "text", length: 255, nullable: true})
     avatar: string;
 
     @Column({type: "varchar", length: 255, nullable: true})
