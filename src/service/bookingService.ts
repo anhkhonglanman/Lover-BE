@@ -10,7 +10,7 @@ class BookingService {
     save = async (idProvider, req, cost) => {
         let user = req['user'].id
         let booking = {
-            location: req.body.location,
+            address: req.body.address,
             hour: req.body.hour,
             startTime: req.body.startTime,
             cost: cost,
