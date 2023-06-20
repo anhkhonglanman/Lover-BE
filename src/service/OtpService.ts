@@ -69,5 +69,15 @@ import * as nanoid from 'nanoid'
         return true;
     }
 
+      checkOtp = async (otpValue:string, owner: string)=>{
+        const findOtp = await this.otpRepo.findOne(
+            { where:
+                 { otpValue,
+                    owner
+                } 
+        });
+        return !findOtp;
+      }
+
 }
 export default new OtpService()

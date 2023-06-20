@@ -43,3 +43,6 @@ lerna-debug.log*
 *.pem
 /uploads
 /private
+
+package.json
+
