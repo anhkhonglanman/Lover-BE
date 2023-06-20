@@ -40,7 +40,7 @@ class ProviderService {
             .createQueryBuilder('p')
             .leftJoinAndSelect('p.user', 'u')
             .leftJoinAndSelect('p.status', 's')
-            // .orderBy('a.createdAt', 'DESC')
+            // .orderBy('p.createdAt', 'DESC')
             .take(q.take ? q.take : 10)
             .skip(q.skip ? q.skip : 0);
 
@@ -50,8 +50,8 @@ class ProviderService {
         if (q.keyword) {
             sql.andWhere(
                 `(
-        a.name like :keyword
-        OR a.city like :keyword
+        p.name like :keyword
+        OR p.city like :keyword
       )`,
                 {keyword: `%${q.keyword}%`},
             );
@@ -60,18 +60,18 @@ class ProviderService {
         //search giới tính
         if (q.sex) {
             sql.andWhere(
-                `(a.sex  like :sex)`, {sex: `${q.sex}`}
+                `(p.sex  like :sex)`, {sex: `${q.sex}`}
             )
         }
 
         if (q.name) {
-            sql.andWhere(`(a.name  like :name)`, {name: `${q.name}`})
+            sql.andWhere(`(p.name  like :name)`, {name: `${q.name}`})
         }
         if (q.city) {
-            sql.andWhere(`(a.city  like :city)`, {city: `${q.city}`})
+            sql.andWhere(`(p.city  like :city)`, {city: `${q.city}`})
         }
         if (q.country) {
-            sql.andWhere(`(a.country  like :country)`, {country: `${q.country}`})
+            sql.andWhere(`(p.country  like :country)`, {country: `${q.country}`})
         }
 
         const [entities, total] = await sql.getManyAndCount();

@@ -32,6 +32,19 @@ class BookingController{
             data: data
         })
     }
+    find = async (req: Request, res: Response) => {
+        try {
+            const query = req.query
+            let booking = await bookingService.find(query)
+            res.status(200).json(booking)
+        } catch (e) {
+            console.log('Lỗi hệ thống', e)
+            res.status(500).json({
+                message: 'Có lỗi hệ thống cmnr'
+            })
+        }
+
+    }
 }
 
 export default new BookingController()
