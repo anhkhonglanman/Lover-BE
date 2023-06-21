@@ -46,5 +46,6 @@ class ProviderController{
             data: newProvider
         })
     }
+
 }
 export default new ProviderController()

@@ -1,7 +1,7 @@
-import { AppDataSource } from "../ormconfig";
-import { Provider } from "../entity/Provider";
-import { PageMeta, Paginate } from "../lib/paginate";
-import { ProviderListPaginated, ProviderPaginate } from "../lib/provider-paginate";
+import {AppDataSource} from "../ormconfig";
+import {Provider} from "../entity/Provider";
+import {PageMeta, Paginate} from "../lib/paginate";
+import {ProviderListPaginated, ProviderPaginate} from "../lib/provider-paginate";
 import {id} from "date-fns/locale";
 
 class ProviderService {
@@ -10,11 +10,12 @@ class ProviderService {
     constructor() {
         this.providerRepository = AppDataSource.getRepository(Provider)
     }
+
 // những function như thế này là thừa không giải quyết vấn đề gì cả
     save = async (req) => {
         const user = req['user'].id
         const provider = await this.providerRepository.create({
-            name : req.body.name,
+            name: req.body.name,
             dob: req.body.dob,
             sex: req.body.sex,
             city: req.body.city,
@@ -34,19 +35,15 @@ class ProviderService {
     }
 
     all = async (q) => {
-        //ở đây có thêm các câu query join với các bảng
-        //LƯU Ý việc sử dụng này nếu ở 2 bảng nhiều nhiều hoặc một nhiều sẽ có thể khác tuỳ tình huống
+
         const sql = this.providerRepository
             .createQueryBuilder('a')
             .leftJoinAndSelect('a.user', 'u')
             .leftJoinAndSelect('a.status', 's')
             // .orderBy('a.createdAt', 'DESC')
-            .take(q.take ? q.take : 10)
-            .skip(q.skip ? q.skip : 1);
+            // .take(q.take ? q.take : 10)
+            // .skip(q.skip ? q.skip : 0);
 
-
-
-        //search keyword
         if (q.keyword) {
             sql.andWhere(
                 `(
@@ -57,19 +54,27 @@ class ProviderService {
             );
         }
 
-        //search giới tính
+
         if (q.sex) {
             sql.andWhere(
                 `(a.sex  like :sex)`, {sex: `${q.sex}`}
             )
         }
+        if (q.name) {
+            sql.andWhere(`(a.name  like :name)`, {name: `%${q.name}%`})
+        }
+        if (q.city) {
+            sql.andWhere(`(p.city  like :city)`, {city: `${q.city}`})
+        }
+        if (q.country) {
+            sql.andWhere(`(p.country  like :country)`, {country: `${q.country}`})
+        }
+
 
         const [entities, total] = await sql.getManyAndCount();
 
-        // tính  bản ghi
         const meta = new PageMeta({options: q, total});
 
-        //phân trang và chuẩn hoá dữ liệu đầu ra
         return new ProviderListPaginated(entities.filter((c) => new ProviderPaginate(c)), meta)
     }
 
@@ -107,6 +112,7 @@ class ProviderService {
     update = async (id, update) => {
         await this.providerRepository.update({id: id}, update)
     }
+
 }
 
 export default new ProviderService()
