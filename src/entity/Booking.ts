@@ -10,10 +10,12 @@ export class Booking {
     address: string;
     @Column({type: "varchar", length: 255})
     hour: string;
-    @Column({type: "date"})
+    @Column({type: "timestamp", default: () => "CURRENT_TIMESTAMP"})
     startTime: Date;
     @Column({type: "varchar", length: 255})
     cost: string;
+    @Column({type: "enum", enum: ["pending", "accept", "reject"], default: "pending"})
+    status: string;
     @ManyToOne(() => User, (user) => user.booking)
     user: User;
     @ManyToOne(() => Provider, (provider) => provider.booking)

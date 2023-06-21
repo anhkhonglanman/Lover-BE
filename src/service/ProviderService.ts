@@ -1,8 +1,9 @@
-import {AppDataSource} from "../ormconfig";
-import {Provider} from "../entity/Provider";
-import {PageMeta, Paginate} from "../lib/paginate";
-import {ProviderListPaginated, ProviderPaginate} from "../lib/provider-paginate";
+import { AppDataSource } from "../ormconfig";
+import { Provider } from "../entity/Provider";
+import { PageMeta, Paginate } from "../lib/paginate";
+import { ProviderListPaginated, ProviderPaginate } from "../lib/provider-paginate";
 import {id} from "date-fns/locale";
+import {Booking} from "../entity/Booking";
 
 class ProviderService {
     private providerRepository
@@ -10,12 +11,11 @@ class ProviderService {
     constructor() {
         this.providerRepository = AppDataSource.getRepository(Provider)
     }
-
 // những function như thế này là thừa không giải quyết vấn đề gì cả
     save = async (req) => {
         const user = req['user'].id
         const provider = await this.providerRepository.create({
-            name: req.body.name,
+            name : req.body.name,
             dob: req.body.dob,
             sex: req.body.sex,
             city: req.body.city,
@@ -26,7 +26,7 @@ class ProviderService {
             desc: req.body.desc,
             request: req.body.request,
             linkFB: req.body.linkFB,
-            count: req.body.body,
+            count: req.body.count,
             images: req.body.images,
             user: user,
             status: 1
@@ -37,31 +37,32 @@ class ProviderService {
     all = async (q) => {
 
         const sql = this.providerRepository
-            .createQueryBuilder('a')
-            .leftJoinAndSelect('a.user', 'u')
-            .leftJoinAndSelect('a.status', 's')
-            // .orderBy('a.createdAt', 'DESC')
-            // .take(q.take ? q.take : 10)
-            // .skip(q.skip ? q.skip : 0);
+            .createQueryBuilder('p')
+            .leftJoinAndSelect('p.user', 'u')
+            .leftJoinAndSelect('p.status', 's')
+            .orderBy('p.createdAt', 'DESC')
+            .take(q.take ? q.take : 12)
+            .skip(q.skip ? q.skip : 0);
+
 
         if (q.keyword) {
             sql.andWhere(
                 `(
-        a.name like :keyword
-        OR a.city like :keyword
+        p.name like :keyword
+        OR p.city like :keyword
       )`,
                 {keyword: `%${q.keyword}%`},
             );
         }
 
-
         if (q.sex) {
             sql.andWhere(
-                `(a.sex  like :sex)`, {sex: `${q.sex}`}
+                `(p.sex  like :sex)`, {sex: `${q.sex}`}
             )
         }
+
         if (q.name) {
-            sql.andWhere(`(a.name  like :name)`, {name: `%${q.name}%`})
+            sql.andWhere(`(p.name  like :name)`, {name: `${q.name}`})
         }
         if (q.city) {
             sql.andWhere(`(p.city  like :city)`, {city: `${q.city}`})
@@ -69,7 +70,6 @@ class ProviderService {
         if (q.country) {
             sql.andWhere(`(p.country  like :country)`, {country: `${q.country}`})
         }
-
 
         const [entities, total] = await sql.getManyAndCount();
 
@@ -88,7 +88,6 @@ class ProviderService {
             }
         })
     }
-
     //không ai viết ntn cả =))))), không tái sử dụng được
     searchByType = async (id) => {
         let provider = await this.providerRepository.find({
@@ -109,10 +108,17 @@ class ProviderService {
         })
         return (provider);
     }
+    accept = async (id) => {
+        return await AppDataSource.getRepository(Booking)
+            .update({id : id}, {status: "accept"})
+    }
+    reject = async (id) => {
+        return await AppDataSource.getRepository(Booking)
+            .update({id : id}, {status: "reject"})
+    }
     update = async (id, update) => {
         await this.providerRepository.update({id: id}, update)
     }
-
 }
 
 export default new ProviderService()

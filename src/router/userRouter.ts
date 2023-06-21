@@ -8,7 +8,6 @@ userRouter.post('/register', userController.signup);
 userRouter.get('/',   passport.authenticate('jwt', { session: false, failWithError: true }),
     userController.allUser);
 userRouter.post('/login',userController.login)
-userRouter.put('/role/:id',userController.updateToProvider);
 userRouter.get('/:id',userController.showUser);
 userRouter.put('/:id',userController.editUser);
 userRouter.delete('/:id',userController.delete);
