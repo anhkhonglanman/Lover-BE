@@ -48,8 +48,8 @@ class ProviderService {
         if (q.keyword) {
             sql.andWhere(
                 `(
-        p.name like :keyword
-        OR p.city like :keyword
+        a.name like :keyword
+        OR a.city like :keyword
       )`,
                 {keyword: `%${q.keyword}%`},
             );
@@ -57,18 +57,18 @@ class ProviderService {
 
         if (q.sex) {
             sql.andWhere(
-                `(p.sex  like :sex)`, {sex: `${q.sex}`}
+                `(s.sex  like :sex)`, {sex: `${q.sex}`}
             )
         }
 
         if (q.name) {
-            sql.andWhere(`(p.name  like :name)`, {name: `${q.name}`})
+            sql.andWhere(`(n.name  like :name)`, {name: `${q.name}`})
         }
         if (q.city) {
-            sql.andWhere(`(p.city  like :city)`, {city: `${q.city}`})
+            sql.andWhere(`(c.city  like :city)`, {city: `${q.city}`})
         }
         if (q.country) {
-            sql.andWhere(`(p.country  like :country)`, {country: `${q.country}`})
+            sql.andWhere(`(c.country  like :country)`, {country: `${q.country}`})
         }
 
         const [entities, total] = await sql.getManyAndCount();

@@ -25,6 +25,7 @@ class ProviderController {
             let allProvider = await providerService.all(query)
             res.status(200).json(allProvider)
         } catch (e) {
+            console.log(2)
             console.log('Lỗi hệ thống', e)
             res.status(500).json({
                 message: 'Có lỗi hệ thống cmnr'
