@@ -1,7 +1,7 @@
-import { AppDataSource } from "../ormconfig";
-import { Provider } from "../entity/Provider";
-import { PageMeta, Paginate } from "../lib/paginate";
-import { ProviderListPaginated, ProviderPaginate } from "../lib/provider-paginate";
+import {AppDataSource} from "../ormconfig";
+import {Provider} from "../entity/Provider";
+import {PageMeta, Paginate} from "../lib/paginate";
+import {ProviderListPaginated, ProviderPaginate} from "../lib/provider-paginate";
 import {id} from "date-fns/locale";
 import {Booking} from "../entity/Booking";
 
@@ -15,7 +15,7 @@ class ProviderService {
     save = async (req) => {
         const user = req['user'].id
         const provider = await this.providerRepository.create({
-            name : req.body.name,
+            name: req.body.name,
             dob: req.body.dob,
             sex: req.body.sex,
             city: req.body.city,
@@ -40,7 +40,7 @@ class ProviderService {
             .createQueryBuilder('p')
             .leftJoinAndSelect('p.user', 'u')
             .leftJoinAndSelect('p.status', 's')
-            .orderBy('p.createdAt', 'DESC')
+            // .orderBy('p.createdAt', 'DESC')
             .take(q.take ? q.take : 12)
             .skip(q.skip ? q.skip : 0);
 
@@ -48,8 +48,17 @@ class ProviderService {
         if (q.keyword) {
             sql.andWhere(
                 `(
-        a.name like :keyword
-        OR a.city like :keyword
+                b.name like :keyword
+                )`,
+                {keyword: `%${q.keyword}%`},
+            );
+        }
+
+        if (q.keyword) {
+            sql.andWhere(
+                `(
+        p.name like :keyword
+        OR p.city like :keyword
       )`,
                 {keyword: `%${q.keyword}%`},
             );
@@ -110,11 +119,11 @@ class ProviderService {
     }
     accept = async (id) => {
         return await AppDataSource.getRepository(Booking)
-            .update({id : id}, {status: "accept"})
+            .update({id: id}, {status: "accept"})
     }
     reject = async (id) => {
         return await AppDataSource.getRepository(Booking)
-            .update({id : id}, {status: "reject"})
+            .update({id: id}, {status: "reject"})
     }
     update = async (id, update) => {
         await this.providerRepository.update({id: id}, update)
