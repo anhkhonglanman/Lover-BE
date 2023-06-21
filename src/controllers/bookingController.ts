@@ -13,7 +13,6 @@ class BookingController{
             let cost = parseInt(price) * parseInt(req.body.hour)
             let booking = await bookingService.save(idProvider, req, cost)
             res.status(200).json({
-                message: "tao thanh cong",
                 data: booking
             })
         } catch (e) {

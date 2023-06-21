@@ -52,7 +52,6 @@ class BookingService {
         const [entities, total] = await sql.getManyAndCount();
 
         const meta = new PageMeta({options: q, total});
-
         return new BookingListPaginated(entities.filter((c) => new BookingPaginate(c)), meta)
 
     }

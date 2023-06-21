@@ -28,7 +28,8 @@ export class PageMeta {
 
     constructor({ options, total }: IPageMetaDto) {
         this.page = options.page;
-        this.take = options.take;
+        // this.take = options.take;
+        this.take = 10;
         this.total = total;
         this.totalPage = Math.ceil(this.total / this.take);
         this.hasPreviousPage = this.page > 1;
