@@ -2,7 +2,7 @@ import { Otp } from "../entity/Otp";
 import { AppDataSource } from "../ormconfig";
 import { addMinutes, isAfter, isBefore } from 'date-fns';
 import * as nanoid from 'nanoid'
- class OtpService {
+class OtpService {
     private readonly alphabet = '0123456789'
     private otpRepo
     constructor() {
@@ -68,16 +68,19 @@ import * as nanoid from 'nanoid'
 
         return true;
     }
-
-      checkOtp = async (otpValue:string, owner: string)=>{
+    checkMail = async (owner: string) => {
+        const findMail = await this.otpRepo.findOne({ where: { owner } });
+        return !findMail; // Trả về true nếu không tìm thấy otp có owner trùng
+    };
+    checkOtp = async (otpValue:string, owner: string)=>{
         const findOtp = await this.otpRepo.findOne(
             { where:
-                 { otpValue,
-                    owner
-                } 
-        });
+                    { otpValue,
+                        owner
+                    }
+            });
         return !findOtp;
-      }
+    }
 
 }
 export default new OtpService()
