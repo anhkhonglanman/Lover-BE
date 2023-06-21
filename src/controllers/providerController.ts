@@ -1,14 +1,33 @@
+import { id } from 'date-fns/locale';
 import {Request, Response} from "express";
 import providerService from "../service/ProviderService";
 import userService from "../service/userService";
+import imageService from "../service/imageService";
 
 class ProviderController {
     save = async (req: Request, res: Response) => {
         try {
-            let newProvider = await providerService.save(req)
+            let provider = {
+                name : req.body.name,
+                dob : req.body.dob,
+                sex : req.body.sex,
+                city : req.body.city,
+                country : req.body.country,
+                avatar : req.body.avatar,
+                height : req.body.height,
+                weight : req.body.weight,
+                hobby : req.body.hobby,
+                desc : req.body.desc,
+                request : req.body.request,
+                linkFB : req.body.linkFB,
+                price : req.body.price
+            }
+            let newProvider = await providerService.save(provider)
+            let image = req.body.image
+            let newImage=await imageService.addImage(image)
             res.status(200).json({
                 success: true,
-                data: newProvider
+                data: newProvider, newImage
             })
         } catch (e) {
             console.log('tạo người CCDV không thành công', e)
