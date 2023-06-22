@@ -76,7 +76,7 @@ class UserController {
     }
     allUser = async (req: Request, res: Response) => {
         const query = req.query
-        let users = await userService.all(query);
+        let users = await userService.test(query);
         res.status(200).json({
             data: users
         })
