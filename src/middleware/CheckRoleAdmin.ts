@@ -1,6 +1,6 @@
 const hasPermissionsAdmin = (req, res, next) => {
     const role = req.user?.role?.id
-    if (role !== 2) {
+    if (role !== 3) {
         return res.status(403).json({
             message: "bạn không có quyền truy cập"
         })

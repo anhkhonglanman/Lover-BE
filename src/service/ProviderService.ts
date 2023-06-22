@@ -43,7 +43,6 @@ class ProviderService {
           .leftJoinAndSelect("p.status", "s")
           .leftJoinAndSelect('p.images', 'images')
           .leftJoinAndSelect("p.serviceProviders", "sp")
-          .leftJoinAndSelect("sp.service", "serv")
           .take(q.take ? q.take : 12)
           .skip(q.skip ? q.skip : 0);
       
@@ -72,14 +71,14 @@ class ProviderService {
       
         const meta = new PageMeta({ options: q, total });
       
-        return new ProviderListPaginated(entities.map((c) => new ProviderPaginate(c, c.user, c.images, c.serviceProviders, c.service, c.evaluate)), meta);
+        return new ProviderListPaginated(entities.map((c) => new ProviderPaginate(c, c.user, c.images, c.serviceProviders, c.service)), meta);
       }
       
 //cái này có thể viết gọn hơn
 one = async (id) => {
     return await this.providerRepository.findOne({
       where: { id: id },
-      relations: ['images', 'serviceProviders', 'serviceProviders.service', 'user', ],
+      relations: ['images', 'serviceProviders', 'serviceProviders.service' ],
     });
   };
     //không ai viết ntn cả =))))), không tái sử dụng được

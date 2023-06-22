@@ -35,7 +35,8 @@ class ProviderController {
         try {
             const query = req.query
             let allProvider = await providerService.all(query)
-            res.status(200).json(allProvider)
+            res.status(200).json({
+                data:allProvider})
         } catch (e) {
             console.log('Lỗi hệ thống', e)
             res.status(500).json({
