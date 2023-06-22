@@ -31,14 +31,23 @@ class BookingController{
     }
     find = async (req: Request, res: Response) => {
         try {
-            const query = req.query
-            let booking = await bookingService.find(query)
+            const text = req.params.text
+            // const query = req.query
+            let booking = await bookingService.find(text)
             res.status(200).json(booking)
         } catch (e) {
             res.status(500).json({
                 message: 'Có lỗi hệ thống cmnr'
             })
         }
+
+    }
+    getDetail = async (req: Request, res: Response) => {
+        const id = req.params.id
+        let detail = await bookingService.detail(id)
+        res.status(200).json({
+            data: detail
+        })
 
     }
 }

@@ -1,5 +1,4 @@
 import {Paginate} from "./paginate";
-import {ProviderPaginate} from "./provider-paginate";
 import {User} from "../entity/User";
 import {Provider} from "../entity/Provider";
 
@@ -14,9 +13,9 @@ export class BookingPaginate{
     providers: Provider
 
     constructor(entity: any) {
-        console.log(entity)
         this.startTime = entity.startTime
         this.status = entity.status
+        this.cost = entity.cost
     }
 }
 
