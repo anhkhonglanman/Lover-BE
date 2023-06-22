@@ -1,4 +1,5 @@
-import {Column, Entity, ManyToMany, ManyToOne, PrimaryGeneratedColumn} from "typeorm";
+import {Column, Entity, ManyToMany, ManyToOne, OneToMany, PrimaryGeneratedColumn} from "typeorm";
+import { Service_provider } from "./Service_provider";
 import {Provider} from "./Provider";
 import {Type} from "./Type";
 
@@ -11,4 +12,6 @@ export class Service {
     name: string;
     @ManyToOne(() => Type)
     type : Type
+    @OneToMany(() => Service_provider, serviceProvider => serviceProvider.service)
+    serviceProviders: Service_provider[];
 }

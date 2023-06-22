@@ -1,5 +1,8 @@
+import { Service_provider } from './../entity/Service_provider';
 import {Paginate} from "./paginate";
 import {User} from "../entity/User";
+import { Image } from "src/entity/Image";
+import { Service } from 'src/entity/Service';
 
 export class ProviderPaginate {
     id: number;
@@ -21,8 +24,12 @@ export class ProviderPaginate {
     ready: string;
     user: User;
     firstname: string;
+    images: Image[]; 
+    serviceProviders: Service_provider[];
+    service : Service[]
 
-    constructor(entity: any) {
+
+    constructor(entity: any, user: User, images: Image[],serviceProviders: Service_provider[], service : Service[]) {
         this.firstname = entity.user?.firstname
         // console.log(entity)
         // this.user = user;
@@ -54,9 +61,12 @@ export class ProviderPaginate {
         //
         // count: string;
         // ready: string;
+        this.user = user;
+        this.images = images;  
+        this.serviceProviders=   serviceProviders;
+        this.service=service;
+
     }
-
-
 }
 
 export class ProviderListPaginated extends Paginate(ProviderPaginate) {

@@ -68,10 +68,6 @@ class OtpService {
 
         return true;
     }
-    checkMail = async (owner: string) => {
-        const findMail = await this.otpRepo.findOne({ where: { owner } });
-        return !findMail; // Trả về true nếu không tìm thấy otp có owner trùng
-    };
     checkOtp = async (otpValue:string, owner: string)=>{
         const findOtp = await this.otpRepo.findOne(
             { where:
