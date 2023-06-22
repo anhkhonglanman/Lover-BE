@@ -5,9 +5,9 @@ class ImageService{
     constructor() {
         this.imageRepository = AppDataSource.getRepository(Image)
     }
-    addImage = async (data) => {
+    addImage = async (providerId,data) => {
         await data.forEach(item=>{
-            this.imageRepository.save({imageURL:`${item}`})
+            this.imageRepository.save({provider : providerId ,imageURL:`${item}`})
         })
     }
     deleteOneImage = async (id) => {
@@ -23,7 +23,7 @@ class ImageService{
     upDateImage = async (providerId,data) => {
         console.log('update image')
         await this.deleteImageById(providerId);
-        await this.addImage(data)
+        await this.addImage(providerId,data)
     }
 
     deleteAllImageByProvidertId = async (id) => {

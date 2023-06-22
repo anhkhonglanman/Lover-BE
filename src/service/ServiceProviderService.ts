@@ -20,8 +20,10 @@ class ServiceProviderService {
             }
         })
     }
-    save = async (data) => {
-        await this.serviceProviderRepository.save(data)
+    addService = async (providerId,data) => {
+        await data.forEach(item=>{
+            this.serviceProviderRepository.save({provider : providerId ,service:`${item}`})
+        })
     }
 }
 

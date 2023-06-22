@@ -1,33 +1,27 @@
-import { id } from 'date-fns/locale';
 import {Request, Response} from "express";
 import providerService from "../service/ProviderService";
 import userService from "../service/userService";
 import imageService from "../service/imageService";
+import { Provider } from "src/entity/Provider";
+import ServiceProviderService from "../service/ServiceProviderService";
+const jwt = require('jsonwebtoken')
 
 class ProviderController {
     save = async (req: Request, res: Response) => {
-        try {
-            let provider = {
-                name : req.body.name,
-                dob : req.body.dob,
-                sex : req.body.sex,
-                city : req.body.city,
-                country : req.body.country,
-                avatar : req.body.avatar,
-                height : req.body.height,
-                weight : req.body.weight,
-                hobby : req.body.hobby,
-                desc : req.body.desc,
-                request : req.body.request,
-                linkFB : req.body.linkFB,
-                price : req.body.price
-            }
-            let newProvider = await providerService.save(provider)
-            let image = req.body.image
-            let newImage=await imageService.addImage(image)
+           let token = req.headers.authorization.split(' ')[1];
+           const decodedToken = jwt.decode(token);
+           console.log(decodedToken);
+           let provider = req.body
+            let newProvider = await providerService.save(provider, decodedToken.idUser) 
+            let image = provider.image
+            let service = provider.service
+            try {
+           let newImage= await imageService.addImage(newProvider.id,image)
+           let newSerrvice= await ServiceProviderService.addService(newProvider.id,service)
+
             res.status(200).json({
                 success: true,
-                data: newProvider, newImage
+                data: newProvider
             })
         } catch (e) {
             console.log('tạo người CCDV không thành công', e)
@@ -81,6 +75,31 @@ class ProviderController {
             data: newProvider
         })
     }
+    privateProvider = async (req: Request, res: Response) => {
+        let providerId = req.params.id
+        let isPrivate = await providerService.private(providerId)
+        res.status(200).json({
+            message: 'chưa sẵn sàng',
+            data: isPrivate
+        })
+    }
+    publicProvider = async (req: Request, res: Response) => {
+        let providerId = req.params.id
+        let isPublic = await providerService.public(providerId)
+        res.status(200).json({
+            message: 'đang sẵn sàng',
+            data: isPublic
+        })
+    }
+    forRentProvider = async (req: Request, res: Response) => {
+        let providerId = req.params.id
+        let isPublic = await providerService.public(providerId)
+        res.status(200).json({
+            message: 'đang cho thuê',
+            data: isPublic
+        })
+    }
+
 }
 
 export default new ProviderController()

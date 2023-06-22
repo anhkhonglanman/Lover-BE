@@ -9,11 +9,18 @@ const providerRouter = Router()
 providerRouter.get('/', providerController.all)
 providerRouter.get('/providerDetail/:id', providerController.showOne)
 providerRouter.post('/',passport.authenticate('jwt', { session: false, failWithError: true }), providerController.save)
-
 providerRouter.put('/:id',passport.authenticate('jwt', { session: false, failWithError: true }),
     (req, res, next) => {
         hasPermissionsProvider(req, res, next, );
     },providerController.editProvider);
+    providerRouter.put('/privateProvider/:id',passport.authenticate('jwt', { session: false, failWithError: true }),
+    (req, res, next) => {
+        hasPermissionsProvider(req, res, next, );
+    },providerController.privateProvider);
+    providerRouter.put('/publicProvider/:id',passport.authenticate('jwt', { session: false, failWithError: true }),
+    (req, res, next) => {
+        hasPermissionsProvider(req, res, next, );
+    },providerController.publicProvider);
 providerRouter.put('/accept/:id',passport.authenticate('jwt', { session: false, failWithError: true }),
     (req, res, next) => {
         hasPermissionsProvider(req, res, next, );
