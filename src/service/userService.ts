@@ -20,7 +20,6 @@ class UserService{
     loginCheck = async (user) => {
         let userFind = await this.userRepository.findOne({
             relations: {
-                provider: true,
                 role: true
             },
             where: {
