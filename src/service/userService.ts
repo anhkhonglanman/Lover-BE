@@ -20,6 +20,7 @@ class UserService{
     loginCheck = async (user) => {
         let userFind = await this.userRepository.findOne({
             relations: {
+                provider: true,
                 role: true
             },
             where: {
@@ -55,6 +56,7 @@ class UserService{
     findOne = async (userId) => {
         let userFind = await this.userRepository.findOne({
             relations: {
+
                 role: true
             },
             where: {
@@ -83,6 +85,7 @@ class UserService{
         const sql = this.userRepository
             .createQueryBuilder('u')
             .leftJoinAndSelect('u.role', 'r')
+            // .leftJoinAndSelect('u.provider', 'p')
             // .orderBy('a.createdAt', 'DESC')
             .take(q.take ? q.take : 10)
             .skip(q.skip ? q.skip : 0);

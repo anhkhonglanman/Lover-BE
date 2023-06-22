@@ -46,7 +46,7 @@ class BookingService {
 
         if (q.status) {
             sql.andWhere(
-                `(q.status like: status)`, {status: `${q.status}`}
+                `(b.status like: status)`, {status: `${q.status}`}
             )
         }
         const [entities, total] = await sql.getManyAndCount();

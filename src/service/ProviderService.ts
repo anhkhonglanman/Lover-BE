@@ -35,24 +35,14 @@ class ProviderService {
     }
 
     all = async (q) => {
-
         const sql = this.providerRepository
             .createQueryBuilder('p')
             .leftJoinAndSelect('p.user', 'u')
             .leftJoinAndSelect('p.status', 's')
-            // .orderBy('p.createdAt', 'DESC')
+            // .orderBy('p.', 'DESC')
             .take(q.take ? q.take : 12)
             .skip(q.skip ? q.skip : 0);
 
-
-        if (q.keyword) {
-            sql.andWhere(
-                `(
-                b.name like :keyword
-                )`,
-                {keyword: `%${q.keyword}%`},
-            );
-        }
 
         if (q.keyword) {
             sql.andWhere(
@@ -66,19 +56,20 @@ class ProviderService {
 
         if (q.sex) {
             sql.andWhere(
-                `(s.sex  like :sex)`, {sex: `${q.sex}`}
+                `(p.sex  like :sex)`, {sex: `${q.sex}`}
             )
         }
 
         if (q.name) {
-            sql.andWhere(`(n.name  like :name)`, {name: `${q.name}`})
+            sql.andWhere(`(p.name  like :name)`, {name: `%${q.name}%`})
         }
         if (q.city) {
-            sql.andWhere(`(c.city  like :city)`, {city: `${q.city}`})
+            sql.andWhere(`(p.city  like :city)`, {city: `${q.city}`})
         }
         if (q.country) {
-            sql.andWhere(`(c.country  like :country)`, {country: `${q.country}`})
+            sql.andWhere(`(p.country  like :country)`, {country: `${q.country}`})
         }
+
 
         const [entities, total] = await sql.getManyAndCount();
 
@@ -92,6 +83,7 @@ class ProviderService {
         return await this.providerRepository.findOne({
             where: {id: id},
             relations: {
+                // provider:true,
                 images: true,
                 // service: true
             }
