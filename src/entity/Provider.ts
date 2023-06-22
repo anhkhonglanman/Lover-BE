@@ -12,6 +12,7 @@ import {Image} from "./Image";
 import {Booking} from "./Booking";
 import {Status} from "./Status";
 import { Service_provider } from "./Service_provider";
+import { Evaluate } from "./Evaluate";
 // import {Booking} from "./Booking";
 @Entity()
 export class Provider {
@@ -70,7 +71,9 @@ export class Provider {
     @OneToMany(() => Image, (image) => image.provider)
     images : Image[];
     @OneToMany(() => Service_provider, serviceProvider => serviceProvider.provider)
-  serviceProviders: Service_provider[];
+   serviceProviders: Service_provider[];
+   @OneToMany(() => Evaluate, (evaluate) => evaluate.provider)
+evaluate: Evaluate[];
     @ManyToOne(() => Status)
     status : Status;
     @OneToOne(() => User)

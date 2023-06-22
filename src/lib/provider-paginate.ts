@@ -1,8 +1,9 @@
 import { Service_provider } from './../entity/Service_provider';
 import {Paginate} from "./paginate";
 import {User} from "../entity/User";
-import { Image } from "src/entity/Image";
-import { Service } from 'src/entity/Service';
+import { Image } from "../entity/Image";
+import { Service } from '../entity/Service';
+import { Evaluate } from '../entity/Evaluate';
 
 export class ProviderPaginate {
     id: number;
@@ -26,7 +27,8 @@ export class ProviderPaginate {
     firstname: string;
     images: Image[];
     serviceProviders: Service_provider[];
-    service : Service[]
+    service : Service[];
+    evaluate: Evaluate[]
 
     constructor(entity: any, user: User, images: Image[],serviceProviders: Service_provider[], service : Service[]) {
         this.firstname = entity.user?.firstname
@@ -64,7 +66,7 @@ export class ProviderPaginate {
         this.images = images;
         this.serviceProviders=   serviceProviders;
         this.service=service;
-
+        this.evaluate=evaluate;
     }
 }
 

@@ -33,8 +33,6 @@ export class User {
     role: Role;
     @OneToMany(() => Booking, (booking) => booking.user)
     booking: Booking[];
-    @Column({
-        default: 0
-    })
+    @Column({default: 0})
     isLocked: number;
 }

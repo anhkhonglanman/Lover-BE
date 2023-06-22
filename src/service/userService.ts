@@ -84,7 +84,6 @@ class UserService{
         const sql = this.userRepository
             .createQueryBuilder('u')
             .leftJoinAndSelect('u.role', 'r')
-            // .leftJoinAndSelect('u.provider', 'p')
             // .orderBy('a.createdAt', 'DESC')
             .take(q.take ? q.take : 10)
             .skip(q.skip ? q.skip : 0);
@@ -119,8 +118,9 @@ class UserService{
         const meta = new PageMeta({options: q, total});
         //phân trang và chuẩn hoá dữ liệu đầu ra
 
-        return new ProviderListPaginated(entities.map((c) => new ProviderPaginate(c, c.user, c.images, c.serviceProviders, c.service)), meta);
+        // return new ProviderListPaginated(entities.map((c) => new ProviderPaginate(c, c.user, c.images, c.serviceProviders, c.service)), meta);
 
+        return new ProviderListPaginated(entities.map((c) => new ProviderPaginate(c, c.user, c.images, c.serviceProviders, c.service,c.evaluate)), meta);
     }
     update = async (id, user) => {
         await this.userRepository.update({id: id}, user);
