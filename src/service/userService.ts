@@ -5,8 +5,7 @@ import jwt from "jsonwebtoken";
 import { Like } from "typeorm";
 import {Role} from "../entity/Role";
 import {PageMeta} from "../lib/paginate";
-// import {ProviderListPaginated, ProviderPaginate} from "../lib/provider-paginate";
-import {ProviderListPaginated, ProviderPaginate} from "../lib/test";
+import {ProviderListPaginated, ProviderPaginate} from "../lib/provider-paginate";
 class UserService{
     private userRepository;
     constructor() {
@@ -74,90 +73,48 @@ class UserService{
         });
         return userFind;
     }
-    test = async (q) => {
+    all = async (q) => {
         const sql = this.userRepository
-            .createQueryBuilder('p')
-            // .leftJoinAndSelect('p.status', 's')
-            .leftJoinAndSelect('p.role', 'r')
-            // .orderBy('p.', 'DESC')
-            .take(q.take ? q.take : 12)
+            .createQueryBuilder('u')
+            .leftJoinAndSelect('u.role', 'r')
+            // .orderBy('a.createdAt', 'DESC')
+            .take(q.take ? q.take : 10)
             .skip(q.skip ? q.skip : 0);
 
-
+        //search keyword
         if (q.keyword) {
             sql.andWhere(
                 `(
-        p.name like :keyword
-        OR p.city like :keyword
+        a.name like :keyword
+        OR a.city like :keyword
       )`,
                 {keyword: `%${q.keyword}%`},
             );
         }
 
+        //search giới tính
         if (q.sex) {
             sql.andWhere(
-                `(p.sex  like :sex)`, {sex: `${q.sex}`}
+                `(a.sex  like :sex)`, {sex: `${q.sex}`}
             )
         }
 
-        if (q.name) {
-            sql.andWhere(`(p.name  like :name)`, {name: `${q.name}`})
+        if (q.role) {
+            sql.andWhere(`(r.name like :role)`, {
+                role: `%${q.role}%`,
+            });
         }
-        if (q.city) {
-            sql.andWhere(`(p.city  like :city)`, {city: `${q.city}`})
-        }
-        if (q.country) {
-            sql.andWhere(`(p.country  like :country)`, {country: `${q.country}`})
-        }
+
 
         const [entities, total] = await sql.getManyAndCount();
-
+        // tính  bản ghi
         const meta = new PageMeta({options: q, total});
+        //phân trang và chuẩn hoá dữ liệu đầu ra
 
-        return new ProviderListPaginated(entities.filter((c) => new ProviderPaginate(c)), meta)
+        // return new ProviderListPaginated(entities.map((c) => new ProviderPaginate(c, c.user, c.images, c.serviceProviders, c.service)), meta);
+
+        return new ProviderListPaginated(entities.map((c) => new ProviderPaginate(c, c.user, c.images, c.serviceProviders, c.service,c.evaluate)), meta);
     }
-    // all = async (q) => {
-    //     const sql = this.userRepository
-    //         .createQueryBuilder('u')
-    //         .leftJoinAndSelect('u.role', 'r')
-    //         // .orderBy('a.createdAt', 'DESC')
-    //         .take(q.take ? q.take : 10)
-    //         .skip(q.skip ? q.skip : 0);
-    //
-    //     //search keyword
-    //     if (q.keyword) {
-    //         sql.andWhere(
-    //             `(
-    //     a.name like :keyword
-    //     OR a.city like :keyword
-    //   )`,
-    //             {keyword: `%${q.keyword}%`},
-    //         );
-    //     }
-    //
-    //     //search giới tính
-    //     if (q.sex) {
-    //         sql.andWhere(
-    //             `(a.sex  like :sex)`, {sex: `${q.sex}`}
-    //         )
-    //     }
-    //
-    //     if (q.role) {
-    //         sql.andWhere(`(r.name like :role)`, {
-    //             role: `%${q.role}%`,
-    //         });
-    //     }
-    //
-    //
-    //     const [entities, total] = await sql.getManyAndCount();
-    //     // tính  bản ghi
-    //     const meta = new PageMeta({options: q, total});
-    //     //phân trang và chuẩn hoá dữ liệu đầu ra
-    //
-    //     // return new ProviderListPaginated(entities.map((c) => new ProviderPaginate(c, c.user, c.images, c.serviceProviders, c.service)), meta);
-    //
-    //     return new ProviderListPaginated(entities.map((c) => new ProviderPaginate(c, c.user, c.images, c.serviceProviders, c.service,c.evaluate)), meta);
-    // }
     update = async (id, user) => {
         await this.userRepository.update({id: id}, user);
     }
