@@ -35,12 +35,11 @@ class ProviderService {
     }
 
     all = async (q) => {
-
         const sql = this.providerRepository
             .createQueryBuilder('p')
             .leftJoinAndSelect('p.user', 'u')
             .leftJoinAndSelect('p.status', 's')
-            .orderBy('p.createdAt', 'DESC')
+            // .orderBy('p.', 'DESC')
             .take(q.take ? q.take : 12)
             .skip(q.skip ? q.skip : 0);
 
@@ -62,7 +61,7 @@ class ProviderService {
         }
 
         if (q.name) {
-            sql.andWhere(`(p.name  like :name)`, {name: `${q.name}`})
+            sql.andWhere(`(p.name  like :name)`, {name: `%${q.name}%`})
         }
         if (q.city) {
             sql.andWhere(`(p.city  like :city)`, {city: `${q.city}`})
@@ -70,6 +69,7 @@ class ProviderService {
         if (q.country) {
             sql.andWhere(`(p.country  like :country)`, {country: `${q.country}`})
         }
+
 
         const [entities, total] = await sql.getManyAndCount();
 

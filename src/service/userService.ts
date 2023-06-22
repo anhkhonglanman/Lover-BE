@@ -152,7 +152,6 @@ class UserService{
             });
             return searchPeople;
         } catch (error) {
-            console.log(`Error ${error} on adminSearchUsername in adminUserService`);
             throw error;
         }
     }

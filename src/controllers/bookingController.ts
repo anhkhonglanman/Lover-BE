@@ -16,7 +16,6 @@ class BookingController{
                 data: booking
             })
         } catch (e) {
-            console.log('tạo contract không thành công', e)
             res.status(400).json({
                 success: false,
                 message: 'tao contract ko thanh cong'
@@ -36,7 +35,6 @@ class BookingController{
             let booking = await bookingService.find(query)
             res.status(200).json(booking)
         } catch (e) {
-            console.log('Lỗi hệ thống', e)
             res.status(500).json({
                 message: 'Có lỗi hệ thống cmnr'
             })

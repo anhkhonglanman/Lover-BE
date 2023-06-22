@@ -11,7 +11,6 @@ class ProviderController {
                 data: newProvider
             })
         } catch (e) {
-            console.log('tạo người CCDV không thành công', e)
             res.status(400).json({
                 success: false,
                 message: 'tao provider ko thanh cong'
@@ -20,12 +19,10 @@ class ProviderController {
     }
     all = async (req: Request, res: Response) => {
         try {
-            console.log(1)
             const query = req.query
             let allProvider = await providerService.all(query)
             res.status(200).json(allProvider)
         } catch (e) {
-            console.log('Lỗi hệ thống', e)
             res.status(500).json({
                 message: 'Có lỗi hệ thống cmnr'
             })

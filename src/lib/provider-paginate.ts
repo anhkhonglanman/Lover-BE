@@ -24,7 +24,6 @@ export class ProviderPaginate {
 
     constructor(entity: any) {
         this.firstname = entity.user?.firstname
-        console.log(entity)
         // this.user = user;
         this.id = entity.id;
         this.name = entity.name;
