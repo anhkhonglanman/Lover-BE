@@ -24,15 +24,14 @@ export class ProviderPaginate {
     ready: string;
     user: User;
     firstname: string;
-    images: Image[]; 
+    images: Image[];
     serviceProviders: Service_provider[];
     service : Service[]
-
 
     constructor(entity: any, user: User, images: Image[],serviceProviders: Service_provider[], service : Service[]) {
         this.firstname = entity.user?.firstname
         // console.log(entity)
-        // this.user = user;
+        // this.user = user ;
         this.id = entity.id;
         this.name = entity.name;
         this.dob = entity.dob;
@@ -62,7 +61,7 @@ export class ProviderPaginate {
         // count: string;
         // ready: string;
         this.user = user;
-        this.images = images;  
+        this.images = images;
         this.serviceProviders=   serviceProviders;
         this.service=service;
 

@@ -115,12 +115,12 @@ class UserService{
 
 
         const [entities, total] = await sql.getManyAndCount();
-
         // tính  bản ghi
         const meta = new PageMeta({options: q, total});
-
         //phân trang và chuẩn hoá dữ liệu đầu ra
+
         return new ProviderListPaginated(entities.map((c) => new ProviderPaginate(c, c.user, c.images, c.serviceProviders, c.service)), meta);
+
     }
     update = async (id, user) => {
         await this.userRepository.update({id: id}, user);
