@@ -18,6 +18,7 @@ class ProviderService {
             dob: provider.dob,
             sex: provider.sex,
             city: provider.city,
+            avatar: provider.avatar,
             country: provider.country,
             height: provider.height,
             weight: provider.weight,
@@ -75,15 +76,12 @@ class ProviderService {
       }
       
 //cái này có thể viết gọn hơn
-    one = async (id) => {
-        return await this.providerRepository.findOne({
-            where: {id: id},
-            relations: {
-                images: true,
-                // service: true
-            }
-        })
-    }
+one = async (id) => {
+    return await this.providerRepository.findOne({
+      where: { id: id },
+      relations: ['images', 'serviceProviders', 'serviceProviders.service'],
+    });
+  };
     //không ai viết ntn cả =))))), không tái sử dụng được
     searchByType = async (id) => {
         let provider = await this.providerRepository.find({

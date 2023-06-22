@@ -60,7 +60,7 @@ export class Provider {
     @Column({type: "varchar", length: 255, default: "70000"})
     price: string;
 
-    @Column({type: "varchar", length: 255, nullable: true})
+    @Column({type: "varchar", length: 255, default:"0"}) 
     count: string;
     // sẵn sàng cho thuê
     @Column({type: "varchar", default:"1"})
@@ -70,7 +70,7 @@ export class Provider {
     @OneToMany(() => Image, (image) => image.provider)
     images : Image[];
     @OneToMany(() => Service_provider, serviceProvider => serviceProvider.provider)
-    serviceProviders: Service_provider[];
+  serviceProviders: Service_provider[];
     @ManyToOne(() => Status)
     status : Status;
     @OneToOne(() => User)

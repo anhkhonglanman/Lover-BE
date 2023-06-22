@@ -33,7 +33,6 @@ class ProviderController {
     }
     all = async (req: Request, res: Response) => {
         try {
-            console.log(1)
             const query = req.query
             let allProvider = await providerService.all(query)
             res.status(200).json(allProvider)
