@@ -11,7 +11,6 @@ class ProviderService {
     constructor() {
         this.providerRepository = AppDataSource.getRepository(Provider)
     }
-
 // những function như thế này là thừa không giải quyết vấn đề gì cả
     save = async (provider, user) => {
         const newProvider={
@@ -44,21 +43,20 @@ class ProviderService {
           .leftJoinAndSelect("p.status", "s")
           .leftJoinAndSelect('p.images', 'images')
           .leftJoinAndSelect("p.serviceProviders", "sp")
-          .leftJoinAndSelect("sp.service", "serv")
           .take(q.take ? q.take : 12)
           .skip(q.skip ? q.skip : 0);
-
+      
         if (q.keyword) {
           sql.andWhere(`(
             p.name like :keyword
             OR p.city like :keyword
           )`, { keyword: `%${q.keyword}%` });
         }
-
+      
         if (q.sex) {
           sql.andWhere(`(p.sex like :sex)`, { sex: `${q.sex}` });
         }
-
+      
         if (q.name) {
           sql.andWhere(`(p.name like :name)`, { name: `${q.name}` });
         }
@@ -68,21 +66,19 @@ class ProviderService {
         if (q.country) {
           sql.andWhere(`(p.country like :country)`, { country: `${q.country}` });
         }
-
+      
         const [entities, total] = await sql.getManyAndCount();
-
+      
         const meta = new PageMeta({ options: q, total });
-
-        // return new ProviderListPaginated(entities.map((c) => new ProviderPaginate(c, c.user, c.images, c.serviceProviders, c.service)), meta);
-
-        return new ProviderListPaginated(entities.map((c) => new ProviderPaginate(c, c.user, c.images, c.serviceProviders, c.service, c.evaluate)), meta);
+      
+        return new ProviderListPaginated(entities.map((c) => new ProviderPaginate(c, c.user, c.images, c.serviceProviders, c.service)), meta);
       }
-
+      
 //cái này có thể viết gọn hơn
 one = async (id) => {
     return await this.providerRepository.findOne({
       where: { id: id },
-      relations: ['images', 'serviceProviders', 'serviceProviders.service', 'user', ],
+      relations: ['images', 'serviceProviders', 'serviceProviders.service' ],
     });
   };
     //không ai viết ntn cả =))))), không tái sử dụng được
