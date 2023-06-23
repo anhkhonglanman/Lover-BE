@@ -118,7 +118,7 @@ class UserService{
         const meta = new PageMeta({options: q, total});
 
         //phân trang và chuẩn hoá dữ liệu đầu ra
-        return new ProviderListPaginated(entities.filter((c) => new ProviderPaginate(c)), meta)
+        return new ProviderListPaginated(entities.map((c) => {return c}), meta)
     }
     update = async (id, user) => {
         await this.userRepository.update({id: id}, user);

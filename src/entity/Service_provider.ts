@@ -8,8 +8,8 @@ import {Provider} from "./Provider";
 export class Service_provider{
     @PrimaryGeneratedColumn()
     id: number;
-    @ManyToOne(() => Service)
-    service : Service
-    @ManyToOne(() => Provider)
+    @ManyToOne(() => Service, service => service.serviceProviders)
+  service: Service;
+    @ManyToOne(() => Provider, provider=>provider.serviceProviders)
     provider : Provider
 }

@@ -6,7 +6,7 @@ import serviceProviderRouter from "./serviceProviderRouter";
 import otpRouter from "./otpRouter";
 import bookingRouter from "./bookingRouter";
 import typeRouter from "./typeRouter";
-import serviceRouter from "./serviceRouter";
+import evaluateRouter from "./evaluateRouter";
 const hasPermissionsAdmin = require('../middleware/CheckRoleAdmin')
 const passport = require('passport');
 const hasPermissionsUser = require('../middleware/checkRoleUser')
@@ -18,7 +18,14 @@ router.use('/admin', passport.authenticate('jwt', { session: false, failWithErro
     (req, res, next) => {
         hasPermissionsAdmin(req, res, next, );
     },adminRouter);
-router.use('/services', serviceRouter)
+router.use('/services', passport.authenticate('jwt', { session: false, failWithError: true }),
+    (req, res, next) => {
+        hasPermissionsUser(req, res, next, );
+    },serviceProviderRouter)
+router.use('/evaluate', passport.authenticate('jwt', { session: false, failWithError: true }),
+    (req, res, next) => {
+        hasPermissionsUser(req, res, next, );
+    },evaluateRouter)
 router.use('/service-provider',serviceProviderRouter)
 router.use('/bookings',bookingRouter)
 router.use('/type',typeRouter)
