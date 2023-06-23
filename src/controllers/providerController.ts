@@ -97,6 +97,26 @@ class ProviderController {
             data: isPublic
         })
     }
+    increaseCounts=async (req: Request, res: Response)=> {
+        const id = req.params.id 
+        let data= await providerService.increaseCount(id);
+        res.status(200).json({
+            data: data
+        })
+      }
+    
+    getTopProviders=async (req: Request, res: Response)=> {
+        let data= await providerService.getTopProviders();
+        res.status(200).json({
+            data: data
+        })
+    }
+     getNewlyJoinedProviders=async (req: Request, res: Response)=> {
+        let data= await providerService.getNewlyJoinedProviders();
+        res.status(200).json({
+            data: data
+        })
+      }
 }
 
 export default new ProviderController()

@@ -127,6 +127,35 @@ one = async (id) => {
         await this.providerRepository.update({id}, {ready: 2});
         return {id, ready: 2}
     }
+     increaseCount= async (providerId)=> {
+      const provider = await this.providerRepository.findOneBy({id: providerId});
+      if (!provider) {
+        throw new Error('Provider not found');
+      }
+      provider.count = await (parseInt(provider.count) + 1).toString();
+      return (await this.providerRepository.save(provider));
+    }
+     getTopProviders= async()=>{
+      const topProviders = await this.providerRepository.find({
+        order: {
+          count: 'DESC',
+        },
+        take: 15,
+      });
+  
+      const males = topProviders.filter(provider => provider.sex === 'male').slice(0, 7);
+      const females = topProviders.filter(provider => provider.sex === 'female').slice(0, 8);
+  
+      return { males, females };
+    }
+     getNewlyJoinedProviders=async ()=> {
+      return this.providerRepository.find({
+        order: {
+          joinDate: 'DESC',
+        },
+        take: 15,
+      });
+    }
 
 }
 

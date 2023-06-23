@@ -7,6 +7,9 @@ const passport = require('passport');
 const providerRouter = Router()
 
 providerRouter.get('/', providerController.all)
+providerRouter.get('/topProviders', providerController.getTopProviders)
+providerRouter.get('/newlyJoinedProviders', providerController.getNewlyJoinedProviders)
+providerRouter.post('/increaseCount/:id', providerController.increaseCounts)
 providerRouter.get('/providerDetail/:id', providerController.showOne)
 providerRouter.post('/',passport.authenticate('jwt', { session: false, failWithError: true }), providerController.save)
 providerRouter.put('/:id',passport.authenticate('jwt', { session: false, failWithError: true }),
