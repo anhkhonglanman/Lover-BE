@@ -70,7 +70,6 @@ socketTEst.on('connect', async ()=>{
         });
     })
 })
-
 socketTEst.on('error', async ()=>{
     signale.fatal(`${socketTEst.id} error`)
 })

@@ -99,7 +99,6 @@ class ProviderController {
             data: isPublic
         })
     }
-
 }
 
 export default new ProviderController()

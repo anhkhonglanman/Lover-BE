@@ -4,6 +4,7 @@ import { PageMeta, Paginate } from "../lib/paginate";
 import { ProviderListPaginated, ProviderPaginate } from "../lib/provider-paginate";
 import { Image } from "../entity/Image";
 import {Booking} from "../entity/Booking";
+import {tr} from "date-fns/locale";
 
 class ProviderService {
     private providerRepository
@@ -124,6 +125,7 @@ one = async (id) => {
         await this.providerRepository.update({id}, {ready: 2});
         return {id, ready: 2}
     }
+
 }
 
 export default new ProviderService()
