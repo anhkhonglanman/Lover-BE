@@ -55,6 +55,7 @@ class UserService{
     findOne = async (userId) => {
         let userFind = await this.userRepository.findOne({
             relations: {
+
                 role: true
             },
             where: {
@@ -72,13 +73,6 @@ class UserService{
         });
         return userFind;
     }
-    // all = async () => {
-    //     return await this.userRepository.find({
-    //         relations: {
-    //             role: true
-    //         }
-    //     })
-    // }
     all = async (q) => {
         const sql = this.userRepository
             .createQueryBuilder('u')

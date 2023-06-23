@@ -2,6 +2,7 @@ import {AppDataSource} from "../ormconfig";
 import {Booking} from "../entity/Booking";
 import {PageMeta} from "../lib/paginate";
 import {BookingListPaginated, BookingPaginate} from "../lib/booking-paginate";
+import {id} from "date-fns/locale";
 
 class BookingService {
     private bookingRepository
@@ -26,35 +27,44 @@ class BookingService {
     all = async () => {
         return await this.bookingRepository.find()
     }
-    find = async (q) => {
-        const sql = this.bookingRepository
-            .createQueryBuilder('b')
-            // .leftJoinAndSelect('b.user', 'u')
-            .leftJoinAndSelect('b.providers', 'p')
-            .orderBy('b.startTime', 'DESC')
-            .take(q.take ? q.take : 12)
-            .skip(q.skip ? q.skip : 0);
-
-        if (q.keyword) {
-            sql.andWhere(
-                `(
-                b.name like :keyword
-                )`,
-                {keyword: `%${q.keyword}%`},
-            );
-        }
-
-        if (q.status) {
-            sql.andWhere(
-                `(q.status like: status)`, {status: `${q.status}`}
-            )
-        }
-        const [entities, total] = await sql.getManyAndCount();
-
-        const meta = new PageMeta({options: q, total});
-        return new BookingListPaginated(entities.filter((c) => new BookingPaginate(c)), meta)
-
+    detail = async (id) => {
+        return await this.bookingRepository.findOne({where:{id: id}})
     }
+    find = async (text) => {
+        return await this.bookingRepository.find({
+            where: {
+                status: text
+            }
+        })
+    }
+    // find = async (q) => {
+    //     const sql = this.bookingRepository
+    //         .createQueryBuilder('b')
+    //         // .leftJoinAndSelect('b.user', 'u')
+    //         .leftJoinAndSelect('b.providers', 'p')
+    //         .orderBy('b.startTime', 'DESC')
+    //         .take(q.take ? q.take : 12)
+    //         .skip(q.skip ? q.skip : 0);
+    //
+    //     if (q.keyword) {
+    //         sql.andWhere(
+    //             `(
+    //         b.name like :keyword
+    //         )`,
+    //             {keyword: `%${q.keyword}%`},
+    //         );
+    //     }
+    //     if (q.status) {
+    //         sql.andWhere(
+    //             `(b.status like: status)`, {status: `%${q.status}%`}
+    //         )
+    //     }
+    //     const [entities, total] = await sql.getManyAndCount();
+    //
+    //     const meta = new PageMeta({options: q, total});
+    //     return new BookingListPaginated(entities.filter((c) => new BookingPaginate(c)), meta)
+    //
+    // }
     delete = async (id) => {
         await this.bookingRepository.delete({id: id})
     }

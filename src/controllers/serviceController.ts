@@ -11,6 +11,11 @@ class ServiceController{
         }
         return res.status(200).json(service);
     }
-
+    allService = async (req: Request, res: Response) => {
+        let services = await serviceService.all()
+        res.status(201).json({
+            data: services
+        })
+    }
 }
 export default new ServiceController()

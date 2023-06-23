@@ -8,7 +8,6 @@ class UserController {
     signup = async (req: Request, res: Response) => {
         try {
             let checkMail = await userService.checkMail(req.body.email);
-            console.log(checkMail);
             if(checkMail == true){
             let check = await userService.loginCheck({username:req.body.username})
             if (check == "User is not exist") {
@@ -40,7 +39,6 @@ class UserController {
          });
         }
         } catch (e) {
-            console.log("error in signup:", e)
             res.status(401).json({
                 message: 'trung tai khoan',
                 success: false
@@ -50,7 +48,6 @@ class UserController {
     login = async (req: Request, res: Response) => {
         try {
             let payload = await userService.loginCheck(req.body)
-            console.log('login with user: ', payload)
             if (payload === "User is not exist") {
                 res.status(401).json({
                     data: payload
@@ -70,7 +67,6 @@ class UserController {
             }
 
         } catch (e) {
-            console.log("error in login:", e)
             res.status(400).json({
                 message: 'error in login',
                 success: false
@@ -80,7 +76,7 @@ class UserController {
     }
     allUser = async (req: Request, res: Response) => {
         const query = req.query
-        let users = await userService.all(query);
+        let users = await userService.test(query);
         res.status(200).json({
             data: users
         })
@@ -132,7 +128,6 @@ class UserController {
             let user = await userService.adminSearchUsername(username);
             res.status(200).json(user);
         } catch (e) {
-            console.log("error in searchUsername:", e)
             res.status(400).json({
                 message: 'error in searchUsername',
                 success: false
