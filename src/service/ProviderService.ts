@@ -44,6 +44,7 @@ class ProviderService {
           .leftJoinAndSelect("p.status", "s")
           .leftJoinAndSelect('p.images', 'images')
           .leftJoinAndSelect("p.serviceProviders", "sp")
+          .leftJoinAndSelect("sp.service", "ser")
           .leftJoinAndSelect("p.evaluate", "eva")
           .take(q.take ? q.take : 12)
           .skip(q.skip ? q.skip : 0);
