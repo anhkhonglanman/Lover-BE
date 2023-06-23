@@ -2,6 +2,7 @@ import {AppDataSource} from "../ormconfig";
 import {Booking} from "../entity/Booking";
 import {PageMeta} from "../lib/paginate";
 import {BookingListPaginated, BookingPaginate} from "../lib/booking-paginate";
+import {id} from "date-fns/locale";
 
 class BookingService {
     private bookingRepository
