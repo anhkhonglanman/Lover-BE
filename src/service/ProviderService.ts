@@ -116,12 +116,11 @@ one = async (id) => {
         await this.providerRepository.update({id: id}, update)
     }
     private =  async (id) => {
-        let ready = await this.providerRepository.findOneBy({ready: 1})
-        await this.providerRepository.update({id: id}, {statusContent: ready})
+        await this.providerRepository.update({id: id}, {ready: 0})
     }
     public =  async (id) => {
-        await this.providerRepository.update({id}, {ready: 0});
-        return {id, ready: 0}
+        await this.providerRepository.update({id}, {ready: 1});
+        return {id, ready: 1}
     }
     forRent =  async (id) => {
         await this.providerRepository.update({id}, {ready: 2});

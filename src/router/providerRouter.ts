@@ -10,6 +10,10 @@ providerRouter.get('/', providerController.all)
 providerRouter.get('/topProviders', providerController.getTopProviders)
 providerRouter.get('/newlyJoinedProviders', providerController.getNewlyJoinedProviders)
 providerRouter.post('/increaseCount/:id', providerController.increaseCounts)
+providerRouter.post('/privateProvider/:id', providerController.privateProvider)
+providerRouter.post('/publicProvider/:id', providerController.publicProvider)
+providerRouter.post('/forRentProvider/:id', providerController.forRentProvider)
+
 providerRouter.get('/providerDetail/:id', providerController.showOne)
 providerRouter.post('/',passport.authenticate('jwt', { session: false, failWithError: true }), providerController.save)
 providerRouter.put('/:id',passport.authenticate('jwt', { session: false, failWithError: true }),

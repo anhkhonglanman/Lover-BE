@@ -91,7 +91,7 @@ class ProviderController {
     }
     forRentProvider = async (req: Request, res: Response) => {
         let providerId = req.params.id
-        let isPublic = await providerService.public(providerId)
+        let isPublic = await providerService.forRent(providerId)
         res.status(200).json({
             message: 'đang cho thuê',
             data: isPublic
