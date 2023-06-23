@@ -18,6 +18,6 @@ class EvaluateController {
             success: true,
             data: newEvaluate
         })
-
     }
 }
+export default new EvaluateController();

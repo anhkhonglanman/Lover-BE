@@ -19,7 +19,7 @@ class ProviderService {
             dob: provider.dob,
             sex: provider.sex,
             city: provider.city,
-            avatar: provider.avatar,
+            avatarProvider: provider.avatarProvider,
             country: provider.country,
             height: provider.height,
             weight: provider.weight,

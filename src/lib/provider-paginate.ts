@@ -11,7 +11,7 @@ export class ProviderPaginate {
     sex: string;
     city: string;
     country: string;
-    avatar: string;
+    avatarProvider: string;
     height: string;
     weight: string;
     hobby: string;
@@ -31,7 +31,7 @@ export class ProviderPaginate {
     constructor(entity: any, user: User, images: Image[],serviceProviders: Service_provider[], service : Service[], ) 
     {
         this.firstname = entity.user?.firstname
-        console.log(entity, 'meo meo')
+        console.log(entity)
         // this.user = user;
         this.id = entity.id;
         this.name = entity.name;
@@ -40,6 +40,7 @@ export class ProviderPaginate {
         this.joinDate = entity.joinDate;
         this.city= entity.city
         this.country= entity.country
+        this.avatarProvider= entity.avatarProvider;
         this.height= entity.height
         this.weight= entity.weight
         this.hobby= entity.hobby

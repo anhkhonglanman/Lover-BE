@@ -35,7 +35,7 @@ export class Provider {
     country: string;
 
     @Column({type: "varchar", length: 255, nullable: true})
-    avatar: string;
+    avatarProvider: string;
 
     @Column({type: "varchar", length: 255, nullable: true})
     height: string;
