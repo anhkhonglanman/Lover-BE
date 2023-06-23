@@ -46,7 +46,7 @@ class ProviderService {
           .leftJoinAndSelect("p.serviceProviders", "sp")
           .leftJoinAndSelect("sp.service", "ser")
           .leftJoinAndSelect("p.evaluate", "eva")
-          .take(q.take ? q.take : 12)
+          .take(q.take ? q.take : 15)
           .skip(q.skip ? q.skip : 0);
       
         if (q.keyword) {
