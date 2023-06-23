@@ -1,5 +1,5 @@
 import {Request, Response} from "express";
-import evaluateService from "src/service/evaluateService";
+import evaluateService from "../service/evaluateService";
 const jwt = require('jsonwebtoken')
 
 

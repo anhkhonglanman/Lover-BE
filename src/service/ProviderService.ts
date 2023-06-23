@@ -43,6 +43,7 @@ class ProviderService {
           .leftJoinAndSelect("p.status", "s")
           .leftJoinAndSelect('p.images', 'images')
           .leftJoinAndSelect("p.serviceProviders", "sp")
+          .leftJoinAndSelect("p.evaluate", "eva")
           .take(q.take ? q.take : 12)
           .skip(q.skip ? q.skip : 0);
       
@@ -71,7 +72,7 @@ class ProviderService {
       
         const meta = new PageMeta({ options: q, total });
       
-        return new ProviderListPaginated(entities.map((c) => new ProviderPaginate(c, c.user, c.images, c.serviceProviders, c.service)), meta);
+        return new ProviderListPaginated(entities.map((c) => new ProviderPaginate(c, c.user, c.images, c.serviceProviders, c.service, c.evaluate)), meta);
       }
       
 //cái này có thể viết gọn hơn
