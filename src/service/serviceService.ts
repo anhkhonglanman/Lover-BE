@@ -7,7 +7,9 @@ class ServiceService {
     constructor() {
         this.serviceRepository = AppDataSource.getRepository(Service)
     }
-
+    all = async () => {
+        return await this.serviceRepository.find()
+    }
     getByIdService = async (idType) => {
         const service = await this.serviceRepository.find(
             {

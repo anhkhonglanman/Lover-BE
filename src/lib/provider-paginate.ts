@@ -3,6 +3,7 @@ import {Paginate} from "./paginate";
 import {User} from "../entity/User";
 import { Image } from "../entity/Image";
 import { Service } from '../entity/Service';
+import { Evaluate } from '../entity/Evaluate';
 
 export class ProviderPaginate {
     id: number;
@@ -11,7 +12,7 @@ export class ProviderPaginate {
     sex: string;
     city: string;
     country: string;
-    avatar: string;
+    avatarProvider: string;
     height: string;
     weight: string;
     hobby: string;
@@ -27,8 +28,9 @@ export class ProviderPaginate {
     images: Image[]; 
     serviceProviders: Service_provider[];
     service : Service[];
+    evaluate: Evaluate[];
 
-    constructor(entity: any, user: User, images: Image[],serviceProviders: Service_provider[], service : Service[], ) 
+    constructor(entity: any, user: User, images: Image[],serviceProviders: Service_provider[], service : Service[],   evaluate: Evaluate[] ) 
     {
         this.firstname = entity.user?.firstname
         // this.user = user;
@@ -39,6 +41,7 @@ export class ProviderPaginate {
         this.joinDate = entity.joinDate;
         this.city= entity.city
         this.country= entity.country
+        this.avatarProvider= entity.avatarProvider;
         this.height= entity.height
         this.weight= entity.weight
         this.hobby= entity.hobby
@@ -52,6 +55,7 @@ export class ProviderPaginate {
         this.images = images;  
         this.serviceProviders=serviceProviders;
         this.service=service;
+        this.evaluate=evaluate;
     }
 }
 

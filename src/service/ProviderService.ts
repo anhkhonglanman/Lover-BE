@@ -4,6 +4,7 @@ import { PageMeta, Paginate } from "../lib/paginate";
 import { ProviderListPaginated, ProviderPaginate } from "../lib/provider-paginate";
 import { Image } from "../entity/Image";
 import {Booking} from "../entity/Booking";
+import {tr} from "date-fns/locale";
 
 class ProviderService {
     private providerRepository
@@ -18,7 +19,7 @@ class ProviderService {
             dob: provider.dob,
             sex: provider.sex,
             city: provider.city,
-            avatar: provider.avatar,
+            avatarProvider: provider.avatarProvider,
             country: provider.country,
             height: provider.height,
             weight: provider.weight,
@@ -43,7 +44,9 @@ class ProviderService {
           .leftJoinAndSelect("p.status", "s")
           .leftJoinAndSelect('p.images', 'images')
           .leftJoinAndSelect("p.serviceProviders", "sp")
-          .take(q.take ? q.take : 12)
+          .leftJoinAndSelect("sp.service", "ser")
+          .leftJoinAndSelect("p.evaluate", "eva")
+          .take(q.take ? q.take : 15)
           .skip(q.skip ? q.skip : 0);
       
         if (q.keyword) {
@@ -71,14 +74,14 @@ class ProviderService {
       
         const meta = new PageMeta({ options: q, total });
       
-        return new ProviderListPaginated(entities.map((c) => new ProviderPaginate(c, c.user, c.images, c.serviceProviders, c.service)), meta);
+        return new ProviderListPaginated(entities.map((c) => new ProviderPaginate(c, c.user, c.images, c.serviceProviders, c.service, c.evaluate)), meta);
       }
       
 //cái này có thể viết gọn hơn
 one = async (id) => {
     return await this.providerRepository.findOne({
       where: { id: id },
-      relations: ['images', 'serviceProviders', 'serviceProviders.service' ],
+      relations: ['images', 'serviceProviders', 'serviceProviders.service', 'evaluate' ],
     });
   };
     //không ai viết ntn cả =))))), không tái sử dụng được
@@ -113,17 +116,46 @@ one = async (id) => {
         await this.providerRepository.update({id: id}, update)
     }
     private =  async (id) => {
-        let ready = await this.providerRepository.findOneBy({ready: 1})
-        await this.providerRepository.update({id: id}, {statusContent: ready})
+        await this.providerRepository.update({id: id}, {ready: 0})
     }
     public =  async (id) => {
-        await this.providerRepository.update({id}, {ready: 0});
-        return {id, ready: 0}
+        await this.providerRepository.update({id}, {ready: 1});
+        return {id, ready: 1}
     }
     forRent =  async (id) => {
         await this.providerRepository.update({id}, {ready: 2});
         return {id, ready: 2}
     }
+     increaseCount= async (providerId)=> {
+      const provider = await this.providerRepository.findOneBy({id: providerId});
+      if (!provider) {
+        throw new Error('Provider not found');
+      }
+      provider.count = await (parseInt(provider.count) + 1).toString();
+      return (await this.providerRepository.save(provider));
+    }
+     getTopProviders= async()=>{
+      const topProviders = await this.providerRepository.find({
+        order: {
+          count: 'DESC',
+        },
+        take: 15,
+      });
+  
+      const males = topProviders.filter(provider => provider.sex === 'male').slice(0, 7);
+      const females = topProviders.filter(provider => provider.sex === 'female').slice(0, 8);
+  
+      return { males, females };
+    }
+     getNewlyJoinedProviders=async ()=> {
+      return this.providerRepository.find({
+        order: {
+          joinDate: 'DESC',
+        },
+        take: 15,
+      });
+    }
+
 }
 
 export default new ProviderService()

@@ -24,7 +24,6 @@ class ProviderController {
                 data: newProvider
             })
         } catch (e) {
-            console.log('tạo người CCDV không thành công', e)
             res.status(400).json({
                 success: false,
                 message: 'tao provider ko thanh cong'
@@ -38,7 +37,6 @@ class ProviderController {
             res.status(200).json({
                 data:allProvider})
         } catch (e) {
-            console.log('Lỗi hệ thống', e)
             res.status(500).json({
                 message: 'Có lỗi hệ thống cmnr'
             })
@@ -93,13 +91,32 @@ class ProviderController {
     }
     forRentProvider = async (req: Request, res: Response) => {
         let providerId = req.params.id
-        let isPublic = await providerService.public(providerId)
+        let isPublic = await providerService.forRent(providerId)
         res.status(200).json({
             message: 'đang cho thuê',
             data: isPublic
         })
     }
-
+    increaseCounts=async (req: Request, res: Response)=> {
+        const id = req.params.id 
+        let data= await providerService.increaseCount(id);
+        res.status(200).json({
+            data: data
+        })
+      }
+    
+    getTopProviders=async (req: Request, res: Response)=> {
+        let data= await providerService.getTopProviders();
+        res.status(200).json({
+            data: data
+        })
+    }
+     getNewlyJoinedProviders=async (req: Request, res: Response)=> {
+        let data= await providerService.getNewlyJoinedProviders();
+        res.status(200).json({
+            data: data
+        })
+      }
 }
 
 export default new ProviderController()
