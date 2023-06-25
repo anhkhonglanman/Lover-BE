@@ -17,5 +17,23 @@ class ServiceController{
             data: services
         })
     }
+    basicService = async (req: Request, res: Response) => {
+        let services = await serviceService.basic()
+        res.status(201).json({
+            data: services
+        })
+    }
+    freeService = async (req: Request, res: Response) => {
+        let services = await serviceService.free()
+        res.status(201).json({
+            data: services
+        })
+    }
+    moreService = async (req: Request, res: Response) => {
+        let services = await serviceService.more()
+        res.status(201).json({
+            data: services
+        })
+    }
 }
 export default new ServiceController()
