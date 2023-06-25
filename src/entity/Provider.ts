@@ -11,8 +11,9 @@ import {User} from "./User";
 import {Image} from "./Image";
 import {Booking} from "./Booking";
 import {Status} from "./Status";
-import { Service_provider } from "./Service_provider";
-import { Evaluate } from "./Evaluate";
+import {Service_provider} from "./Service_provider";
+import {Evaluate} from "./Evaluate";
+
 // import {Booking} from "./Booking";
 @Entity()
 export class Provider {
@@ -61,21 +62,21 @@ export class Provider {
     @Column({type: "varchar", length: 255, default: "70000"})
     price: string;
 
-    @Column({type: "varchar", length: 255, default:"0"}) 
+    @Column({type: "varchar", length: 255, default: "0"})
     count: string;
     // sẵn sàng cho thuê
-    @Column({type: "varchar", default:"1"})
+    @Column({type: "varchar", default: "1"})
     ready: string;
     @OneToMany(() => Booking, (booking) => booking.providers)
     booking: Booking[];
     @OneToMany(() => Image, (image) => image.provider)
-    images : Image[];
+    images: Image[];
     @OneToMany(() => Service_provider, serviceProvider => serviceProvider.provider)
-   serviceProviders: Service_provider[];
-   @OneToMany(() => Evaluate, (evaluate) => evaluate.provider)
-evaluate: Evaluate[];
+    serviceProviders: Service_provider[];
+    @OneToMany(() => Evaluate, (evaluate) => evaluate.provider)
+    evaluate: Evaluate[];
     @ManyToOne(() => Status)
-    status : Status;
+    status: Status;
     @OneToOne(() => User)
     @JoinColumn()
     user: User;

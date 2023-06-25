@@ -104,7 +104,23 @@ one = async (id) => {
         })
         return (provider);
     }
-    accept = async (id) => {
+    accept = async (id, req) => {
+        // let user = req['user'].id
+        // await this.providerRepository.update({
+        //     relations: {
+        //         user: true
+        //     },
+        //     where: {
+        //         user: {
+        //             provider: {
+        //                 user: user
+        //             }
+        //         }
+        //     },
+        //     set: {
+        //         count: "parseInt(count + 1)"
+        //     }
+        // })
         return await AppDataSource.getRepository(Booking)
             .update({id : id}, {status: "accept"})
     }
