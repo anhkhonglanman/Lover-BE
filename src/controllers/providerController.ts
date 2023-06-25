@@ -48,6 +48,13 @@ class ProviderController {
         let oneProvider = await providerService.one(id)
         res.status(200).json(oneProvider)
     }
+    showOneByIdUser = async (req: Request, res: Response) => {
+        let token = req.headers.authorization.split(' ')[1];
+        const decodedToken = jwt.decode(token);
+        let id = decodedToken.idUser
+        let oneProvider = await providerService.oneByIdUser(id)
+        res.status(200).json(oneProvider)
+    }
     acceptUser = async (req: Request, res: Response) => {
         let id  = req.params.id
         const data = await providerService.accept(id)
