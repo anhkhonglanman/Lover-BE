@@ -6,8 +6,6 @@ export class Status{
     @PrimaryGeneratedColumn()
     id: number;
     // có 2 trang thái on , off để đăng nhập
-    @Column({type: "varchar", default:"off"})
+    @Column({type: "varchar", default:"ON"})
     status: string;
-    @ManyToOne(() => Provider)
-    provider : Provider;
 }
