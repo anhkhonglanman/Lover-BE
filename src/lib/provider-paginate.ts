@@ -4,6 +4,7 @@ import {User} from "../entity/User";
 import { Image } from "../entity/Image";
 import { Service } from '../entity/Service';
 import { Evaluate } from '../entity/Evaluate';
+import { Type } from '../entity/Type';
 
 export class ProviderPaginate {
     id: number;
@@ -29,8 +30,9 @@ export class ProviderPaginate {
     serviceProviders: Service_provider[];
     service : Service[];
     evaluate: Evaluate[];
+    type: Type[];
 
-    constructor(entity: any, user: User, images: Image[],serviceProviders: Service_provider[], service : Service[],   evaluate: Evaluate[] ) 
+    constructor(entity: any, user: User, images: Image[],serviceProviders: Service_provider[], service : Service[],   evaluate: Evaluate[],  type: Type[] ) 
     {
         this.firstname = entity.user?.firstname
         console.log(entity)
@@ -57,6 +59,7 @@ export class ProviderPaginate {
         this.serviceProviders=serviceProviders;
         this.service=service;
         this.evaluate=evaluate;
+        this.type=type;
     }
 }
 
