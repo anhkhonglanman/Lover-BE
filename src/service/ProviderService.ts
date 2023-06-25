@@ -75,14 +75,14 @@ class ProviderService {
       
         const meta = new PageMeta({ options: q, total });
       
-        return new ProviderListPaginated(entities.map((c) => new ProviderPaginate(c, c.user, c.images, c.serviceProviders, c.service, c.evaluate, c.serviceProviders.service.type)), meta);
+        return new ProviderListPaginated(entities.map((c) => new ProviderPaginate(c, c.user, c.images, c.serviceProviders, c.service, c.evaluate,c.type)), meta);
       }
       
 //cái này có thể viết gọn hơn
 one = async (id) => {
     return await this.providerRepository.findOne({
       where: { id: id },
-      relations: ['images', 'serviceProviders', 'serviceProviders.service', 'evaluate' ],
+      relations: ['images', 'serviceProviders', 'serviceProviders.service', 'evaluate' ,'serviceProviders.service.type'],
     });
   };
     //không ai viết ntn cả =))))), không tái sử dụng được
