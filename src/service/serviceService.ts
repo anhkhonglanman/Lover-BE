@@ -23,7 +23,42 @@ class ServiceService {
         );
         return service;
     }
-
+    basic = async () => {
+        return await this.serviceRepository.find({
+            relations: {
+                type: true
+            },
+            where: {
+                type: {
+                    id: 1
+                }
+            }
+        })
+    }
+    free = async () => {
+        return await this.serviceRepository.find({
+            relations: {
+                type: true
+            },
+            where: {
+                type: {
+                    id: 2
+                }
+            }
+        })
+    }
+    more = async () => {
+        return await this.serviceRepository.find({
+            relations: {
+                type: true
+            },
+            where: {
+                type: {
+                    id: 3
+                }
+            }
+        })
+    }
 }
 
 export default new ServiceService();

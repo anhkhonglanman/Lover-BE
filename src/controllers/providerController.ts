@@ -33,6 +33,7 @@ class ProviderController {
     all = async (req: Request, res: Response) => {
         try {
             const query = req.query
+            console.log(query)
             let allProvider = await providerService.all(query)
             res.status(200).json({
                 data:allProvider})
@@ -50,7 +51,9 @@ class ProviderController {
     }
     acceptUser = async (req: Request, res: Response) => {
         let id  = req.params.id
-        const data = await providerService.accept(id)
+        const data = await providerService.accept(id, req)
+        // console.log('----- data: ',data)
+        // await providerService.increaseCount(data.id)
         res.status(200).json({
             message: true,
             data: data
