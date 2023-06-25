@@ -20,11 +20,15 @@ providerRouter.put('/:id',passport.authenticate('jwt', { session: false, failWit
     (req, res, next) => {
         hasPermissionsProvider(req, res, next, );
     },providerController.editProvider);
-    providerRouter.put('/privateProvider/:id',passport.authenticate('jwt', { session: false, failWithError: true }),
+providerRouter.put('/privateProvider/:id',passport.authenticate('jwt', { session: false, failWithError: true }),
     (req, res, next) => {
         hasPermissionsProvider(req, res, next, );
     },providerController.privateProvider);
-    providerRouter.put('/publicProvider/:id',passport.authenticate('jwt', { session: false, failWithError: true }),
+    providerRouter.get('/providerDetailByUser',passport.authenticate('jwt', { session: false, failWithError: true }),
+    (req, res, next) => {
+        hasPermissionsProvider(req, res, next, );
+    },providerController.showOneByIdUser);
+providerRouter.put('/publicProvider/:id',passport.authenticate('jwt', { session: false, failWithError: true }),
     (req, res, next) => {
         hasPermissionsProvider(req, res, next, );
     },providerController.publicProvider);

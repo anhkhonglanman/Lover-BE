@@ -105,23 +105,13 @@ one = async (id) => {
         })
         return (provider);
     }
-    accept = async (id, req) => {
-        // let user = req['user'].id
-        // await this.providerRepository.update({
-        //     relations: {
-        //         user: true
-        //     },
-        //     where: {
-        //         user: {
-        //             provider: {
-        //                 user: user
-        //             }
-        //         }
-        //     },
-        //     set: {
-        //         count: "parseInt(count + 1)"
-        //     }
-        // })
+    oneByIdUser = async (id) => {
+      return await this.providerRepository.findOne({
+        where: { user: id },
+        relations: ['images', 'serviceProviders', 'serviceProviders.service', 'evaluate' ,'serviceProviders.service.type'],
+      });
+    };
+    accept = async (id) => {
         return await AppDataSource.getRepository(Booking)
             .update({id : id}, {status: "accept"})
     }
