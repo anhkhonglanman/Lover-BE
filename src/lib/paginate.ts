@@ -18,11 +18,16 @@ export interface IPaginated<T> {
     meta: PageMeta
 }
 
+export interface IPaginated<T> {
+    docs: T[];
+    meta: PageMeta | null; // Thêm kiểu dữ liệu `null`
+}
+
 export class PageMeta {
     readonly page: number;
     readonly take: number;
     readonly total: number;
-    readonly totalPage: number;
+    readonly totalPage: number;''
     readonly hasPreviousPage: boolean;
     readonly hasNextPage: boolean;
 
@@ -31,13 +36,22 @@ export class PageMeta {
         // this.take = options.take;
         this.take = 10;
         this.total = total;
-        this.totalPage = Math.ceil(this.total / this.take);
+        this.totalPage = Math.ceil(total / 10);
         this.hasPreviousPage = this.page > 1;
         this.hasNextPage = this.page < this.totalPage;
+
+        if (this.total < this.take) {
+            this.totalPage = 1;
+        } else {
+            const remainingItems = this.total % this.take;
+            if (remainingItems > 0) {
+                this.totalPage++;
+            }
+        }
     }
 }
 
-export function Paginate<T>(classRef){
+    export function Paginate<T>(classRef){
     class Pagination implements IPaginated<T> {
         docs: T[];
         meta: PageMeta;

@@ -33,7 +33,6 @@ export class ProviderPaginate {
     constructor(entity: any, user: User, images: Image[],serviceProviders: Service_provider[], service : Service[],   evaluate: Evaluate[] ) 
     {
         this.firstname = entity.user?.firstname
-        console.log(entity)
         // this.user = user;
         this.id = entity.id;
         this.name = entity.name;

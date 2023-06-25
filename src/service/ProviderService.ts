@@ -61,7 +61,7 @@ class ProviderService {
         }
       
         if (q.name) {
-          sql.andWhere(`(p.name like :name)`, { name: `${q.name}` });
+          sql.andWhere(`(p.name like :name)`, { name: `%${q.name}%` });
         }
         if (q.city) {
           sql.andWhere(`(p.city like :city)`, { city: `${q.city}` });

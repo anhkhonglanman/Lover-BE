@@ -3,10 +3,7 @@ import ServiceProviderController from "../controllers/ServiceProviderController"
 const passport = require('passport');
 const hasPermissionsProvider = require('../middleware/CheckRoleProvider')
 const ServiceProviderRouter = Router()
-ServiceProviderRouter.get('/type/:id',passport.authenticate('jwt', { session: false, failWithError: true }),
-    (req, res, next) => {
-        hasPermissionsProvider(req, res, next, );
-    }, ServiceProviderController.find)
+ServiceProviderRouter.get('/type/:id', ServiceProviderController.find)
 ServiceProviderRouter.get('/:id', passport.authenticate('jwt', { session: false, failWithError: true }),
     (req, res, next) => {
         hasPermissionsProvider(req, res, next, );
