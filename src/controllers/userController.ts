@@ -134,5 +134,18 @@ class UserController {
             })
         }
     }
+    allBooking = async (req: Request, res: Response) => {
+        let all = await userService.allBooking(req)
+        res.status(200).json({
+            data: all
+        })
+    }
+    detailBooking = async (req: Request, res: Response) => {
+        let id = req.params.id
+        let one = await userService.detailBooking(id,req)
+        res.status(200).json({
+            data: one
+        })
+    }
 }
 export default new UserController()

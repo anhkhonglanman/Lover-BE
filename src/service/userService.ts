@@ -6,6 +6,7 @@ import { Like } from "typeorm";
 import {Role} from "../entity/Role";
 import {PageMeta} from "../lib/paginate";
 import {ProviderListPaginated, ProviderPaginate} from "../lib/provider-paginate";
+import {Booking} from "../entity/Booking";
 class UserService{
     private userRepository;
     constructor() {
@@ -153,5 +154,51 @@ class UserService{
         const findMail = await this.userRepository.findOne({ where: { email: owner } });
         return !findMail; // Trả về true nếu không tìm thấy otp có owner trùng
       };
+    allBooking = async (req) => {
+        let user = req['user'].id
+        let bookings = await AppDataSource.getRepository(Booking).find({
+            relations: {
+                providers: true
+            },
+            select: {
+                providers: {
+                    name: true
+                }
+            },
+            where: {
+                user: {
+                    id: user
+                }
+            }
+        })
+
+        return bookings
+    }
+
+    detailBooking = async (id, req) => {
+        let user = req['user'].id
+        let booking = await AppDataSource.getRepository(Booking).find({
+            relations: {
+                providers: {
+                    serviceProviders: {
+                        service: true
+                    }
+                },
+            },
+            select: {
+                providers: {
+                    name: true
+                }
+            },
+            where: {
+                id: id,
+                user: {
+                    id: user
+                }
+            }
+        })
+
+        return booking
+    }
 }
 export default new UserService()
