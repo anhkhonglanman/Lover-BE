@@ -19,7 +19,6 @@ import {Evaluate} from "./Evaluate";
 export class Provider {
     @PrimaryGeneratedColumn()
     id: number;
-
     @Column({type: "varchar", length: 255})
     name: string;
 

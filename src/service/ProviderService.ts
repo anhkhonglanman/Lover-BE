@@ -107,10 +107,11 @@ one = async (id) => {
     }
     oneByIdUser = async (id) => {
       return await this.providerRepository.findOne({
-        where: { user: id },
+        where: { user:  {id: id} },
         relations: ['images', 'serviceProviders', 'serviceProviders.service', 'evaluate' ,'serviceProviders.service.type'],
       });
     };
+    
     accept = async (id) => {
         return await AppDataSource.getRepository(Booking)
             .update({id : id}, {status: "accept"})
