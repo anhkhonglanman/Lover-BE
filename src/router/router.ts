@@ -8,6 +8,7 @@ import bookingRouter from "./bookingRouter";
 import typeRouter from "./typeRouter";
 import evaluateRouter from "./evaluateRouter";
 import serviceRouter from "./serviceRouter";
+import messageRouter from "./messageRouter";
 const hasPermissionsAdmin = require('../middleware/CheckRoleAdmin')
 const passport = require('passport');
 const hasPermissionsUser = require('../middleware/checkRoleUser')
@@ -15,6 +16,7 @@ const router = Router();
 
 router.use('/users', userRouter);
 router.use('/providers', providerRouter);
+router.use('/messages', messageRouter);
 router.use('/admin', passport.authenticate('jwt', { session: false, failWithError: true }),
     (req, res, next) => {
         hasPermissionsAdmin(req, res, next, );

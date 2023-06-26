@@ -50,27 +50,13 @@ class ProviderController {
         res.status(200).json(oneProvider)
     }
     showOneByIdUser = async (req: Request, res: Response) => {
-        try {
-          const token = req.headers.authorization.split(' ')[1];
-          const decodedToken = jwt.decode(token);
-          const id = decodedToken.idUser;
-          
-          console.log(id);
-          
-          const oneProvider = await providerService.oneByIdUser(id);
-          
-          if (!oneProvider) {
-            // Nếu không tìm thấy nhà cung cấp, trả về mã lỗi 404
-            return res.status(404).json({ message: 'Provider not found' });
-          }
-          
-          res.status(200).json(oneProvider);
-        } catch (error) {
-          console.error('Error retrieving provider:', error);
-          res.status(500).json({ message: 'Internal server error' });
-        }
-      }
-      
+        let token = req.headers.authorization.split(' ')[1];
+        const decodedToken = jwt.decode(token);
+        let id = decodedToken.idUser
+        console.log(id);
+        let oneProvider = await providerService.oneByIdUser(id)
+        res.status(200).json(oneProvider)
+    }
     acceptUser = async (req: Request, res: Response) => {
         let id  = req.params.id
         const data = await providerService.accept(id)

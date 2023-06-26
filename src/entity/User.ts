@@ -9,6 +9,7 @@ import {
 import { Role } from "./Role";
 import { Provider } from "./Provider";
 import { Booking } from "./Booking";
+import { Message } from "./Message";
 
 @Entity('user')
 export class User {
@@ -60,6 +61,12 @@ export class User {
 
     @OneToMany(() => Booking, (booking) => booking.user)
     booking: Booking[];
+
+    @OneToMany(() => Message, (massage) => massage.sender)
+    messages: Message[];
+    
+    @OneToMany(() => Message, (massage) => massage.receiver)
+    message: Message[];
 
     @Column({ default: 0 })
     isLocked: number;
