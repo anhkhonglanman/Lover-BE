@@ -1,16 +1,21 @@
 import {AppDataSource} from "../ormconfig";
 import {User} from "../entity/User";
-import bcrypt from  "bcrypt"
+import bcrypt from "bcrypt"
 import jwt from "jsonwebtoken";
-import { Like } from "typeorm";
+import {Like} from "typeorm";
 import {Role} from "../entity/Role";
 import {PageMeta} from "../lib/paginate";
 import {ProviderListPaginated, ProviderPaginate} from "../lib/provider-paginate";
-class UserService{
+import {Booking} from "../entity/Booking";
+import {de, tr} from "date-fns/locale";
+
+class UserService {
     private userRepository;
+
     constructor() {
         this.userRepository = AppDataSource.getRepository(User)
     }
+
     save = async (user) => {
         let password = await bcrypt.hash(user.password, 10)
         user.password = password;
@@ -26,11 +31,11 @@ class UserService{
                 username: user.username
             }
         });
-        if(!userFind){
+        if (!userFind) {
             return 'User is not exist'
-        }else {
+        } else {
             let passWordCompare = await bcrypt.compare(user.password, userFind.password);
-            if(passWordCompare){
+            if (passWordCompare) {
                 if (userFind.isLocked) {
                     return {
                         isLocked: true
@@ -47,7 +52,7 @@ class UserService{
                 }))
                 payload['token'] = token
                 return payload;
-            }else {
+            } else {
                 return 'Password is wrong'
             }
         }
@@ -112,7 +117,9 @@ class UserService{
         const meta = new PageMeta({options: q, total});
 
         //phân trang và chuẩn hoá dữ liệu đầu ra
-        return new ProviderListPaginated(entities.map((c) => {return c}), meta)
+        return new ProviderListPaginated(entities.map((c) => {
+            return c
+        }), meta)
     }
     update = async (id, user) => {
         await this.userRepository.update({id: id}, user);
@@ -121,13 +128,13 @@ class UserService{
         let providerRole = await AppDataSource.getRepository(Role).findOneBy({id: 3})
         await this.userRepository.update({id: id}, {role: providerRole});
     }
-    lock =  async (id) => {
+    lock = async (id) => {
         let isLock = await this.userRepository.findOneBy({isLocked: 1})
         await this.userRepository.update({id: id}, {isLocked: isLock})
     }
 
 
-    open =  async (id) => {
+    open = async (id) => {
         // let isOpen = await this.userRepository.findOneBy({isLocked: 0})
         // await this.userRepository.update({id: id}, {isLocked: isOpen})
         await this.userRepository.update({id}, {isLocked: 0});
@@ -151,8 +158,35 @@ class UserService{
         }
     }
     checkMail = async (owner: string) => {
-        const findMail = await this.userRepository.findOne({ where: { email: owner } });
+        const findMail = await this.userRepository.findOne({where: {email: owner}});
         return !findMail; // Trả về true nếu không tìm thấy otp có owner trùng
-      };
+    };
+
+    allBook = async (req) => {
+        let idUser = req['user'].id
+        const all = await AppDataSource.getRepository(Booking).find({
+            where: {
+                user: idUser
+            }
+        })
+        return all
+    }
+    detailBooking = async (bookingId) => {
+        const detail = await AppDataSource.getRepository(Booking).find({
+            where: {
+                id: bookingId
+            },
+            relations: {
+                providers: true
+            },
+            select: {
+                providers: {
+                    name: true
+                }
+            }
+        })
+        return detail
+    }
 }
+
 export default new UserService()
