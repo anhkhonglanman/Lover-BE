@@ -27,6 +27,18 @@ class ServiceProviderService {
             this.serviceProviderRepository.save({provider: providerId, service: `${item}`})
         })
     }
+    upDateService = async (providerId,data) => {
+        console.log('update service')
+        await this.deleteServiceById(providerId);
+        await this.addService(providerId,data)
+    }
+    deleteServiceById = async (providerId) => {
+        await this.serviceProviderRepository
+            .createQueryBuilder('Provider')
+            .delete()
+            .where({ provider: providerId })
+            .execute();
+    }
     one = async (id) => {
         return await this.serviceProviderRepository.find({
             where: {

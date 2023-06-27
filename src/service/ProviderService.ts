@@ -31,6 +31,7 @@ class ProviderService {
             images: provider.images,
             user: user,
             status: 1
+            
         }
        let data= await this.providerRepository.save(newProvider);
        return data
@@ -150,10 +151,8 @@ one = async (id) => {
         take: 15,
       });
   
-      const males = topProviders.filter(provider => provider.sex === 'male').slice(0, 7);
-      const females = topProviders.filter(provider => provider.sex === 'female').slice(0, 8);
   
-      return { males, females };
+      return topProviders
     }
      getNewlyJoinedProviders=async ()=> {
       return this.providerRepository.find({

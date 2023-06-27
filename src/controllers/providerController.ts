@@ -2,15 +2,15 @@ import {Request, Response} from "express";
 import providerService from "../service/ProviderService";
 import userService from "../service/userService";
 import imageService from "../service/imageService";
-import { Provider } from "src/entity/Provider";
+import { Provider } from "../entity/Provider";
 import ServiceProviderService from "../service/ServiceProviderService";
+import serviceService from "../service/serviceService";
 const jwt = require('jsonwebtoken')
 
 class ProviderController {
     save = async (req: Request, res: Response) => {
            let token = req.headers.authorization.split(' ')[1];
            const decodedToken = jwt.decode(token);
-           console.log(decodedToken);
            let provider = req.body
             let newProvider = await providerService.save(provider, decodedToken.idUser) 
             let image = provider.image
@@ -24,6 +24,7 @@ class ProviderController {
                 data: newProvider
             })
         } catch (e) {
+            console.log('e in save provoder:', e)
             res.status(400).json({
                 success: false,
                 message: 'tao provider ko thanh cong'
@@ -77,8 +78,28 @@ class ProviderController {
     }
     editProvider = async (req: Request, res: Response) => {
         let provider = req.body;
+        const newProviders={
+            name : provider.name,
+            dob: provider.dob,
+            sex: provider.sex,
+            city: provider.city,
+            avatarProvider: provider.avatarProvider,
+            country: provider.country,
+            height: provider.height,
+            weight: provider.weight,
+            hobby: provider.hobby,
+            desc: provider.desc,
+            request: provider.request,
+            linkFB: provider.linkFB,
+            count: provider.count,
+            price: provider.price
+        }
         let id = req.params.id;
-        let newProvider = await providerService.update(id, provider)
+        let img = provider.image
+        let service = provider.service
+        let newProvider = await providerService.update(id, newProviders)
+        await imageService.upDateImage(id, img)
+        await ServiceProviderService.upDateService(id,service )
         res.status(200).json({
             success: true,
             data: newProvider
