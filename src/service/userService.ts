@@ -200,5 +200,7 @@ class UserService{
 
         return booking
     }
+
+
 }
 export default new UserService()

@@ -51,6 +51,7 @@
     "typescript": "^5.0.4"
   },
   "devDependencies": {
-    "@types/faker": "^6.6.9"
+    "@types/faker": "^6.6.9",
+    "@types/passport": "^1.0.12"
   }
 }
