@@ -154,8 +154,14 @@ class ProviderService {
         const males = topProviders.filter(provider => provider.sex === 'male').slice(0, 7);
         const females = topProviders.filter(provider => provider.sex === 'female').slice(0, 8);
 
-        return {males, females};
+        const mergedArray = males.concat(females);
+
+        mergedArray.sort((a, b) => b.count - a.count);
+
+        return mergedArray;
     }
+
+
     getNewlyJoinedProviders = async () => {
         return this.providerRepository.find({
             order: {

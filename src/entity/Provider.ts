@@ -63,7 +63,7 @@ export class Provider {
 
     @Column({type: "varchar", length: 255, default: "0"})
     count: string;
-    // sẵn sàng cho thuê
+
     @Column({type: "varchar", default: "1"})
     ready: string;
     @OneToMany(() => Booking, (booking) => booking.providers)

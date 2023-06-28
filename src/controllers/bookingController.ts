@@ -92,7 +92,6 @@ class BookingController {
         let newBooking = await bookingService.showOne(bookingId);
         let idProvider = newBooking.providers.id;
         const updatedBooking = await bookingService.acceptBooking(bookingId, idProvider);
-        console.log(updatedBooking, 666)
         res.status(200).json({
             success: true,
             message: "Booking accepted",
@@ -119,7 +118,7 @@ class BookingController {
         const bookingId = req.params.bookingId;
         let newBooking = await bookingService.showOne(bookingId);
         let idProvider = newBooking.providers.id;
-        const updatedBooking = await bookingService.doneBooking(bookingId, idProvider);
+        const updatedBooking = await bookingService.updateCountOnStatusChange(bookingId, idProvider);
         res.status(200).json({
             success: true,
             message: "Booking rejected",

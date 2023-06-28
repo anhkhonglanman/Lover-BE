@@ -1,12 +1,15 @@
 import {AppDataSource} from "../ormconfig";
 import {Booking} from "../entity/Booking";
-import {LessThanOrEqual, MoreThanOrEqual, Not} from "typeorm";
+import {Provider} from "../entity/Provider";
+import {LessThanOrEqual, Not} from "typeorm";
 
 class BookingService {
     private bookingRepository
+    private providerRepository
 
     constructor() {
         this.bookingRepository = AppDataSource.getRepository(Booking)
+        this.providerRepository = AppDataSource.getRepository(Provider)
     }
 
     save = async (idProvider, req, cost) => {
@@ -56,8 +59,8 @@ class BookingService {
             .createQueryBuilder("booking")
             .leftJoinAndSelect("booking.providers", "provider")
             .leftJoinAndSelect("booking.user", "user")
-            .where("booking.status = :status", { status: text })
-            .andWhere("provider.id = :idProvider", { idProvider: loggedInUserId })
+            .where("booking.status = :status", {status: text})
+            .andWhere("provider.id = :idProvider", {idProvider: loggedInUserId})
             .getMany();
 
         return await query;
@@ -127,7 +130,7 @@ class BookingService {
         const booking = await this.bookingRepository.findOne({
             where: {
                 id: bookingId,
-                providers: { id: idProvider }
+                providers: {id: idProvider}
             },
             relations: ["user", "providers"]
         });
@@ -162,21 +165,49 @@ class BookingService {
             booking.status = "accept";
             return await this.bookingRepository.save(booking);
         } else {
-            throw new Error("No overlapping bookings found");
+            // If no overlapping bookings found, accept the booking directly
+            booking.status = "accept";
+            return await this.bookingRepository.save(booking);
         }
     }
 
 
     showOne = async (id) => {
-        return await  this.bookingRepository.findOne({
+        return await this.bookingRepository.findOne({
             where: {
-                id:id
+                id: id
             },
             relations: ["user", "providers"]
         })
     }
 
 
+    updateCountOnStatusChange = async (bookingId, providerId) => {
+        const booking = await this.bookingRepository.findOne({
+            where: {
+                id: bookingId
+            },
+            relations: ["providers"]
+        });
+
+        if (booking && booking.status === 'accept') {
+            const provider = await this.providerRepository.findOne({
+                where: {
+                    id: providerId
+                }
+            });
+
+            if (provider) {
+                provider.count = (parseInt(provider.count) + 1).toString();
+                await this.providerRepository.save(provider);
+
+                booking.status = 'done';
+                await this.bookingRepository.save(booking);
+            }
+        }
+
+        return booking;
+    }
 
 }
 
