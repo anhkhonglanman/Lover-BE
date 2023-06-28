@@ -121,12 +121,20 @@ class UserService{
             .createQueryBuilder()
             .update(User)
             .set({
+                username: user.username,
+                password: user.password,
                 firstname: user.firstname,
                 lastname: user.lastname,
                 address: user.address,
                 phoneNumber: user.phoneNumber,
                 numberCard: user.numberCard,
-                update: user.update
+                avatar:user.avatar,
+                update: user.update,
+                email: user.email,
+                afterImageCard: user.afterImageCard,
+                beforeImageCard: user.beforeImageCard
+
+
             })
             .where("id = :id", { id: id })
             .execute();
