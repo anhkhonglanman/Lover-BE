@@ -143,17 +143,25 @@ one = async (id) => {
       provider.count = await (parseInt(provider.count) + 1).toString();
       return (await this.providerRepository.save(provider));
     }
-     getTopProviders= async()=>{
+
+    getTopProviders = async () => {
       const topProviders = await this.providerRepository.find({
-        order: {
-          count: 'DESC',
-        },
-        take: 15,
+          order: {
+              count: 'DESC',
+          },
+          take: 15,
       });
+
+      const males = topProviders.filter(provider => provider.sex === 'male').slice(0, 7);
+      const females = topProviders.filter(provider => provider.sex === 'female').slice(0, 8);
+
+      const mergedArray = males.concat(females);
+
+      mergedArray.sort((a, b) => b.count - a.count);
+
+      return mergedArray;
+  }
   
-  
-      return topProviders
-    }
      getNewlyJoinedProviders=async ()=> {
       return this.providerRepository.find({
         order: {

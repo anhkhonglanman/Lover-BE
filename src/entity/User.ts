@@ -34,6 +34,9 @@ export class User {
     @Column({ type: "varchar", length: 255, nullable: true })
     address: string | null;
 
+    @Column({ type: "varchar", length: 255, nullable: true })
+    update: string | null;
+
     @Column({ type: "varchar", default: "https://files.playerduo.net/production/images/avatar1.png" })
     avatar: string;
 
