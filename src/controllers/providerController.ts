@@ -152,7 +152,7 @@ class ProviderController {
         const q = {
             page: parseInt(String(page), 10) || 1,
             take: parseInt(String(take), 10) || 15,
-            sex: 'all', // Điều chỉnh giới tính theo yêu cầu của bạn
+            sex: 'all',
         };
         console.log(q)
 
