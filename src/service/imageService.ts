@@ -21,7 +21,6 @@ class ImageService{
             .execute();
     }
     upDateImage = async (providerId,data) => {
-        console.log('update image')
         await this.deleteImageById(providerId);
         await this.addImage(providerId,data)
     }

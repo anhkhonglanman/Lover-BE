@@ -14,7 +14,6 @@ class EmailService{
         mail.owner = email;
         mail.otpValue = otp;
         mail.otpExpireAt = date;
-        console.log(email)
         return await this.emailRepository.save(mail);
     }
     

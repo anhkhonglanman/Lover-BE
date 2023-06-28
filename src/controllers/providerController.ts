@@ -34,7 +34,6 @@ class ProviderController {
     all = async (req: Request, res: Response) => {
         try {
             const query = req.query
-            console.log(query)
             let allProvider = await providerService.all(query)
             res.status(200).json({
                 data:allProvider})
@@ -54,15 +53,12 @@ class ProviderController {
         let token = req.headers.authorization.split(' ')[1];
         const decodedToken = jwt.decode(token);
         let id = decodedToken.idUser
-        console.log(id);
         let oneProvider = await providerService.oneByIdUser(id)
         res.status(200).json(oneProvider)
     }
     acceptUser = async (req: Request, res: Response) => {
         let id  = req.params.id
         const data = await providerService.accept(id)
-        // console.log('----- data: ',data)
-        // await providerService.increaseCount(data.id)
         res.status(200).json({
             message: true,
             data: data
