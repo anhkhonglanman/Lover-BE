@@ -50,7 +50,7 @@ class ProviderService {
             .leftJoinAndSelect("ser.type", "type")
             .leftJoinAndSelect("p.evaluate", "eva")
             .take(q.take ? q.take : 15)
-            .skip(q.skip ? q.skip : 0);
+            .skip((q.page - 1) * q.take);
 
         if (q.keyword) {
             sql.andWhere(`(
@@ -145,23 +145,24 @@ class ProviderService {
         provider.count = await (parseInt(provider.count) + 1).toString();
         return (await this.providerRepository.save(provider));
     }
-    getTopProviders = async () => {
-        const topProviders = await this.providerRepository.find({
-            order: {
-                count: 'DESC',
-            },
-            take: 15,
-        });
 
-        const males = topProviders.filter(provider => provider.sex === 'male').slice(0, 7);
-        const females = topProviders.filter(provider => provider.sex === 'female').slice(0, 8);
 
-        const mergedArray = males.concat(females);
+    getTopProviders = async (q) => {
+        const sql = this.providerRepository.createQueryBuilder("p")
+            .where("p.sex = :sex", { sex: q.sex })
+            .orderBy("p.count", "DESC")
+            .take(q.take ? q.take : 15)
+            .skip((q.page - 1) * q.take);
 
-        mergedArray.sort((a, b) => b.count - a.count);
+        const [entities, total] = await sql.getManyAndCount();
 
-        return mergedArray;
+        const meta = new PageMeta({ options: q, total });
+
+        return new ProviderListPaginated(entities.map((c) => new ProviderPaginate(c, c.user, c.images, c.serviceProviders, c.service, c.evaluate, c.type)), meta);
     }
+
+
+
 
 
     getNewlyJoinedProviders = async () => {

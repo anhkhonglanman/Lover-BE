@@ -113,11 +113,12 @@ class UserController {
     editUser = async (req: Request, res: Response) => {
         let user = req.body;
         let id = req.params.id;
-        let newUser = await userService.update(id, user)
+        let newUser = await userService.update(id, user);
         res.status(200).json({
-            data: newUser
-        })
-    }
+            data: newUser,
+        });
+    };
+
     delete = async (req: Request, res: Response) => {
         await userService.delete(req.params.id)
         res.status(200).json('delete user success')

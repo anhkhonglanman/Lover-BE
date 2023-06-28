@@ -31,19 +31,32 @@ class ProviderController {
             })
         }
     }
+
+
     all = async (req: Request, res: Response) => {
         try {
-            const query = req.query
-            let allProvider = await providerService.all(query)
+            const { page, take, keyword, sex, name, city, country } = req.query;
+            const query = {
+                page: parseInt(String(page), 10) || 1,
+                take: parseInt(String(take), 10) || 15,
+                keyword: keyword || '',
+                sex: sex || '',
+                name: name || '',
+                city: city || '',
+                country: country || ''
+            };
+
+            const allProvider = await providerService.all(query);
             res.status(200).json({
-                data:allProvider})
+                data: allProvider
+            });
         } catch (e) {
             res.status(500).json({
                 message: 'Có lỗi hệ thống cmnr'
-            })
+            });
         }
-
     }
+
     showOne = async (req: Request, res: Response) => {
         let id = req.params.id
         let oneProvider = await providerService.one(id)
@@ -132,14 +145,24 @@ class ProviderController {
             data: data
         })
       }
-    
-    getTopProviders=async (req: Request, res: Response)=> {
-        let data= await providerService.getTopProviders();
+
+    getTopProviders = async (req: Request, res: Response) => {
+        const { page, take } = req.query;
+
+        const q = {
+            page: parseInt(String(page), 10) || 1,
+            take: parseInt(String(take), 10) || 15,
+            sex: 'all', // Điều chỉnh giới tính theo yêu cầu của bạn
+        };
+
+        const data = await providerService.getTopProviders(q);
+
         res.status(200).json({
-            data: data
-        })
-    }
-     getNewlyJoinedProviders=async (req: Request, res: Response)=> {
+            data: data,
+        });
+    };
+
+    getNewlyJoinedProviders=async (req: Request, res: Response)=> {
         let data= await providerService.getNewlyJoinedProviders();
         res.status(200).json({
             data: data
