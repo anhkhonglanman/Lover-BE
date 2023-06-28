@@ -154,8 +154,10 @@ class ProviderController {
             take: parseInt(String(take), 10) || 15,
             sex: 'all', // Điều chỉnh giới tính theo yêu cầu của bạn
         };
+        console.log(q)
 
         const data = await providerService.getTopProviders(q);
+        console.log(data)
 
         res.status(200).json({
             data: data,
