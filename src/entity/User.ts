@@ -11,7 +11,7 @@ import { Provider } from "./Provider";
 import { Booking } from "./Booking";
 import { Message } from "./Message";
 
-@Entity('user')
+@Entity("user")
 export class User {
     @PrimaryGeneratedColumn()
     id: number;
@@ -34,7 +34,13 @@ export class User {
     @Column({ type: "varchar", length: 255, nullable: true })
     address: string | null;
 
-    @Column({ type: "varchar", default: "https://files.playerduo.net/production/images/avatar1.png" })
+    @Column({ type: "varchar", length: 255, nullable: true })
+    update: string | null;
+
+    @Column({
+        type: "varchar",
+        default: "https://files.playerduo.net/production/images/avatar1.png",
+    })
     avatar: string;
 
     @Column({ type: "varchar", length: 255, nullable: true })
@@ -45,15 +51,15 @@ export class User {
 
     @Column({
         type: "varchar",
-        default: "https://images2.thanhnien.vn/zoom/622_389/Uploaded/khanhtd/2022_06_08/8b63a9ff2202e25cbb13-1752.jpg"
+        nullable: true,
     })
-    beforeImageCard: string;
+    beforeImageCard: string | null;
 
     @Column({
         type: "varchar",
-        default: "https://images2.thanhnien.vn/zoom/622_389/Uploaded/khanhtd/2022_06_08/8b63a9ff2202e25cbb13-1752.jpg"
+        nullable: true,
     })
-    afterImageCard: string;
+    afterImageCard: string | null;
 
     @ManyToOne(() => Role, (role) => role.users)
     @JoinColumn({ name: "role_id" }) // Tên cột liên kết tới Role
@@ -64,7 +70,7 @@ export class User {
 
     @OneToMany(() => Message, (massage) => massage.sender)
     messages: Message[];
-    
+
     @OneToMany(() => Message, (massage) => massage.receiver)
     message: Message[];
 

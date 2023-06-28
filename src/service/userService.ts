@@ -115,9 +115,31 @@ class UserService{
         //phân trang và chuẩn hoá dữ liệu đầu ra
         return new ProviderListPaginated(entities.map((c) => {return c}), meta)
     }
+
     update = async (id, user) => {
-        await this.userRepository.update({id: id}, user);
-    }
+        await this.userRepository
+            .createQueryBuilder()
+            .update(User)
+            .set({
+                firstname: user.firstname,
+                lastname: user.lastname,
+                address: user.address,
+                phoneNumber: user.phoneNumber,
+            })
+            .where("id = :id", { id: id })
+            .execute();
+
+        const updatedUser = await this.userRepository
+            .createQueryBuilder("user")
+            .where("user.id = :id", { id: id })
+            .getOne();
+
+        return updatedUser;
+    };
+
+
+
+
     updateRole = async (id) => {
         let providerRole = await AppDataSource.getRepository(Role).findOneBy({id: 3})
         await this.userRepository.update({id: id}, {role: providerRole});

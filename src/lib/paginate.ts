@@ -1,6 +1,6 @@
 export class PageRequestDto {
     readonly page: number = 1;
-    take = 10;
+    take: number = 15;
 
     get skip(): number {
         return (this.page - 1) * this.take;
@@ -33,10 +33,9 @@ export class PageMeta {
 
     constructor({ options, total }: IPageMetaDto) {
         this.page = options.page;
-        // this.take = options.take;
-        this.take = 10;
+        this.take = 15;
         this.total = total;
-        this.totalPage = Math.ceil(total / 10);
+        this.totalPage = Math.ceil(total / this.take);
         this.hasPreviousPage = this.page > 1;
         this.hasNextPage = this.page < this.totalPage;
 
@@ -45,7 +44,7 @@ export class PageMeta {
         } else {
             const remainingItems = this.total % this.take;
             if (remainingItems > 0) {
-                this.totalPage++;
+
             }
         }
     }
