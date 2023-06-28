@@ -125,6 +125,8 @@ class UserService{
                 lastname: user.lastname,
                 address: user.address,
                 phoneNumber: user.phoneNumber,
+                numberCard: user.numberCard,
+                update: user.update
             })
             .where("id = :id", { id: id })
             .execute();

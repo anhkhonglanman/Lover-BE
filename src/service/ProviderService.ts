@@ -154,7 +154,11 @@ class ProviderService {
 
         const [entities, total] = await sql.getManyAndCount();
 
+        console.log("Entities:", entities); // Log entities để kiểm tra kết quả trả về
+
         const meta = new PageMeta({ options: q, total });
+
+        console.log("Meta:", meta); // Log meta để kiểm tra thông tin meta
 
         return new ProviderListPaginated(entities.map((c) => new ProviderPaginate(c, c.user, c.images, c.serviceProviders, c.service, c.evaluate, c.type)), meta);
     }
