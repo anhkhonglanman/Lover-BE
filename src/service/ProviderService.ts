@@ -127,6 +127,7 @@ class ProviderService {
     }
     private = async (id) => {
         await this.providerRepository.update({id: id}, {ready: 0})
+        return {id, ready: 0}
     }
     public = async (id) => {
         await this.providerRepository.update({id}, {ready: 1});
