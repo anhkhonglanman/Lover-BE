@@ -62,7 +62,6 @@ class ProviderService {
         if (q.sex) {
             sql.andWhere(`(p.sex like :sex)`, {sex: `${q.sex}`});
         }
-
         if (q.name) {
             sql.andWhere(`(p.name like :name)`, {name: `%${q.name}%`});
         }
@@ -72,14 +71,12 @@ class ProviderService {
         if (q.country) {
             sql.andWhere(`(p.country like :country)`, {country: `${q.country}`});
         }
-
         const [entities, total] = await sql.getManyAndCount();
 
         const meta = new PageMeta({options: q, total});
 
         return new ProviderListPaginated(entities.map((c) => new ProviderPaginate(c, c.user, c.images, c.serviceProviders, c.service, c.evaluate, c.type)), meta);
     }
-
 //cái này có thể viết gọn hơn
     one = async (id) => {
         return await this.providerRepository.findOne({
@@ -146,8 +143,6 @@ class ProviderService {
         return (await this.providerRepository.save(provider));
     }
 
-
-
     getTopProviders = async (q) => {
         const sexValues = ["male", "female"];
 
@@ -158,9 +153,7 @@ class ProviderService {
             .take(q.take ? q.take : 15)
             .skip((q.page - 1) * q.take);
 
-
         const [entities, total] = await sql.getManyAndCount();
-
 
         entities.sort((a, b) => b.count - a.count);
 
@@ -192,7 +185,6 @@ class ProviderService {
         return new ProviderListPaginated(entities.map((c) => new ProviderPaginate(c, c.user, c.images, c.serviceProviders, c.service, c.evaluate, c.type)), meta);
     }
 
-
     findOneProvider = async (idUser) => {
         return this.providerRepository.findOne({
             where: {
@@ -205,7 +197,6 @@ class ProviderService {
             }
         })
     }
-
 }
 
 export default new ProviderService()

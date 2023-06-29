@@ -107,8 +107,12 @@ class ProviderController {
         let img = provider.image
         let service = provider.service
         let newProvider = await providerService.update(id, newProviders)
-        await imageService.upDateImage(id, img)
-        await ServiceProviderService.upDateService(id,service )
+        if (img !== undefined && img !== null) {
+            await imageService.upDateImage(id, img)
+          }
+        if (service !== undefined && service !== null) {
+            await ServiceProviderService.upDateService(id,service )
+        }
         res.status(200).json({
             success: true,
             data: newProvider
