@@ -139,6 +139,13 @@ class ProviderController {
             data: data
         })
     }
+     
+    getTopSixProviders=async (req: Request, res: Response)=> {
+        let data= await providerService.getTopSixProviders();
+        res.status(200).json({
+            data: data
+        })
+    }
      getNewlyJoinedProviders=async (req: Request, res: Response)=> {
         let data= await providerService.getNewlyJoinedProviders();
         res.status(200).json({

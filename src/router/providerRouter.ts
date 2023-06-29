@@ -8,6 +8,7 @@ const providerRouter = Router()
 
 providerRouter.get('/', providerController.all)
 providerRouter.get('/topProviders', providerController.getTopProviders)
+providerRouter.get('/topSixProviders', providerController.getTopSixProviders)
 providerRouter.get('/newlyJoinedProviders', providerController.getNewlyJoinedProviders)
 providerRouter.post('/increaseCount/:id', providerController.increaseCounts)
 providerRouter.put('/privateProvider/:id', providerController.privateProvider)

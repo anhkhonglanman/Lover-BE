@@ -162,7 +162,16 @@ class ProviderService {
 
         return mergedArray;
     }
+    getTopSixProviders = async () => {
+        const topSixProviders = await this.providerRepository.find({
+            order: {
+                count: 'DESC',
+            },
+            take: 6,
+        });
 
+        return topSixProviders;
+    }
 
     getNewlyJoinedProviders = async () => {
         return this.providerRepository.find({
