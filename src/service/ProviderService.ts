@@ -50,7 +50,7 @@ class ProviderService {
             .leftJoinAndSelect("ser.type", "type")
             .leftJoinAndSelect("p.evaluate", "eva")
             .take(q.take ? q.take : 15)
-            .skip(q.skip ? q.skip : 0);
+            .skip((q.page - 1) * q.take);
 
         if (q.keyword) {
             sql.andWhere(`(
@@ -145,22 +145,28 @@ class ProviderService {
         provider.count = await (parseInt(provider.count) + 1).toString();
         return (await this.providerRepository.save(provider));
     }
-    getTopProviders = async () => {
-        const topProviders = await this.providerRepository.find({
-            order: {
-                count: 'DESC',
-            },
-            take: 15,
-        });
 
-        const males = topProviders.filter(provider => provider.sex === 'male').slice(0, 7);
-        const females = topProviders.filter(provider => provider.sex === 'female').slice(0, 8);
 
-        const mergedArray = males.concat(females);
 
-        mergedArray.sort((a, b) => b.count - a.count);
+    getTopProviders = async (q) => {
+        const sexValues = ["male", "female"];
 
-        return mergedArray;
+        const sql = this.providerRepository.createQueryBuilder("p")
+            .where("p.sex IN (:...sexValues)", { sexValues })
+            .orderBy("p.count", "DESC")
+            .addOrderBy("p.sex", "ASC")
+            .take(q.take ? q.take : 15)
+            .skip((q.page - 1) * q.take);
+
+
+        const [entities, total] = await sql.getManyAndCount();
+
+
+        entities.sort((a, b) => b.count - a.count);
+
+        const meta = new PageMeta({ options: q, total });
+
+        return new ProviderListPaginated(entities.map((c) => new ProviderPaginate(c, c.user, c.images, c.serviceProviders, c.service, c.evaluate, c.type)), meta);
     }
     getTopSixProviders = async () => {
         const topSixProviders = await this.providerRepository.find({
@@ -173,14 +179,20 @@ class ProviderService {
         return topSixProviders;
     }
 
-    getNewlyJoinedProviders = async () => {
-        return this.providerRepository.find({
-            order: {
-                joinDate: 'DESC',
-            },
-            take: 15,
-        });
+    getNewlyJoinedProviders = async (q) => {
+        const sql = this.providerRepository.createQueryBuilder("p")
+            .orderBy("p.joinDate", "DESC")
+            .take(q.take ? q.take : 15)
+            .skip((q.page - 1) * q.take);
+
+        const [entities, total] = await sql.getManyAndCount();
+
+        const meta = new PageMeta({ options: q, total });
+
+        return new ProviderListPaginated(entities.map((c) => new ProviderPaginate(c, c.user, c.images, c.serviceProviders, c.service, c.evaluate, c.type)), meta);
     }
+
+
     findOneProvider = async (idUser) => {
         return this.providerRepository.findOne({
             where: {
