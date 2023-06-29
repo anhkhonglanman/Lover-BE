@@ -140,12 +140,18 @@ class ProviderController {
         });
     };
 
-    getNewlyJoinedProviders=async (req: Request, res: Response)=> {
-        let data= await providerService.getNewlyJoinedProviders();
+    getNewlyJoinedProviders = async (req: Request, res: Response) => {
+        const { page, take } = req.query;
+        const q = {
+            page: parseInt(String(page), 10) || 1,
+            take: parseInt(String(take), 10) || 15,
+        };
+
+        const data = await providerService.getNewlyJoinedProviders(q);
         res.status(200).json({
-            data: data
-        })
-      }
+            data: data,
+        });
+    };
 }
 
 export default new ProviderController()

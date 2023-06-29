@@ -145,36 +145,42 @@ class ProviderService {
     }
 
 
+
     getTopProviders = async (q) => {
+        const sexValues = ["male", "female"];
+
         const sql = this.providerRepository.createQueryBuilder("p")
-            .where("p.sex = :sex", { sex: q.sex })
+            .where("p.sex IN (:...sexValues)", { sexValues })
             .orderBy("p.count", "DESC")
+            .addOrderBy("p.sex", "ASC")
             .take(q.take ? q.take : 15)
             .skip((q.page - 1) * q.take);
 
         const [entities, total] = await sql.getManyAndCount();
 
-        console.log("Entities:", entities); // Log entities để kiểm tra kết quả trả về
+
+        entities.sort((a, b) => b.count - a.count);
 
         const meta = new PageMeta({ options: q, total });
-
-        console.log("Meta:", meta); // Log meta để kiểm tra thông tin meta
 
         return new ProviderListPaginated(entities.map((c) => new ProviderPaginate(c, c.user, c.images, c.serviceProviders, c.service, c.evaluate, c.type)), meta);
     }
 
 
+    getNewlyJoinedProviders = async (q) => {
+        const sql = this.providerRepository.createQueryBuilder("p")
+            .orderBy("p.joinDate", "DESC")
+            .take(q.take ? q.take : 15)
+            .skip((q.page - 1) * q.take);
 
+        const [entities, total] = await sql.getManyAndCount();
 
+        const meta = new PageMeta({ options: q, total });
 
-    getNewlyJoinedProviders = async () => {
-        return this.providerRepository.find({
-            order: {
-                joinDate: 'DESC',
-            },
-            take: 15,
-        });
+        return new ProviderListPaginated(entities.map((c) => new ProviderPaginate(c, c.user, c.images, c.serviceProviders, c.service, c.evaluate, c.type)), meta);
     }
+
+
     findOneProvider = async (idUser) => {
         return this.providerRepository.findOne({
             where: {
