@@ -11,13 +11,17 @@ class ProviderController {
     save = async (req: Request, res: Response) => {
            let token = req.headers.authorization.split(' ')[1];
            const decodedToken = jwt.decode(token);
+        console.log(decodedToken,666)
            let provider = req.body
-            let newProvider = await providerService.save(provider, decodedToken.idUser) 
+        console.log(provider,555)
+            let newProvider = await providerService.save(provider, decodedToken.idUser)
+        console.log(newProvider,444)
             let image = provider.image
+        console.log(image,333)
             let service = provider.service
             try {
-           let newImage= await imageService.addImage(newProvider.id,image)
-           let newSerrvice= await ServiceProviderService.addService(newProvider.id,service)
+           await imageService.addImage(newProvider.id,image)
+           await ServiceProviderService.addService(newProvider.id,service)
 
             res.status(200).json({
                 success: true,
