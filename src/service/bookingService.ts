@@ -208,6 +208,33 @@ class BookingService {
 
         return booking;
     }
+      totalCostByUserId= async (userId)=> {
+        const bookingRepository = AppDataSource.getRepository(Booking);
+        const bookings = await bookingRepository.find({ where: { user: userId } });
+      
+        let totalCost = 0;
+        for (const booking of bookings) {
+            totalCost += parseFloat(booking.cost);
+          }
+        return totalCost;
+      }
+      
+      totalCostByProviderId= async ( providerId)=> {
+        const bookingRepository = await AppDataSource.getRepository(Booking);
+        const bookings = await bookingRepository.find({ 
+            where:
+             {
+                providers: providerId
+            }
+             });
+        let totalCost = 0;
+      
+        for (const booking of bookings) {
+            totalCost += parseFloat(booking.cost);
+          }
+          
+        return totalCost;
+      }
 
 }
 

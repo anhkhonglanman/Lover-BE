@@ -16,4 +16,6 @@ bookingRouter.post('/provider/:id', passport.authenticate('jwt', { session: fals
     (req, res, next) => {
         hasPermissionsUser(req, res, next, );
     }, bookingController.save)
+bookingRouter.get('/totalCostByUserId',passport.authenticate('jwt', { session: false, failWithError: true }), bookingController.totalCostByUserId)
+bookingRouter.get('/totalCostByProviderId/:id', passport.authenticate('jwt', { session: false, failWithError: true }), bookingController.totalCostByProviderId)
 export default bookingRouter

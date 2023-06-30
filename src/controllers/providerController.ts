@@ -15,7 +15,7 @@ class ProviderController {
             let newProvider = await providerService.save(provider, decodedToken.idUser) 
             let image = provider.image
             let service = provider.service
-            try {
+    
            let newImage= await imageService.addImage(newProvider.id,image)
            let newSerrvice= await ServiceProviderService.addService(newProvider.id,service)
 
@@ -23,13 +23,6 @@ class ProviderController {
                 success: true,
                 data: newProvider
             })
-        } catch (e) {
-            console.log('e in save provoder:', e)
-            res.status(400).json({
-                success: false,
-                message: 'tao provider ko thanh cong'
-            })
-        }
     }
 
 

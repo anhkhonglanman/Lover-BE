@@ -151,8 +151,7 @@ class UserService{
 
 
     updateRole = async (id) => {
-        let providerRole = await AppDataSource.getRepository(Role).findOneBy({id: 3})
-        await this.userRepository.update({id: id}, {role: providerRole});
+        await this.userRepository.update({id: id}, {role: 3});
     }
     lock =  async (id) => {
         let isLock = await this.userRepository.findOneBy({isLocked: 1})

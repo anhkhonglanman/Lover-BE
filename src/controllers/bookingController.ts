@@ -125,7 +125,24 @@ class BookingController {
             data: updatedBooking,
         });
     }
+    totalCostByUserId = async (req: Request, res: Response)=>{
+        let token = req.headers.authorization.split(' ')[1];
+        const decodedToken = jwt.decode(token);
+        let total = await bookingService.totalCostByUserId(decodedToken.idUser)
+        res.status(200).json({
+            success: true,
+            data: total,
+        });
+    }
 
+    totalCostByProviderId = async (req: Request, res: Response)=>{
+        let idProvider= req.params.id
+        let total = await bookingService.totalCostByProviderId(idProvider )
+        res.status(200).json({
+            success: true,
+            data: total,
+        });
+    }
 
 }
 

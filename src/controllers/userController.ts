@@ -89,10 +89,15 @@ class UserController {
         })
     }
     updateToProvider = async (req: Request, res: Response) => {
-        let userId = req.params.id
-        let newRole = await userService.updateRole(userId)
-        res.status(200).json(newRole)
-    }
+        try {
+          let userId = req.params.id;
+          let newRole = await userService.updateRole(userId);
+          res.status(200).json(newRole);
+        } catch (error) {
+          res.status(500).json({ error: 'Internal Server Error' });
+        }
+      }
+      
 
     lockUser = async (req: Request, res: Response) => {
         let userId = req.params.id
