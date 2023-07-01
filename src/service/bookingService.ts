@@ -54,6 +54,22 @@ class BookingService {
     }
 
 
+    findUser = async (idUser) => {
+        return await this.bookingRepository.find({
+            where: {
+                user: {
+                    id: idUser
+                }
+            },
+            relations: {
+            user: true,
+                providers: true,
+        }
+
+        })
+    }
+
+
     findProvider = async (text, loggedInUserId) => {
         const query = this.bookingRepository
             .createQueryBuilder("booking")
@@ -61,6 +77,18 @@ class BookingService {
             .leftJoinAndSelect("booking.user", "user")
             .where("booking.status = :status", {status: text})
             .andWhere("provider.id = :idProvider", {idProvider: loggedInUserId})
+            .getMany();
+
+        return await query;
+    };
+
+
+    findALlProvider = async (loggedInUserId) => {
+        const query = this.bookingRepository
+            .createQueryBuilder("booking")
+            .leftJoinAndSelect("booking.providers", "provider")
+            .leftJoinAndSelect("booking.user", "user")
+            .where("provider.id = :idProvider", { idProvider: loggedInUserId })
             .getMany();
 
         return await query;
@@ -105,25 +133,6 @@ class BookingService {
         return await this.bookingRepository.save(booking);
     }
 
-
-    doneBooking = async (bookingId, idProvider) => {
-        const booking = await this.bookingRepository.findOne({
-            where: {
-                id: bookingId,
-                providers: idProvider
-            }
-        });
-        if (!booking) {
-            throw new Error("Booking not found");
-        }
-
-        if (booking.status !== "accept") {
-            throw new Error("Booking is not in pending status");
-        }
-
-        booking.status = "done";
-        return await this.bookingRepository.save(booking);
-    }
 
 
     acceptBooking = async (bookingId, idProvider) => {

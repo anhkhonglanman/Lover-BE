@@ -155,16 +155,14 @@ class UserService{
         await this.userRepository.update({id: id}, {role: providerRole});
     }
     lock =  async (id) => {
-        let isLock = await this.userRepository.findOneBy({isLocked: 1})
+        let isLock = 1
         await this.userRepository.update({id: id}, {isLocked: isLock})
     }
 
 
     open =  async (id) => {
-        // let isOpen = await this.userRepository.findOneBy({isLocked: 0})
-        // await this.userRepository.update({id: id}, {isLocked: isOpen})
-        await this.userRepository.update({id}, {isLocked: 0});
-        return {id, isLocked: 0}
+        let isLock = 0
+        await this.userRepository.update({id: id}, {isLocked: isLock});
     }
     delete = async (id) => {
         await this.userRepository.delete({id: id})

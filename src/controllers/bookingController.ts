@@ -31,12 +31,29 @@ class BookingController {
             data: data
         })
     }
+
     find = async (req: Request, res: Response) => {
         try {
             let token = req.headers.authorization.split(' ')[1];
             const decodedToken = jwt.decode(token);
             const text = req.params.text
             let booking = await bookingService.find(text, decodedToken.idUser)
+            res.status(200).json(booking)
+        } catch (e) {
+            res.status(500).json({
+                message: 'Có lỗi hệ thống cmnr'
+            })
+        }
+
+    }
+
+
+    findALlUser = async (req: Request, res: Response) => {
+        try {
+            let id = req.params.id
+            console.log(id)
+            let booking = await bookingService.findUser(id)
+            console.log(booking)
             res.status(200).json(booking)
         } catch (e) {
             res.status(500).json({
@@ -69,6 +86,19 @@ class BookingController {
             const idProvider = await providerService.findOneProvider(loggedInUserId)
             const booking = await bookingService.findProvider(text, idProvider.id);
 
+            res.status(200).json(booking);
+        } catch (error) {
+            // Handle any errors that occur during the process
+            res.status(500).json({error: "Internal Server Error"});
+        }
+    };
+
+
+    findAllProvider = async (req, res) => {
+        try {
+            let id = req.params.id
+            const idProvider = await providerService.findOneProvider(id)
+            const booking = await bookingService.findALlProvider(idProvider.id);
             res.status(200).json(booking);
         } catch (error) {
             // Handle any errors that occur during the process
