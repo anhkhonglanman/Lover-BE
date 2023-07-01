@@ -12,7 +12,7 @@ class ProviderController {
            let token = req.headers.authorization.split(' ')[1];
            const decodedToken = jwt.decode(token);
            let provider = req.body
-            let newProvider = await providerService.save(provider, decodedToken.idUser) 
+            let newProvider = await providerService.save(provider, decodedToken.idUser)
             let image = provider.image
             let service = provider.service
     
@@ -78,8 +78,12 @@ class ProviderController {
             data: data
         })
     }
+
+
     editProvider = async (req: Request, res: Response) => {
         let provider = req.body;
+        console.log(req.body)
+
         const newProviders={
             name : provider.name,
             dob: provider.dob,
@@ -111,6 +115,9 @@ class ProviderController {
             data: newProvider
         })
     }
+
+
+
     privateProvider = async (req: Request, res: Response) => {
         let providerId = req.params.id
         let isPrivate = await providerService.private(providerId)

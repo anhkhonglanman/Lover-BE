@@ -2,6 +2,7 @@ import {Router} from "express";
 import bookingController from "../controllers/bookingController";
 const passport = require('passport');
 const hasPermissionsUser = require('../middleware/checkRoleUser')
+const hasPermissionsAdmin = require('../middleware/CheckRoleAdmin')
 const bookingRouter = Router()
 
 bookingRouter.get('', bookingController.all);
@@ -15,7 +16,14 @@ bookingRouter.put("/done/:bookingId", bookingController.bookingDone);
 bookingRouter.post('/provider/:id', passport.authenticate('jwt', { session: false, failWithError: true }),
     (req, res, next) => {
         hasPermissionsUser(req, res, next, );
-    }, bookingController.save)
-bookingRouter.get('/totalCostByUserId',passport.authenticate('jwt', { session: false, failWithError: true }), bookingController.totalCostByUserId)
-bookingRouter.get('/totalCostByProviderId/:id', passport.authenticate('jwt', { session: false, failWithError: true }), bookingController.totalCostByProviderId)
-export default bookingRouter
+    }, bookingController.save);
+bookingRouter.get('/all-text/bill/history/:id', passport.authenticate('jwt', { session: false, failWithError: true }),
+    (req, res, next) => {
+        hasPermissionsAdmin(req, res, next, );
+    }, bookingController.findAllProvider)
+
+bookingRouter.get('/all-text-user/order/:id', passport.authenticate('jwt', { session: false, failWithError: true }),
+    (req, res, next) => {
+        hasPermissionsAdmin(req, res, next, );
+    }, bookingController.findALlUser)
+export default bookingRouter;
