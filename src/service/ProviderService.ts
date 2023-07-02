@@ -81,7 +81,7 @@ class ProviderService {
     one = async (id) => {
         return await this.providerRepository.findOne({
             where: {id: id},
-            relations: ['images', 'serviceProviders', 'serviceProviders.service', 'evaluate', 'serviceProviders.service.type'],
+            relations: [ 'user','images', 'serviceProviders', 'serviceProviders.service', 'evaluate', 'serviceProviders.service.type'],
         });
     };
     //không ai viết ntn cả =))))), không tái sử dụng được

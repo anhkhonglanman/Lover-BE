@@ -15,12 +15,11 @@ class MessageService{
             ]
         })
     }
-    addMessage = async (evaluate,senderId, receiverId ) => {
+    addMessage = async (body,senderId, conversationId) => {
         const newMessage={
-            content : evaluate.content,
+            content : body.content,
             sender:senderId,
-            receiver: receiverId
-            
+            conversation: conversationId            
         }
        let data= await this.messageRepository.save(newMessage);
        return data

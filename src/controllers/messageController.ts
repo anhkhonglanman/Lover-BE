@@ -1,3 +1,4 @@
+import { Conversation } from './../entity/Conversation';
 import {Request, Response} from "express";
 import messageService from "../service/messageService";
 const jwt = require('jsonwebtoken')
@@ -24,8 +25,8 @@ class MessageController {
         const decodedToken = jwt.decode(token);
         let message = req.body
         let senderId = decodedToken.idUser
-        let receiverId = req.params.id
-        let newMessage = await messageService.addMessage(message, senderId,receiverId ) 
+        let conversationId = req.params.id
+        let newMessage = await messageService.addMessage(message, senderId,conversationId ) 
         res.status(200).json({
         success: true,
         data: newMessage

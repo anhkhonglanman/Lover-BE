@@ -9,6 +9,7 @@ import typeRouter from "./typeRouter";
 import evaluateRouter from "./evaluateRouter";
 import serviceRouter from "./serviceRouter";
 import messageRouter from "./messageRouter";
+import conversationRouter from "./conversationRouter";
 const hasPermissionsAdmin = require('../middleware/CheckRoleAdmin')
 const passport = require('passport');
 const hasPermissionsUser = require('../middleware/checkRoleUser')
@@ -30,4 +31,5 @@ router.use('/service-provider',serviceProviderRouter)
 router.use('/bookings',bookingRouter)
 router.use('/type',typeRouter)
 router.use('/otp',otpRouter)
+router.use('/conversation', conversationRouter)
 export default router
