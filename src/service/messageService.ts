@@ -7,14 +7,15 @@ class MessageService{
     constructor() {
         this.messageRepository = AppDataSource.getRepository(Message)
     }
-    all = async (senderId, receiverId) => {
-        return await this.messageRepository.find({
-            where: [
-                { sender: { id: senderId }, receiver: { id: receiverId } },
-                { sender: { id: receiverId }, receiver: { id: senderId } }        
-            ]
-        })
-    }
+    showAllByConversation = async (conversationId)=> {
+        return await this.messageRepository.createQueryBuilder("message")
+          .leftJoinAndSelect("message.sender", "sender")
+          .leftJoinAndSelect("message.conversation", "conversation")
+          .leftJoinAndSelect("conversation.user1", "user1")
+          .leftJoinAndSelect("conversation.user2", "user2")
+          .where("conversation.id = :conversationId", { conversationId })
+          .getMany();
+      };
     addMessage = async (body,senderId, conversationId) => {
         const newMessage={
             content : body.content,

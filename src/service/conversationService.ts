@@ -6,14 +6,13 @@ class ConversationService{
     constructor() {
         this.conversationRepository = AppDataSource.getRepository(Conversation)
     }
-    all = async (senderId, receiverId) => {
-        return await this.conversationRepository.find({
-            where: [
-                { sender: { id: senderId }, receiver: { id: receiverId } },
-                { sender: { id: receiverId }, receiver: { id: senderId } }        
-            ]
-        })
-    }
+    showAll = async (userId: number)=> {
+    return await this.conversationRepository.createQueryBuilder("conversation")
+      .leftJoinAndSelect("conversation.user1", "user1")
+      .leftJoinAndSelect("conversation.user2", "user2")
+      .where("user1.id = :userId OR user2.id = :userId", { userId })
+      .getMany();
+  };
     addConversation = async (user1,user2) => {
         const newConversation={
             user1:user1,

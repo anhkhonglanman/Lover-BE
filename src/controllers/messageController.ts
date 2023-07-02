@@ -10,23 +10,21 @@ class MessageController {
         this.messageService = messageService
     }
     getMessage = async (req: Request, res: Response) => {
-        const receiverId = req.params.id;
-        let token = req.headers.authorization.split(' ')[1];
-        const decodedToken = jwt.decode(token);
-        let senderId = decodedToken.idUser
-        const message = await messageService.all(senderId,receiverId );
+        const conversationId = req.params.id;
+        const message = await messageService.showAllByConversation(conversationId);
         if (!message) {
             return res.status(404).json({ message: 'Service not found' });
         }
         return res.status(200).json(message);
     }
+    
     addMessage =async (req: Request, res: Response) => {
         let token = req.headers.authorization.split(' ')[1];
         const decodedToken = jwt.decode(token);
         let message = req.body
         let senderId = decodedToken.idUser
-        let conversationId = req.params.id
-        let newMessage = await messageService.addMessage(message, senderId,conversationId ) 
+        let conversation = req.params.id
+        let newMessage = await messageService.addMessage(message, senderId, conversation ) 
         res.status(200).json({
         success: true,
         data: newMessage

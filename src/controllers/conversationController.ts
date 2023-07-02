@@ -9,12 +9,11 @@ class ConversationController {
     constructor() {
         this.conversationService = conversationService
     }
-    getMessage = async (req: Request, res: Response) => {
-        const receiverId = req.params.id;
+    getConversation = async (req: Request, res: Response) => {
         let token = req.headers.authorization.split(' ')[1];
         const decodedToken = jwt.decode(token);
-        let senderId = decodedToken.idUser
-        const message = await conversationService.all(senderId,receiverId );
+        let userId = decodedToken.idUser
+        const message = await conversationService.showAll(userId);
         if (!message) {
             return res.status(404).json({ message: 'Service not found' });
         }
