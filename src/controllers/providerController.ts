@@ -31,7 +31,7 @@ class ProviderController {
             const { page, take, keyword, sex, name, city, country } = req.query;
             const query = {
                 page: parseInt(String(page), 10) || 1,
-                take: parseInt(String(take), 10) || 15,
+                take: parseInt(String(take), 10) || 10,
                 keyword: keyword || '',
                 sex: sex || '',
                 name: name || '',
@@ -82,7 +82,6 @@ class ProviderController {
 
     editProvider = async (req: Request, res: Response) => {
         let provider = req.body;
-        console.log(req.body)
 
         const newProviders={
             name : provider.name,
@@ -155,13 +154,11 @@ class ProviderController {
 
         const q = {
             page: parseInt(String(page), 10) || 1,
-            take: parseInt(String(take), 10) || 15,
+            take: parseInt(String(take), 10) || 10,
             sex: 'all',
         };
-        console.log(q)
 
         const data = await providerService.getTopProviders(q);
-        console.log(data)
 
         res.status(200).json({
             data: data,
@@ -178,7 +175,7 @@ class ProviderController {
         const { page, take } = req.query;
         const q = {
             page: parseInt(String(page), 10) || 1,
-            take: parseInt(String(take), 10) || 15,
+            take: parseInt(String(take), 10) || 10,
         };
 
         const data = await providerService.getNewlyJoinedProviders(q);

@@ -1,17 +1,20 @@
 import {AppDataSource} from "../ormconfig";
 import {User} from "../entity/User";
-import bcrypt from  "bcrypt"
+import bcrypt from "bcrypt"
 import jwt from "jsonwebtoken";
-import { Like } from "typeorm";
+import {Like} from "typeorm";
 import {Role} from "../entity/Role";
 import {PageMeta} from "../lib/paginate";
 import {ProviderListPaginated, ProviderPaginate} from "../lib/provider-paginate";
 import {Booking} from "../entity/Booking";
-class UserService{
+
+class UserService {
     private userRepository;
+
     constructor() {
         this.userRepository = AppDataSource.getRepository(User)
     }
+
     save = async (user) => {
         let password = await bcrypt.hash(user.password, 10)
         user.password = password;
@@ -27,11 +30,11 @@ class UserService{
                 username: user.username
             }
         });
-        if(!userFind){
+        if (!userFind) {
             return 'User is not exist'
-        }else {
+        } else {
             let passWordCompare = await bcrypt.compare(user.password, userFind.password);
-            if(passWordCompare){
+            if (passWordCompare) {
                 if (userFind.isLocked) {
                     return {
                         isLocked: true
@@ -48,7 +51,7 @@ class UserService{
                 }))
                 payload['token'] = token
                 return payload;
-            }else {
+            } else {
                 return 'Password is wrong'
             }
         }
@@ -74,13 +77,37 @@ class UserService{
         });
         return userFind;
     }
+
+    allUsers = async (page, limit) => {
+        const skip = (page - 1) * limit;
+        const [users, total] = await this.userRepository.findAndCount({
+            where: {
+                role: {
+                    id: 1
+                }
+            },
+            skip,
+            take: limit
+        });
+        const totalPage = Math.ceil(total / limit);
+        return {
+            docs: users,
+            meta: {
+                total,
+                page,
+                limit,
+                totalPage
+            }
+        };
+    };
+
     all = async (q) => {
         const sql = this.userRepository
             .createQueryBuilder('u')
             .leftJoinAndSelect('u.role', 'r')
             // .orderBy('a.createdAt', 'DESC')
             .take(q.take ? q.take : 10)
-            .skip(q.skip ? q.skip : 0);
+            .skip((q.page - 1) * q.take);
 
         //search keyword
         if (q.keyword) {
@@ -113,7 +140,9 @@ class UserService{
         const meta = new PageMeta({options: q, total});
 
         //phân trang và chuẩn hoá dữ liệu đầu ra
-        return new ProviderListPaginated(entities.map((c) => {return c}), meta)
+        return new ProviderListPaginated(entities.map((c) => {
+            return c
+        }), meta)
     }
 
     update = async (id, user) => {
@@ -128,7 +157,7 @@ class UserService{
                 address: user.address,
                 phoneNumber: user.phoneNumber,
                 numberCard: user.numberCard,
-                avatar:user.avatar,
+                avatar: user.avatar,
                 update: user.update,
                 email: user.email,
                 afterImageCard: user.afterImageCard,
@@ -136,30 +165,28 @@ class UserService{
 
 
             })
-            .where("id = :id", { id: id })
+            .where("id = :id", {id: id})
             .execute();
 
         const updatedUser = await this.userRepository
             .createQueryBuilder("user")
-            .where("user.id = :id", { id: id })
+            .where("user.id = :id", {id: id})
             .getOne();
 
         return updatedUser;
     };
 
 
-
-
     updateRole = async (id) => {
         await this.userRepository.update({id: id}, {role: 3});
     }
-    lock =  async (id) => {
+    lock = async (id) => {
         let isLock = 1
         await this.userRepository.update({id: id}, {isLocked: isLock})
     }
 
 
-    open =  async (id) => {
+    open = async (id) => {
         let isLock = 0
         await this.userRepository.update({id: id}, {isLocked: isLock});
     }
@@ -180,9 +207,9 @@ class UserService{
         }
     }
     checkMail = async (owner: string) => {
-        const findMail = await this.userRepository.findOne({ where: { email: owner } });
+        const findMail = await this.userRepository.findOne({where: {email: owner}});
         return !findMail; // Trả về true nếu không tìm thấy otp có owner trùng
-      };
+    };
     allBooking = async (req) => {
         let user = req['user'].id
         let bookings = await AppDataSource.getRepository(Booking).find({
@@ -231,4 +258,5 @@ class UserService{
     }
 
 }
+
 export default new UserService()

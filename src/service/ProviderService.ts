@@ -49,7 +49,7 @@ class ProviderService {
             .leftJoinAndSelect("sp.service", "ser")
             .leftJoinAndSelect("ser.type", "type")
             .leftJoinAndSelect("p.evaluate", "eva")
-            .take(q.take ? q.take : 15)
+            .take(q.take ? q.take : 10)
             .skip((q.page - 1) * q.take);
 
         if (q.keyword) {
@@ -150,7 +150,7 @@ class ProviderService {
             .where("p.sex IN (:...sexValues)", { sexValues })
             .orderBy("p.count", "DESC")
             .addOrderBy("p.sex", "ASC")
-            .take(q.take ? q.take : 15)
+            .take(q.take ? q.take : 10)
             .skip((q.page - 1) * q.take);
 
         const [entities, total] = await sql.getManyAndCount();
@@ -175,7 +175,7 @@ class ProviderService {
     getNewlyJoinedProviders = async (q) => {
         const sql = this.providerRepository.createQueryBuilder("p")
             .orderBy("p.joinDate", "DESC")
-            .take(q.take ? q.take : 15)
+            .take(q.take ? q.take : 10)
             .skip((q.page - 1) * q.take);
 
         const [entities, total] = await sql.getManyAndCount();

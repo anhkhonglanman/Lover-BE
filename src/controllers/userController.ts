@@ -75,7 +75,19 @@ class UserController {
 
     }
     allUser = async (req: Request, res: Response) => {
-        const query = req.query
+
+
+        const { page, take, keyword, sex, name, city, country } = req.query;
+        const query = {
+            page: parseInt(String(page), 10) || 1,
+            take: parseInt(String(take), 10) || 10,
+            keyword: keyword || '',
+            sex: sex || '',
+            name: name || '',
+            city: city || '',
+            country: country || ''
+        };
+
         let users = await userService.all(query);
         res.status(200).json({
             data: users
@@ -88,6 +100,22 @@ class UserController {
             data: user
         })
     }
+
+    allUsers = async (req: Request, res: Response) => {
+        const page = Number(req.query.page) || 1;
+        const limit = Number(req.query.limit) || 10;
+        try {
+            const result = await userService.allUsers(page, limit);
+            res.status(200).json(result);
+        } catch (error) {
+            // Xử lý lỗi
+            res.status(500).json({
+                error: "Internal Server Error"
+            });
+        }
+    };
+
+
     updateToProvider = async (req: Request, res: Response) => {
         try {
           let userId = req.params.id;
