@@ -1,7 +1,7 @@
 import express from 'express';
 import bodyParser from "body-parser";
 import cors from 'cors'
-import {AppDataSource} from "./ormconfig";
+import { AppDataSource } from "./ormconfig";
 import router from "./router/router";
 require('dotenv').config();
 const passport = require('passport');
@@ -23,53 +23,54 @@ AppDataSource.initialize()
     });
 
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors());
 app.use("", router)
 const server = app.listen(process.env.PORT || 8181, () => {
     signale.success(`Server is running on  port ${process.env.PORT}`)
 });
 
-//đây là config backend
 const { Server } = require("socket.io");
-const io = new Server(server);
-const sockets = new Map() // holds all active sockets
 
-io.on('connection', (socket) => {
-    sockets.set(socket.id,socket) // add socket to Map object
-    socket.join("ChessRoom") // join socket to demo room
+const io = new Server({ cors: { origin: "http://localhost:5173" } });
 
-    socket.on('disconnect', (data)=>{
-        signale.watch(`${socket.id} disconnected`);
-        sockets.delete(socket.id) // delete socket from Map object
-    })
 
-    socket.on('getrooms', (data,replyFn)=>{
-        signale.watch(`${socket.id}: received getrooms event with ${data}`);
-        const rooms = Array.from(io.sockets.adapter.rooms).map( (room) => {
-            return { name: room[0], members: Array.from(room[1])}
-        })
-        replyFn(rooms)
-    })
+let users = [];
 
+const addUser = (id, socketId) => {
+  if (!users.some((user) => user.id === id)) {
+    users.push({ id, socketId });
+  }
+};
+const getUser = (id) => {
+    return users.find((user) => user.id === id);
+  };
+
+
+io.on("connection", (socket) => {
+  console.log("Kết nối thành công!");
+
+  socket.on("addUser", (id) => {
+    addUser(id, socket.id);
+    io.emit("getUsers", users);
+  });
+/// gui tin nhan
+socket.on("sendMessage", ({id, receiverId, content})=>{
+    const user = getUser(receiverId);
+    io.to(user.socketId).emit("getMessage", {
+        id,
+        content,
+    });
+})
+
+
+  // ngat ket noi
+  socket.on("disconnect", () => {
+    console.log("Ngắt kết nối!");
+    users = users.filter((user) => user.socketId !== socket.id);
+    io.emit("getUsers", users);
+  });
 });
 
-//config client
-const test = require('socket.io-client');
-const socketTEst = test( "http://localhost:8181" );
+io.listen(5555);
 
-
-socketTEst.on('connect', async ()=>{
-    signale.success(`${socketTEst.id} connected`)
-    const data = "OptionalData"
-    socketTEst.emit('joinroom', 'agent')
-
-    socketTEst.emit( "getrooms", data, (rooms) =>{
-        rooms.forEach((room, index) => {
-            signale.success(`room${index}: `, room)
-        });
-    })
-})
-socketTEst.on('error', async ()=>{
-    signale.fatal(`${socketTEst.id} error`)
-})
